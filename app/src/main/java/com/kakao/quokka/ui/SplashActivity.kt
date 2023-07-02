@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.kakao.quokka.MainActivity
 import com.kakao.quokka.ext.statusBar
 import com.kakao.quokka.ui.base.BaseActivity
 import com.kako.quokka.R
@@ -35,7 +34,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
     }
 
     private fun moveToDashBoard() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, DashBoardActivity::class.java)
         startActivity(intent)
     }
 

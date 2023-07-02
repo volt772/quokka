@@ -1,4 +1,4 @@
-package com.kakao.quokka
+package com.kakao.quokka.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -13,9 +13,9 @@ import com.kako.quokka.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
+class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityMainBinding>() {
 
-    override val viewModel: MainViewModel by viewModels()
+    override val viewModel: DashBoardViewModel by viewModels()
     override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
