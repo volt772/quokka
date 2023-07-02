@@ -10,8 +10,8 @@ data class QkdSuccessResponse<T>(
 
     val body: T?,
 
-    val nextOffset: Int? = null,
-
-    val limit: Int? = null
+//    val nextOffset: Int? = null,
+//
+//    val limit: Int? = null
 
 )

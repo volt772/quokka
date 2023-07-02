@@ -14,10 +14,10 @@ object QkdNetworkKeyTags {
     }
 
     object Response {
-        const val META = "value"
-        const val DOCUMENTS = "count"
+        const val META = "meta"
+        const val DOCUMENTS = "documents"
 
-        const val TOTAL_COUNT = "TOTAL_COUNT"
+        const val TOTAL_COUNT = "total_count"
         const val PAGEABLE_COUNT = "pageable_count"
         const val IS_END = "is_end"
 

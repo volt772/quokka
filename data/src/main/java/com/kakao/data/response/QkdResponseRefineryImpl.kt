@@ -37,21 +37,21 @@ class QkdResponseRefineryImpl @Inject constructor(
         response: Response<T>
     ): QkdResult<QkdSuccessResponse<T>> {
 
-        val (nextOffset, limit) = if (response.body() is ResponseListDto<*>) {
-            val body = response.body() as ResponseListDto<*>
-            if (body.value.isNotEmpty()) {
-                if (body.count == body.limit) { body.offset + 1 } else { null }
-            } else { null } to body.limit
-        } else {
-            null to null
-        }
+//        val (nextOffset, limit) = if (response.body() is ResponseListDto<*>) {
+//            val body = response.body() as ResponseListDto<*>
+//            if (body.value.isNotEmpty()) {
+//                if (body.count == body.limit) { body.offset + 1 } else { null }
+//            } else { null } to body.limit
+//        } else {
+//            null to null
+//        }
 
         return QkdResult.Success(
             QkdSuccessResponse(
                 code = response.code(),
                 body = response.body(),
-                nextOffset = nextOffset,
-                limit = limit
+//                nextOffset = nextOffset,
+//                limit = limit
             )
         )
     }
