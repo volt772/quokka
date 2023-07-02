@@ -74,10 +74,20 @@ dependencies {
     implementation(Hilt.worker)
     kapt(Hilt.workerCompiler)
 
+    /* Retrofit*/
+    implementation(Retrofit.retrofit)
+    implementation(Retrofit.converterGson)
+    implementation(Retrofit.adapterRxJava)
+    implementation(Retrofit.adapterRxJava2)
+    implementation(Retrofit.loggingInterceptor)
+
     /* Paging3*/
     implementation(Paging3.ktx)
     implementation(Paging3.rxJava3)
     implementation(Paging3.roomPaging)
+
+    /* PreferenceManager*/
+    implementation(PrefManager.preferenceKtx)
 
     /* Test*/
     androidTestImplementation(Test.jUnit)

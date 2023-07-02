@@ -28,7 +28,7 @@ dependencies {
     implementation(Retrofit.loggingInterceptor)
 
     /* PreferenceManager*/
-    implementation(PrefManager.ktx)
+    implementation(PrefManager.preferenceKtx)
 
     /* Hilt*/
     implementation(Hilt.dagger)

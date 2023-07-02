@@ -38,6 +38,7 @@ object Coroutines {
 }
 
 object Retrofit {
+    const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
     const val core = "com.squareup.retrofit2:retrofit:2.9.0"
     const val converterGson = "com.squareup.retrofit2:converter-gson:2.9.0"
     const val adapterRxJava = "com.squareup.retrofit2:adapter-rxjava:2.9.0"
@@ -59,11 +60,8 @@ object Paging3 {
 }
 
 object PrefManager {
-    const val ktx = "androidx.preference:preference-ktx:1.2.0"
+    const val preferenceKtx = "androidx.preference:preference-ktx:1.2.0"
 }
-
-
-
 
 object Test {
     const val jUnit = "junit:junit:4.13.2"
