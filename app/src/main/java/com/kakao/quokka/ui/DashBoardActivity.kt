@@ -2,6 +2,9 @@ package com.kakao.quokka.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -11,6 +14,7 @@ import com.kakao.quokka.ui.base.BaseActivity
 import com.kako.quokka.R
 import com.kako.quokka.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityMainBinding>() {
@@ -33,5 +37,19 @@ class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityMainBinding>(
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        /* *********************************/
+        viewModel.getHamster()
+        testSubscriber()
+    }
+
+    private fun testSubscriber() {
+        lifecycleScope.run {
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.hamster.collect {  }
+                }
+            }
+        }
     }
 }

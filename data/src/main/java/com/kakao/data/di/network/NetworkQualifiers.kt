@@ -1,4 +1,4 @@
-package com.kakao.quokka.di.network
+package com.kakao.data.di.network
 
 import javax.inject.Qualifier
 

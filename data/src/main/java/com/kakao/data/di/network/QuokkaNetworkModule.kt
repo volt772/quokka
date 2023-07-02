@@ -1,6 +1,7 @@
-package com.kakao.quokka.di.network
+package com.kakao.data.di.network
 
-import com.kakao.quokka.constants.QkConstants
+import com.kakao.data.network.QkdApiService
+import com.kakao.domain.constants.QkdConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ object QuokkaNetworkModule {
     @Singleton
     @Provides
     @QuokkaBaseUrl
-    fun provideQuokkaBaseUrl() = QkConstants.Uri.BASE
+    fun provideQuokkaBaseUrl() = QkdConstants.Uri.BASE
 
     /**
      * @Desc Retrofit Clients
@@ -33,6 +34,16 @@ object QuokkaNetworkModule {
     ): Retrofit {
         return retrofitBuilder(baseUrl, converterFactory, okHttpClient)
     }
+
+    /**
+     * @Desc API Services
+     */
+    @Singleton
+    @Provides
+    fun provideQuokkaApiService(
+        @QuokkaService retrofit: Retrofit
+    ): QkdApiService = retrofit.create(QkdApiService::class.java)
+
 
     /**
      * @Desc 일반 Retrofit Builder

@@ -1,5 +1,6 @@
-package com.kakao.quokka.di.network
+package com.kakao.data.di.network
 
+import com.kakao.domain.constants.QkdNetworkKeyTags.HEADER.AUTHORIZATION
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,7 +31,10 @@ object InterceptorModule {
     @GeneralInterceptor
     fun provideInterceptor(): Interceptor {
         return Interceptor { chain ->
-            chain.proceed(chain.request())
+            val builder = chain.request().newBuilder()
+                .header(AUTHORIZATION, "KakaoAK dbb8d3097da36f5c3fcd34a5e56e055b")
+            chain.proceed(builder.build())
+//            chain.proceed(chain.request())
         }
 //        return Interceptor { chain ->
 //            val accessToken = try {
