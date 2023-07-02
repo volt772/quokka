@@ -89,6 +89,9 @@ dependencies {
     /* PreferenceManager*/
     implementation(PrefManager.preferenceKtx)
 
+    /* Kakao*/
+    implementation(Kakao.sdkAll)
+
     /* Test*/
     androidTestImplementation(Test.jUnit)
     androidTestImplementation(Test.workTest)

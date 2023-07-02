@@ -63,6 +63,17 @@ object PrefManager {
     const val preferenceKtx = "androidx.preference:preference-ktx:1.2.0"
 }
 
+object Kakao {
+    object Sdk {
+        const val group = "com.kakao.sdk"
+        const val name = "usermgmt"
+        const val version = "1.30.0"
+    }
+
+    const val user = "com.kakao.sdk:v2-user:2.10.0"
+    const val sdkAll = "com.kakao.sdk:v2-all:2.14.0"
+}
+
 object Test {
     const val jUnit = "junit:junit:4.13.2"
     const val workTest = "android.arch.work:work-testing:1.0.1"

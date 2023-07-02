@@ -2,6 +2,8 @@ package com.kakao.quokka
 
 import android.app.Application
 import android.content.Context
+import com.kakao.sdk.common.KakaoSdk
+import com.kako.quokka.R
 import dagger.hilt.android.HiltAndroidApp
 
 
@@ -13,7 +15,7 @@ class QuokkaApp : Application() {
 
         appContext = applicationContext
 
-//        KakaoSdk.init(this, getString(R.string.kakao_app_key))
+        KakaoSdk.init(this, getString(R.string.kakao_app_key))
     }
     companion object {
         lateinit var appContext: Context
