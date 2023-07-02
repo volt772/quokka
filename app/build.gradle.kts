@@ -57,6 +57,7 @@ dependencies {
     implementation(Android.navigationKtx)
     implementation(Android.workRunTime)
     implementation(Android.workRunTimeKtx)
+    implementation(Android.splashScreen)
 
     /* LifeCycle*/
     implementation(Lifecycle.viewModel)

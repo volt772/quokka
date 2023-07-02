@@ -23,6 +23,7 @@ object Android {
     const val navigationKtx = "androidx.navigation:navigation-ui-ktx:2.6.0"
     const val workRunTime = "androidx.work:work-runtime:2.8.0"
     const val workRunTimeKtx = "androidx.work:work-runtime-ktx:2.8.0"
+    const val splashScreen = "androidx.core:core-splashscreen:1.0.1"
 }
 
 object Lifecycle {
