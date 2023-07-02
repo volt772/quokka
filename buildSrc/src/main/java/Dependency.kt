@@ -63,6 +63,10 @@ object PrefManager {
     const val preferenceKtx = "androidx.preference:preference-ktx:1.2.0"
 }
 
+object Glide {
+    const val core = "com.github.bumptech.glide:glide:4.15.1"
+}
+
 object Kakao {
     object Sdk {
         const val group = "com.kakao.sdk"
@@ -134,9 +138,6 @@ object Test {
 //    const val ktx = "androidx.preference:preference-ktx:1.2.0"
 //}
 //
-//object Glide {
-//    const val core = "com.github.bumptech.glide:glide:4.15.1"
-//}
 //
 //object Joda {
 //    const val core = "net.danlew:android.joda:2.12.5"

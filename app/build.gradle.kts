@@ -89,6 +89,9 @@ dependencies {
     /* PreferenceManager*/
     implementation(PrefManager.preferenceKtx)
 
+    /* Glide*/
+    implementation(Glide.core)
+
     /* Kakao*/
     implementation(Kakao.sdkAll)
 
