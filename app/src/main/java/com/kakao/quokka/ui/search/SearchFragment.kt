@@ -39,9 +39,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         initView()
 
-        if (keyword == null) {
-            collectUiState()
-        }
+        collectUiState()
     }
 
     private fun initView() {
@@ -78,10 +76,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 //            }
 //        }
         viewLifecycleOwner.lifecycleScope.launch {
-            keyword = "hamster"
+            vm.saveQueryKeyword("hamster")
             vm.getDocuments().collectLatest { docs ->
                 adapter?.submitData(docs)
             }
+        }
+    }
+
+    companion object {
+        fun newInstance() = SearchFragment().apply {
+//            this.selectedDate = selectedDate this.isDueAllDay = isDueAllDay
+//            param = Unit
         }
     }
 

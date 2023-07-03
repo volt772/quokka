@@ -13,7 +13,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,8 +21,16 @@ class DashBoardViewModel @Inject constructor(
     private val repository: QkdHamsterRepository
 ) : BaseViewModel() {
 
+    private val _query: MutableSharedFlow<String> = MutableSharedFlow()
+    val query: SharedFlow<String> = _query
+
     private val _hamster: MutableSharedFlow<QkdHamster> = MutableSharedFlow()
     val hamster: SharedFlow<QkdHamster> = _hamster
+
+    suspend fun saveQueryKeyword(query: String) {
+        println("probe :: vm save : query : $query")
+        _query.emit(query)
+    }
 
     fun getHamster() {
 //        viewModelScope.launch {
