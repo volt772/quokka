@@ -12,15 +12,15 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.quokka.ui.base.BaseActivity
 import com.kako.quokka.R
-import com.kako.quokka.databinding.ActivityMainBinding
+import com.kako.quokka.databinding.ActivityDashboardBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityMainBinding>() {
+class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityDashboardBinding>() {
 
     override val viewModel: DashBoardViewModel by viewModels()
-    override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+    override fun getViewBinding(): ActivityDashboardBinding = ActivityDashboardBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityMainBinding>(
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard
+                R.id.navigation_search, R.id.navigation_cabinet
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

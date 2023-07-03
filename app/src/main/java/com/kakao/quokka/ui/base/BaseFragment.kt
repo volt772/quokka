@@ -10,19 +10,18 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
 
-abstract class BaseFragment<B : ViewDataBinding, PARAM>(
+abstract class BaseFragment<B : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
 ) : Fragment() {
 
-
-    protected var param: PARAM? = null
+//    protected var param: PARAM? = null
 
     private var _binding: B? = null
     protected val binding get() = _binding!!
 
     protected abstract fun setBindings()
 
-    protected abstract fun prepareFragment(param: PARAM)
+    protected abstract fun prepareFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,9 +37,9 @@ abstract class BaseFragment<B : ViewDataBinding, PARAM>(
 
         performDataBinding()
 
-        param?.let {
-            prepareFragment(it)
-        }
+//        param?.let {
+            prepareFragment()
+//        }
     }
 
     private fun performDataBinding() {

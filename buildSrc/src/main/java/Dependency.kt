@@ -24,6 +24,7 @@ object Android {
     const val workRunTime = "androidx.work:work-runtime:2.8.0"
     const val workRunTimeKtx = "androidx.work:work-runtime-ktx:2.8.0"
     const val splashScreen = "androidx.core:core-splashscreen:1.0.1"
+    const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }
 
 object Lifecycle {

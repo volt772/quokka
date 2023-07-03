@@ -22,8 +22,12 @@ class DashBoardViewModel @Inject constructor(
     val hamster: SharedFlow<QkdHamster> = _hamster
 
     fun getHamster() {
-        viewModelScope.launch {
-            val result = hamsterRepository.getHamster()
-        }
+//        viewModelScope.launch {
+//            val result = hamsterRepository.getHamster()
+//        }
+    }
+
+    fun getTest() {
+        println("probe :: test hamster!!")
     }
 }

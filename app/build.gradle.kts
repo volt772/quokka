@@ -58,6 +58,7 @@ dependencies {
     implementation(Android.workRunTime)
     implementation(Android.workRunTimeKtx)
     implementation(Android.splashScreen)
+    implementation(Android.swipeRefreshLayout)
 
     /* LifeCycle*/
     implementation(Lifecycle.viewModel)

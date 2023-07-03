@@ -1,8 +1,8 @@
-package com.kakao.quokka.ui.home
+package com.kakao.quokka.ui.cabinet
 
 import androidx.fragment.app.Fragment
 
-class HomeFragment : Fragment() {
+class CabinetFragment : Fragment() {
 
 //    private var _binding: FragmentHomeBinding? = null
 //
