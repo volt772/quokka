@@ -12,4 +12,11 @@
         <item name="android:maxLines">1</item>
     </style>
 
+    <!-- List No Label -->
+    <style name="DocumentsEmptyLabel">
+        <item name="android:textSize">@dimen/md_16</item>
+        <item name="android:textColor">@color/material_gray_500</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

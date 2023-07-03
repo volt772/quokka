@@ -79,6 +79,10 @@ object Kakao {
     const val sdkAll = "com.kakao.sdk:v2-all:2.14.0"
 }
 
+object Joda {
+    const val core = "net.danlew:android.joda:2.12.5"
+}
+
 object Test {
     const val jUnit = "junit:junit:4.13.2"
     const val workTest = "android.arch.work:work-testing:1.0.1"
@@ -140,9 +144,6 @@ object Test {
 //}
 //
 //
-//object Joda {
-//    const val core = "net.danlew:android.joda:2.12.5"
-//}
 //
 //object Hilt {
 //    const val dagger = "com.google.dagger:hilt-android:2.45"

@@ -1,14 +1,8 @@
 package com.kakao.quokka.ui.search
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.whenResumed
+import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.ui.DashBoardViewModel
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
@@ -30,12 +24,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
     override fun prepareFragment() {
-//        loadingView(true)
-//        ids = param.ids
-//        subscribeViewModel()
-//        initSectionView(!param.pushDestination.isNullOrEmpty())
-//        setAdapter()
-//        setUpListener()
 
         initView()
 
@@ -76,11 +64,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 //            }
 //        }
         viewLifecycleOwner.lifecycleScope.launch {
-            vm.saveQueryKeyword("hamster")
             vm.getDocuments().collectLatest { docs ->
+//                viewForEmptyDocuments(docs.count())
+//                viewForEmptyDocuments(0)
                 adapter?.submitData(docs)
             }
         }
+    }
+
+    private fun viewForEmptyDocuments(count: Int) {
+        binding.clNoDocs.visibilityExt(count <= 0)
     }
 
     companion object {

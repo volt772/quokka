@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.kakao.domain.dto.QkDocuments
 import com.kakao.quokka.QuokkaApp.Companion.appContext
+import com.kakao.quokka.ext.convertFormat
 import com.kako.quokka.databinding.ItemDocumentsBinding
 
 class DocumentsAdapter : PagingDataAdapter<QkDocuments, DocumentsViewHolder>(DocumentsDiffCallBack()) {
@@ -57,7 +58,7 @@ class DocumentsViewHolder(
                 ))
                 .into(binding.ivThumbnail)
 
-            binding.tvThumbnailDate.text = _doc.datetime
+            binding.tvThumbnailDate.text = _doc.datetime.convertFormat()
         }
     }
 }

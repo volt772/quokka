@@ -1,14 +1,8 @@
 package com.kakao.quokka.ext
 
-//import com.apx6.domain.constants.CmdConstants
-//import org.joda.time.DateTime
-//import org.joda.time.LocalDate
-//import org.joda.time.Period
-//import java.text.SimpleDateFormat
-//import java.util.Calendar
-//import java.util.Date
-//import java.util.Locale
-//import java.util.TimeZone
+import java.text.SimpleDateFormat
+import java.util.Date
+
 //
 //
 //val currMillis: Long
@@ -17,7 +11,7 @@ package com.kakao.quokka.ext
 //    }
 //
 //
-//val BASE_DATE_FORMATE = "yy.MM.dd"
+val DOC_DATE_FORMAT = "yy.MM.dd HH:mm"
 //
 ///**
 // * Joda DateTime 이 올바른 값인지 검사.
@@ -47,13 +41,21 @@ package com.kakao.quokka.ext
 //    }
 //}
 //
+//fun String.getUTCDateTime() {
+//    val stringDate = "2023-06-28T21:00:48.000+09:00"
+////    2022-12-15T09:00:00.624+09:00 =>  yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+//    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+//    var consultationDate = sdf.parse(this)
+//    println("probe :: date : $consultationDate")
+//}
+//
 ///**
 // * Date Convert
 // * @desc String to Millis
 // */
 //fun String?.formedDateToMillis(format : String = BASE_DATE_FORMATE): Long {
 //    val millis = this?.let { formed ->
-//        val sdf = SimpleDateFormat("yy.MM.dd")
+//        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
 //        val date: Date = sdf.parse(formed) as Date
 //        date.time
 //    } ?: 0L
@@ -73,6 +75,18 @@ package com.kakao.quokka.ext
 //
 //    return formed
 //}
+
+fun String?.convertFormat(format : String = DOC_DATE_FORMAT): String {
+    val formed = this?.let { formed ->
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+        val date: Date = sdf.parse(formed) as Date
+        val millis = date.time
+        val formatter = SimpleDateFormat(format)
+        formatter.format(Date(millis))
+    } ?: ""
+
+    return formed
+}
 //
 //fun getMillis(d: Long): Long {
 //    val offset: Int = TimeZone.getDefault().getOffset(d)

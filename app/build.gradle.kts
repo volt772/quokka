@@ -96,6 +96,9 @@ dependencies {
     /* Kakao*/
     implementation(Kakao.sdkAll)
 
+    /* Joda*/
+    implementation(Joda.core)
+
     /* Test*/
     androidTestImplementation(Test.jUnit)
     androidTestImplementation(Test.workTest)
