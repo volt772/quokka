@@ -25,14 +25,5 @@ class SearchViewModel @Inject constructor(
     private val repository: QkdHamsterRepository
 ) : BaseViewModel() {
 
-    suspend fun getDocuments(): Flow<PagingData<QkDocuments>> {
-        return repository.documents()
-//            .map { pagingData ->
-//                pagingData.map {
-//                    mapper.mapDomainMovieToUi(domainMovie = it)
-//                }
-//            }
-            .cachedIn(viewModelScope)
-    }
 
 }

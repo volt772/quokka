@@ -9,10 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
-
 abstract class BaseFragment<B : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
 ) : Fragment() {
+
 
 //    protected var param: PARAM? = null
 
@@ -21,6 +21,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     protected abstract fun setBindings()
 
+//    protected abstract fun prepareFragment(param: PARAM)
     protected abstract fun prepareFragment()
 
     override fun onCreateView(

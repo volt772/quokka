@@ -28,10 +28,10 @@ class SearchRemoteMediator(
 //                page = pageIndex
 //            )
             val respImg = withContext(defaultDispatcher) {
-                api.getSearchImage(query = "hamster", page = 1, size = 10, sort = "recency")
+                api.getSearchImage(query = "hamster", page = pageIndex, size = 10, sort = "recency")
             }.body()?.documents
             val respClip = withContext(defaultDispatcher) {
-                api.getSearchVClip(query = "hamster", page = 1, size = 10, sort = "recency")
+                api.getSearchVClip(query = "hamster", page = pageIndex, size = 10, sort = "recency")
             }.body()?.documents
 
             val searched = mutableListOf<QkdDocuments>().also { _list ->

@@ -1,12 +1,16 @@
 package com.kakao.quokka.ui
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.apx6.chipmunk.app.ui.base.BaseViewModel
+import com.kakao.domain.dto.QkDocuments
 import com.kakao.domain.dto.QkdHamster
 import com.kakao.domain.repository.QkdHamsterRepository
 import com.kakao.quokka.di.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -15,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DashBoardViewModel @Inject constructor(
     @IoDispatcher val ioDispatcher: CoroutineDispatcher,
-    private val hamsterRepository: QkdHamsterRepository
+    private val repository: QkdHamsterRepository
 ) : BaseViewModel() {
 
     private val _hamster: MutableSharedFlow<QkdHamster> = MutableSharedFlow()
@@ -29,5 +33,16 @@ class DashBoardViewModel @Inject constructor(
 
     fun getTest() {
 //        println("probe :: test hamster!!")
+    }
+
+    suspend fun getDocuments(): Flow<PagingData<QkDocuments>> {
+        println("probe :: >>>>>>>>>..")
+        return repository.documents()
+//            .map { pagingData ->
+//                pagingData.map {
+//                    mapper.mapDomainMovieToUi(domainMovie = it)
+//                }
+//            }
+            .cachedIn(viewModelScope)
     }
 }

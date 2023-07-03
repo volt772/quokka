@@ -6,7 +6,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kakao.domain.dto.QkDocuments
-import com.kakao.domain.dto.QkdDocuments
 import com.kako.quokka.databinding.ItemDocumentsBinding
 
 class DocumentsAdapter : PagingDataAdapter<QkDocuments, DocumentsViewHolder>(DocumentsDiffCallBack()) {
@@ -20,7 +19,7 @@ class DocumentsAdapter : PagingDataAdapter<QkDocuments, DocumentsViewHolder>(Doc
     }
 
     override fun onBindViewHolder(holder: DocumentsViewHolder, position: Int) {
-        holder.bind(getItem(position)?.datetime)
+        holder.bind(getItem(position)!!)
     }
 }
 
@@ -38,12 +37,14 @@ class DocumentsViewHolder(
     val binding:ItemDocumentsBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(path: String?) {
-        path?.let {
+    fun bind(doc: QkDocuments) {
+//        path?.let {
 //            binding.ivMoviePoster.load("https://image.tmdb.org/t/p/w500/$it") {
 //                crossfade(durationMillis = 2000)
 //                transformations(RoundedCornersTransformation(12.5f))
 //            }
-        }
+//        }
+        binding.tvTitle.text = doc.title
+
     }
 }

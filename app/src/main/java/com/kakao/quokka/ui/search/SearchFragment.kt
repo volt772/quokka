@@ -1,7 +1,14 @@
 package com.kakao.quokka.ui.search
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.whenResumed
 import com.kakao.quokka.ui.DashBoardViewModel
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
@@ -16,9 +23,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
-    private val vm: SearchViewModel by viewModels()
+    private val vm: DashBoardViewModel by viewModels()
     private var adapter: DocumentsAdapter? = null
-
+    private var keyword: String?= null
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
@@ -31,7 +38,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 //        setUpListener()
 
         initView()
-        collectUiState()
+
+        if (keyword == null) {
+            collectUiState()
+        }
     }
 
     private fun initView() {
@@ -51,7 +61,24 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     private fun collectUiState() {
+        println("probe :: <<<<<<<<<<<<<< : keyword : $keyword")
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.CREATED) {
+//                vm.getDocuments().collectLatest { docs ->
+//                    adapter?.submitData(docs)
+//                }
+//            }
+//        }
+
+//        lifecycleScope.run {
+//            launch {
+//                vm.getDocuments().collectLatest { docs ->
+//                    adapter?.submitData(docs)
+//                }
+//            }
+//        }
         viewLifecycleOwner.lifecycleScope.launch {
+            keyword = "hamster"
             vm.getDocuments().collectLatest { docs ->
                 adapter?.submitData(docs)
             }

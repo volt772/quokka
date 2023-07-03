@@ -39,8 +39,8 @@ class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityDashboardBind
         navView.setupWithNavController(navController)
 
         /* *********************************/
-        viewModel.getHamster()
-        testSubscriber()
+//        viewModel.getHamster()
+//        testSubscriber()
     }
 
     private fun testSubscriber() {
