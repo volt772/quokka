@@ -28,6 +28,6 @@ class DashBoardViewModel @Inject constructor(
     }
 
     fun getTest() {
-        println("probe :: test hamster!!")
+//        println("probe :: test hamster!!")
     }
 }

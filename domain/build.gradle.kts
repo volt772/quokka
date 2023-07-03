@@ -36,6 +36,10 @@ dependencies {
     implementation(Paging3.rxJava3)
     implementation(Paging3.roomPaging)
 
+    /* Coroutine*/
+    implementation(Coroutines.core)
+    implementation(Coroutines.android)
+
     implementation(Android.coreKtx)
     androidTestImplementation(Test.hiltTest)
     androidTestImplementation(Test.coroutineTest)

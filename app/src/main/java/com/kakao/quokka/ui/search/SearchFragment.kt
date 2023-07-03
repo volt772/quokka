@@ -1,23 +1,28 @@
 package com.kakao.quokka.ui.search
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.kakao.quokka.ui.DashBoardViewModel
+import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
 import com.kako.quokka.R
 import com.kako.quokka.BR
 import com.kako.quokka.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
-    private val vm: DashBoardViewModel by viewModels()
+    private val vm: SearchViewModel by viewModels()
+    private var adapter: DocumentsAdapter? = null
+
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
     override fun prepareFragment() {
-        println("probe :: this frag")
 //        loadingView(true)
 //        ids = param.ids
 //        subscribeViewModel()
@@ -26,18 +31,30 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 //        setUpListener()
 
         initView()
+        collectUiState()
     }
 
     private fun initView() {
-        vm.getTest()
-        with(binding) {
-//            inContent.run {
-//                rvCheckList.adapter = checkListAdapter
-//                srfRefresh.setOnRefreshListener {
-//                    clearFilter()
-//                    srfRefresh.isRefreshing = false
-//                }
-//            }
+        adapter = DocumentsAdapter()
+        binding.rvDocs.adapter = adapter
+
+//        vm.getTest()
+//        with(binding) {
+////            inContent.run {
+////                rvCheckList.adapter = checkListAdapter
+////                srfRefresh.setOnRefreshListener {
+////                    clearFilter()
+////                    srfRefresh.isRefreshing = false
+////                }
+////            }
+//        }
+    }
+
+    private fun collectUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            vm.getDocuments().collectLatest { docs ->
+                adapter?.submitData(docs)
+            }
         }
     }
 

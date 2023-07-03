@@ -1,15 +1,21 @@
 package com.kakao.data.repository
 
+import androidx.paging.PagingData
+import androidx.paging.map
+import com.kakao.data.datasource.search.SearchRemoteDataSource
 import com.kakao.data.di.DefaultDispatcher
 import com.kakao.data.di.IoDispatcher
+import com.kakao.domain.mapper.QkdDocumentsMapper
 import com.kakao.data.network.QkdApiService
 import com.kakao.data.response.QkdResponseRefinery
+import com.kakao.domain.dto.QkDocuments
 import com.kakao.domain.dto.QkdDocuments
 import com.kakao.domain.repository.QkdHamsterRepository
 import com.kakao.domain.repository.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.UnknownHostException
@@ -19,7 +25,9 @@ class QkdHamsterRepositoryImpl @Inject constructor(
     @IoDispatcher val ioDispatcher: CoroutineDispatcher,
     @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher,
     private val refinery: QkdResponseRefinery,
-    private val api: QkdApiService
+    private val api: QkdApiService,
+    private val dataSource: SearchRemoteDataSource,
+    private val mapper: QkdDocumentsMapper,
 ): QkdHamsterRepository {
 
     override suspend fun getHamster() {
@@ -55,6 +63,15 @@ class QkdHamsterRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             println("probe :: err : ${e}")
+        }
+    }
+
+    override suspend fun documents(): Flow<PagingData<QkDocuments>> {
+        return dataSource.search("hamster")
+            .map { pagingData ->
+                pagingData.map { docs ->
+                    mapper.mapDocumentToUi(docs)
+                }
         }
     }
 }
