@@ -2,13 +2,13 @@ package com.kakao.domain.dto
 
 data class QkDocuments (
 
-    val thumbnailUrl: String?= "",
+    val thumbnailUrl: String = "",
 
-    val thumbnail: String?= "",
+    val thumbnail: String = "",
 
-    val title: String?= "",
+    val title: String = "",
 
-    val displaySiteName: String?= "",
+    val displaySiteName: String = "",
 
     val datetime: String
 

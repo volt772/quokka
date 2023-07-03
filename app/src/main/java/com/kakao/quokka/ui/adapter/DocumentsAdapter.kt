@@ -5,7 +5,13 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.kakao.domain.dto.QkDocuments
+import com.kakao.quokka.QuokkaApp.Companion.appContext
 import com.kako.quokka.databinding.ItemDocumentsBinding
 
 class DocumentsAdapter : PagingDataAdapter<QkDocuments, DocumentsViewHolder>(DocumentsDiffCallBack()) {
@@ -19,7 +25,7 @@ class DocumentsAdapter : PagingDataAdapter<QkDocuments, DocumentsViewHolder>(Doc
     }
 
     override fun onBindViewHolder(holder: DocumentsViewHolder, position: Int) {
-        holder.bind(getItem(position)!!)
+        holder.bind(getItem(position))
     }
 }
 
@@ -37,14 +43,21 @@ class DocumentsViewHolder(
     val binding:ItemDocumentsBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(doc: QkDocuments) {
-//        path?.let {
-//            binding.ivMoviePoster.load("https://image.tmdb.org/t/p/w500/$it") {
-//                crossfade(durationMillis = 2000)
-//                transformations(RoundedCornersTransformation(12.5f))
-//            }
-//        }
-        binding.tvTitle.text = doc.title
+    fun bind(doc: QkDocuments?) {
+        doc?.let { _doc ->
+            val thumbUrl = _doc.thumbnailUrl.ifBlank {
+                _doc.thumbnail
+            }
 
+            Glide.with(appContext)
+                .load(thumbUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .apply(RequestOptions.bitmapTransform(
+                    MultiTransformation(CenterCrop(), RoundedCorners(4))
+                ))
+                .into(binding.ivThumbnail)
+
+            binding.tvThumbnailDate.text = _doc.datetime
+        }
     }
 }
