@@ -29,19 +29,23 @@ class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityDashboardBind
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
         initFrag()
         subscribers()
     }
 
+    private fun initView() {
+    }
+
     private fun subscribers() {
-//        lifecycleScope.run {
-//            launch {
-//                viewModel.query.collect { _query ->
-//                    println("probe :: subscrivers : query : $_query")
-//                    query = _query
-//                }
-//            }
-//        }
+        lifecycleScope.run {
+            launch {
+                viewModel.query.collect { _query ->
+                    println("probe :: subscrivers : main : query : $_query")
+                    query = _query
+                }
+            }
+        }
     }
 
     private fun initFrag() {

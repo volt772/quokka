@@ -18,6 +18,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.Quokka.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Quokka.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="android:windowSplashScreenBackground">@color/white</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_app</item>

@@ -11,6 +11,6 @@ interface QkdHamsterRepository {
 //    suspend fun getHamster(): Flow<Resource<List<QkdDocuments>>>
     suspend fun getHamster()
 
-    suspend fun documents(): Flow<PagingData<QkDocuments>>
+    suspend fun documents(query: String): Flow<PagingData<QkDocuments>>
 
 }

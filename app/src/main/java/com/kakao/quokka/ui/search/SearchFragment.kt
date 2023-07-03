@@ -1,13 +1,13 @@
 package com.kakao.quokka.ui.search
 
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kakao.quokka.ext.visibilityExt
-import com.kakao.quokka.ui.DashBoardViewModel
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
-import com.kako.quokka.R
 import com.kako.quokka.BR
+import com.kako.quokka.R
 import com.kako.quokka.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
-    private val vm: DashBoardViewModel by viewModels()
+    private val vm: SearchViewModel by viewModels()
     private var adapter: DocumentsAdapter? = null
     private var keyword: String?= null
 
@@ -28,43 +28,43 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         initView()
 
         collectUiState()
+        subscribers()
+    }
+
+    private fun subscribers() {
+        viewLifecycleOwner.lifecycleScope.run {
+            launch {
+                vm.query.collectLatest { _query ->
+                    collectUiState(_query)
+                }
+            }
+        }
     }
 
     private fun initView() {
         adapter = DocumentsAdapter()
         binding.rvDocs.adapter = adapter
 
-//        vm.getTest()
-//        with(binding) {
-////            inContent.run {
-////                rvCheckList.adapter = checkListAdapter
-////                srfRefresh.setOnRefreshListener {
-////                    clearFilter()
-////                    srfRefresh.isRefreshing = false
-////                }
-////            }
-//        }
+        binding.svDocs.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                binding.svDocs.clearFocus()
+                lifecycleScope.launch {
+                    query?.let { _query ->
+                        vm.queryDocuments(_query)
+                    }
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 
-    private fun collectUiState() {
-        println("probe :: <<<<<<<<<<<<<< : keyword : $keyword")
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.CREATED) {
-//                vm.getDocuments().collectLatest { docs ->
-//                    adapter?.submitData(docs)
-//                }
-//            }
-//        }
-
-//        lifecycleScope.run {
-//            launch {
-//                vm.getDocuments().collectLatest { docs ->
-//                    adapter?.submitData(docs)
-//                }
-//            }
-//        }
+    private fun collectUiState(query: String = "") {
         viewLifecycleOwner.lifecycleScope.launch {
-            vm.getDocuments().collectLatest { docs ->
+            vm.getDocuments(query).collectLatest { docs ->
 //                viewForEmptyDocuments(docs.count())
 //                viewForEmptyDocuments(0)
                 adapter?.submitData(docs)

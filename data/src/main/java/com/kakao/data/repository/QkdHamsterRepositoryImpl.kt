@@ -66,8 +66,8 @@ class QkdHamsterRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun documents(): Flow<PagingData<QkDocuments>> {
-        return dataSource.search("hamster")
+    override suspend fun documents(query: String): Flow<PagingData<QkDocuments>> {
+        return dataSource.search(query)
             .map { pagingData ->
                 pagingData.map { docs ->
                     mapper.mapDocumentToUi(docs)

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,5 +26,23 @@ class SearchViewModel @Inject constructor(
     private val repository: QkdHamsterRepository
 ) : BaseViewModel() {
 
+    private val _query: MutableSharedFlow<String> = MutableSharedFlow()
+    val query: SharedFlow<String> = _query
+
+    suspend fun queryDocuments(query: String) {
+        viewModelScope.launch {
+            _query.emit(query)
+        }
+    }
+
+    suspend fun getDocuments(query: String): Flow<PagingData<QkDocuments>> {
+        return repository.documents(query)
+//            .map { pagingData ->
+//                pagingData.map {
+//                    mapper.mapDomainMovieToUi(domainMovie = it)
+//                }
+//            }
+            .cachedIn(viewModelScope)
+    }
 
 }

@@ -4,6 +4,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kakao.data.network.QkdApiService
+import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_NETWORK_SIZE
+import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_NETWORK_SORT
 import com.kakao.domain.dto.QkdDocuments
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -23,26 +25,21 @@ class SearchRemoteMediator(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, QkdDocuments> {
         val pageIndex = params.key ?: TMDB_STARTING_PAGE_INDEX
         return try {
-//            val response = service.getTopRatedMovies(
-//                language = "en-US",
-//                page = pageIndex
-//            )
+
             val respImg = withContext(defaultDispatcher) {
-                api.getSearchImage(query = "hamster", page = pageIndex, size = 10, sort = "recency")
+                api.getSearchImage(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
             }.body()?.documents
             val respClip = withContext(defaultDispatcher) {
-                api.getSearchVClip(query = "hamster", page = pageIndex, size = 10, sort = "recency")
+                api.getSearchVClip(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
             }.body()?.documents
 
-            val searched = mutableListOf<QkdDocuments>().also { _list ->
+            val docs = mutableListOf<QkdDocuments>().also { _list ->
                 respImg?.let { img -> _list.addAll(img) }
                 respClip?.let { clip -> _list.addAll(clip) }
             }
 
-            val movies = searched
-            println("probe :: movies : $movies")
             val nextKey =
-                if (movies.isEmpty()) {
+                if (docs.isEmpty()) {
                     null
                 } else {
                     // By default, initial load size = 3 * NETWORK PAGE SIZE
@@ -50,7 +47,7 @@ class SearchRemoteMediator(
                     pageIndex + (params.loadSize / 10)
                 }
             LoadResult.Page(
-                data = movies,
+                data = docs,
                 prevKey = if (pageIndex == TMDB_STARTING_PAGE_INDEX) null else pageIndex,
                 nextKey = nextKey
             )
