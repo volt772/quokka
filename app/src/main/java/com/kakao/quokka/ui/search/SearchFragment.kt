@@ -1,9 +1,12 @@
 package com.kakao.quokka.ui.search
 
+import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.kakao.quokka.ext.visibilityExt
+import com.kakao.quokka.ui.adapter.DocumentLoadStateAdapter
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
 import com.kako.quokka.BR
@@ -18,7 +21,7 @@ import kotlinx.coroutines.launch
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
     private val vm: SearchViewModel by viewModels()
-    private var adapter: DocumentsAdapter? = null
+    private lateinit var docAdapter: DocumentsAdapter
     private var keyword: String?= null
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
@@ -42,8 +45,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     private fun initView() {
-        adapter = DocumentsAdapter()
-        binding.rvDocs.adapter = adapter
+        docAdapter = DocumentsAdapter()
+
+        binding.rvDocs.apply {
+            setHasFixedSize(true)
+            adapter = docAdapter.withLoadStateFooter(
+                footer = DocumentLoadStateAdapter { docAdapter.retry() }
+            )
+        }
 
         binding.svDocs.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -60,6 +69,39 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 return false
             }
         })
+
+        binding.btnRetry.setOnClickListener{
+            docAdapter.retry()
+        }
+
+        docAdapter.addLoadStateListener { loadState ->
+
+            if (loadState.refresh is LoadState.Loading) {
+
+                binding.btnRetry.visibility = View.GONE
+
+                // Show ProgressBar
+                binding.progressBar.visibility = View.VISIBLE
+            }
+            else {
+                // Hide ProgressBar
+                binding.progressBar.visibility = View.GONE
+
+                // If we have an error, show a toast
+                val errorState = when {
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.refresh is LoadState.Error -> {
+                        binding.btnRetry.visibility = View.VISIBLE
+                        loadState.refresh as LoadState.Error
+                    }
+                    else -> null
+                }
+                errorState?.let {
+//                    Toast.makeText(this, it.error.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     private fun collectUiState(query: String = "") {
@@ -67,7 +109,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             vm.getDocuments(query).collectLatest { docs ->
 //                viewForEmptyDocuments(docs.count())
 //                viewForEmptyDocuments(0)
-                adapter?.submitData(docs)
+                docAdapter.submitData(docs)
             }
         }
     }

@@ -12,60 +12,85 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.kakao.quokka.QuokkaApp.Companion.appContext
 import com.kakao.quokka.ext.convertFormat
-import com.kakao.quokka.model.DocumentDto
+import com.kakao.quokka.model.DocumentModel
+import com.kako.quokka.R
 import com.kako.quokka.databinding.ItemDocumentsBinding
+import com.kako.quokka.databinding.ItemSeparatorBinding
 
-class DocumentsAdapter : PagingDataAdapter<DocumentDto, DocumentsViewHolder>(DocumentsDiffCallBack()) {
+class DocumentsAdapter : PagingDataAdapter<DocumentModel, RecyclerView.ViewHolder>(DocumentModelComparator) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentsViewHolder {
-        return DocumentsViewHolder(
-            ItemDocumentsBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
+    class DocumentViewHolder(val binding: ItemDocumentsBinding): RecyclerView.ViewHolder(binding.root)
+    class SeparatorViewHolder(val binding: ItemSeparatorBinding): RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            R.layout.item_documents -> DocumentViewHolder(ItemDocumentsBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            else -> SeparatorViewHolder(ItemSeparatorBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        }
     }
 
-    override fun onBindViewHolder(holder: DocumentsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val docModel: DocumentModel = getItem(position)!!
+
+        docModel.let {
+            when (docModel) {
+                is DocumentModel.DocumentItem -> {
+                    val vh = holder as DocumentViewHolder
+                    vh.binding.apply {
+                        val _doc = docModel.doc
+
+                        /* Thumbnail*/
+                        val thumbUrl = _doc.thumbnailUrl.ifBlank { _doc.thumbnail }
+
+                        Glide.with(appContext)
+                            .load(thumbUrl)
+                            .apply(RequestOptions.circleCropTransform())
+                            .apply(
+                                RequestOptions.bitmapTransform(
+                                    MultiTransformation(CenterCrop(), RoundedCorners(12))
+                                )
+                            )
+                            .into(ivThumbnail)
+
+                        val dateTime = _doc.datetime.convertFormat()
+                        tvDate.text = dateTime.first
+                        tvTime.text = dateTime.second
+                        tvType.text = _doc.type.type
+                        tvPage.text = _doc.page.toString()
+                    }
+                }
+
+                is DocumentModel.SeparatorItem -> {
+                    val vh = holder as SeparatorViewHolder
+                    vh.binding.apply {
+                        tvDescription.text = docModel.desc
+                    }
+                }
+            }
+        }
     }
-}
 
-class DocumentsDiffCallBack : DiffUtil.ItemCallback<DocumentDto>() {
-    override fun areItemsTheSame(oldItem: DocumentDto, newItem: DocumentDto): Boolean {
-        return oldItem.datetime == newItem.datetime
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is DocumentModel.DocumentItem -> R.layout.item_documents
+            is DocumentModel.SeparatorItem -> R.layout.item_separator
+            null -> throw UnsupportedOperationException("Unknown view")
+        }
     }
 
-    override fun areContentsTheSame(oldItem: DocumentDto, newItem: DocumentDto): Boolean {
-        return oldItem == newItem
-    }
-}
-
-class DocumentsViewHolder(
-    val binding:ItemDocumentsBinding
-) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(doc: DocumentDto?) {
-        doc?.let { _doc ->
-            val thumbUrl = _doc.thumbnailUrl.ifBlank {
-                _doc.thumbnail
+    companion object {
+        private val DocumentModelComparator = object : DiffUtil.ItemCallback<DocumentModel>() {
+            override fun areItemsTheSame(oldItem: DocumentModel, newItem: DocumentModel): Boolean {
+                return (
+                    oldItem is DocumentModel.DocumentItem &&
+                    newItem is DocumentModel.DocumentItem &&
+                    oldItem.doc.datetime == newItem.doc.datetime) ||
+                    (oldItem is DocumentModel.SeparatorItem && newItem is DocumentModel.SeparatorItem &&
+                        oldItem.desc == newItem.desc)
             }
 
-            Glide.with(appContext)
-                .load(thumbUrl)
-                .apply(RequestOptions.circleCropTransform())
-                .apply(RequestOptions.bitmapTransform(
-                    MultiTransformation(CenterCrop(), RoundedCorners(12))
-                ))
-                .into(binding.ivThumbnail)
-
-            val dateTime = _doc.datetime.convertFormat()
-            binding.apply {
-                tvDate.text = dateTime.first
-                tvTime.text = dateTime.second
-                tvType.text = doc.type.type
-                tvPage.text = doc.page.toString()
-            }
-
+            override fun areContentsTheSame(oldItem: DocumentModel, newItem: DocumentModel): Boolean =
+                oldItem == newItem
         }
     }
 }
