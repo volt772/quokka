@@ -299,4 +299,20 @@
     <color name="material_blue_gray_700">#455A64</color>
     <color name="material_blue_gray_800">#37474F</color>
     <color name="material_blue_gray_900">#263238</color>
+
+    <!-- Custom-->
+    <color name="gray_h0">#757575</color>
+    <color name="gray_h0_2">#F2F2F2</color>
+    <color name="gray_h0_3">#C7C7C7</color>
+    <color name="gray_h0_4">#9E9E9E</color>
+    <color name="gray_h0_5">#F7F7F7</color>
+    <color name="gray_h0_6">#424242</color>
+    <color name="gray_h0_7">#212121</color>
+    <color name="gray_h0_8">#616161</color>
+    <color name="gray_h0_op18">#2ECDCDCD</color>
+    <color name="gray_h0_op48">#7AE9E9E9</color>
+    <color name="gray_h31">#D4C8BB</color>
+    <color name="gray_h48">#E9E9E9</color>
+    <color name="gray_h210_op50">#80949596</color>
+    <color name="gray_h212">#A1A7AE</color>
 </resources>

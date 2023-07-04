@@ -54,11 +54,17 @@ class DocumentsViewHolder(
                 .load(thumbUrl)
                 .apply(RequestOptions.circleCropTransform())
                 .apply(RequestOptions.bitmapTransform(
-                    MultiTransformation(CenterCrop(), RoundedCorners(4))
+                    MultiTransformation(CenterCrop(), RoundedCorners(12))
                 ))
                 .into(binding.ivThumbnail)
 
-            binding.tvThumbnailDate.text = _doc.datetime.convertFormat()
+            val dateTime = _doc.datetime.convertFormat()
+            println("probe :: datetime : $dateTime")
+            binding.apply {
+                tvDate.text = dateTime.first
+                tvTime.text = dateTime.second
+            }
+
         }
     }
 }

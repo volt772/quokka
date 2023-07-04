@@ -5,49 +5,76 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/md_6">
+        android:layout_height="@dimen/md_60"
+        android:layout_margin="@dimen/md_8"
+        android:background="@drawable/bg_document_list_gray_corner"
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_thumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/md_130"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="@dimen/md_50"
+            android:layout_height="@dimen/md_50"
+            android:layout_marginStart="@dimen/md_6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:background="@color/black" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_thumbnail_action"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/md_42"
-            android:paddingHorizontal="@dimen/md_10"
-            app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/bg_rect" >
+            android:id="@+id/cl_document_root"
+            android:layout_width="@dimen/md_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/md_8"
+            android:layout_marginEnd="@dimen/md_8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_thumbnail"
+            app:layout_constraintEnd_toStartOf="@id/cl_document_sub" >
 
+            <!-- Date-->
             <TextView
-                android:id="@+id/tv_thumbnail_date"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/DocumentDateLabel"
+                style="@style/DocumentItemDate"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_time"
+                android:layout_marginEnd="@dimen/md_10"
+                tools:text="2023-05-05" />
+
+            <!-- Time-->
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="@dimen/md_0"
+                android:layout_height="wrap_content"
+                style="@style/DocumentItemTime"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="2023-05-05:11:11" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="11:11" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_document_sub"
+            android:layout_width="@dimen/md_0"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/md_12"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" >
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_favorite"
                 android:layout_width="@dimen/md_24"
                 android:layout_height="@dimen/md_24"
                 android:src="@drawable/ic_favorite"
-                android:tint="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

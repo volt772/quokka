@@ -27,7 +27,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         initView()
 
-        collectUiState()
+        collectUiState("hamster")
         subscribers()
     }
 

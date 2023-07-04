@@ -11,7 +11,9 @@ import java.util.Date
 //    }
 //
 //
-val DOC_DATE_FORMAT = "yy.MM.dd HH:mm"
+val DOC_FORMAT = "yy.MM.dd HH:mm"
+val DOC_DATE_FORMAT = "yy.MM.dd"
+val DOC_TIME_FORMAT = "HH:mm"
 //
 ///**
 // * Joda DateTime 이 올바른 값인지 검사.
@@ -76,16 +78,20 @@ val DOC_DATE_FORMAT = "yy.MM.dd HH:mm"
 //    return formed
 //}
 
-fun String?.convertFormat(format : String = DOC_DATE_FORMAT): String {
-    val formed = this?.let { formed ->
+fun String?.convertFormat(): Pair<String, String> {
+    return this?.let { formed ->
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
         val date: Date = sdf.parse(formed) as Date
         val millis = date.time
-        val formatter = SimpleDateFormat(format)
-        formatter.format(Date(millis))
-    } ?: ""
 
-    return formed
+        val dateFormatter = SimpleDateFormat(DOC_DATE_FORMAT)
+        dateFormatter.format(Date(millis))
+
+        val timeFormatter = SimpleDateFormat(DOC_TIME_FORMAT)
+        timeFormatter.format(Date(millis))
+
+        dateFormatter.format(Date(millis)) to timeFormatter.format(Date(millis))
+    } ?: ("" to "")
 }
 //
 //fun getMillis(d: Long): Long {
