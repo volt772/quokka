@@ -7,6 +7,7 @@ import com.kakao.data.network.QkdApiService
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_NETWORK_SIZE
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_NETWORK_SORT
 import com.kakao.domain.dto.QkdDocuments
+import com.kakao.domain.mapper.QkdDocumentsMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -20,6 +21,7 @@ class SearchRemoteMediator(
     private val query: String,
     private val ioDispatcher: CoroutineDispatcher,
     private val defaultDispatcher: CoroutineDispatcher,
+    private val mapper: QkdDocumentsMapper
 ) : PagingSource<Int, QkdDocuments>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, QkdDocuments> {
@@ -34,8 +36,8 @@ class SearchRemoteMediator(
             }.body()?.documents
 
             val docs = mutableListOf<QkdDocuments>().also { _list ->
-                respImg?.let { img -> _list.addAll(img) }
-                respClip?.let { clip -> _list.addAll(clip) }
+                respImg?.let { img -> _list.addAll(mapper.mapRespToDocument(pageIndex, img)) }
+                respClip?.let { clip -> _list.addAll(mapper.mapRespToDocument(pageIndex, clip)) }
             }
 
             val nextKey =
@@ -46,6 +48,7 @@ class SearchRemoteMediator(
                     // ensure we're not requesting duplicating items at the 2nd request
                     pageIndex + (params.loadSize / 10)
                 }
+            println("probe :: docs : $docs")
             LoadResult.Page(
                 data = docs,
                 prevKey = if (pageIndex == TMDB_STARTING_PAGE_INDEX) null else pageIndex,

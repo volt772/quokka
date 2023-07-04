@@ -10,12 +10,12 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.kakao.domain.dto.QkDocuments
 import com.kakao.quokka.QuokkaApp.Companion.appContext
 import com.kakao.quokka.ext.convertFormat
+import com.kakao.quokka.model.DocumentDto
 import com.kako.quokka.databinding.ItemDocumentsBinding
 
-class DocumentsAdapter : PagingDataAdapter<QkDocuments, DocumentsViewHolder>(DocumentsDiffCallBack()) {
+class DocumentsAdapter : PagingDataAdapter<DocumentDto, DocumentsViewHolder>(DocumentsDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentsViewHolder {
         return DocumentsViewHolder(
@@ -30,12 +30,12 @@ class DocumentsAdapter : PagingDataAdapter<QkDocuments, DocumentsViewHolder>(Doc
     }
 }
 
-class DocumentsDiffCallBack : DiffUtil.ItemCallback<QkDocuments>() {
-    override fun areItemsTheSame(oldItem: QkDocuments, newItem: QkDocuments): Boolean {
+class DocumentsDiffCallBack : DiffUtil.ItemCallback<DocumentDto>() {
+    override fun areItemsTheSame(oldItem: DocumentDto, newItem: DocumentDto): Boolean {
         return oldItem.datetime == newItem.datetime
     }
 
-    override fun areContentsTheSame(oldItem: QkDocuments, newItem: QkDocuments): Boolean {
+    override fun areContentsTheSame(oldItem: DocumentDto, newItem: DocumentDto): Boolean {
         return oldItem == newItem
     }
 }
@@ -44,7 +44,7 @@ class DocumentsViewHolder(
     val binding:ItemDocumentsBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(doc: QkDocuments?) {
+    fun bind(doc: DocumentDto?) {
         doc?.let { _doc ->
             val thumbUrl = _doc.thumbnailUrl.ifBlank {
                 _doc.thumbnail
@@ -62,6 +62,7 @@ class DocumentsViewHolder(
             binding.apply {
                 tvDate.text = dateTime.first
                 tvTime.text = dateTime.second
+                tvPage.text = doc.page.toString()
             }
 
         }

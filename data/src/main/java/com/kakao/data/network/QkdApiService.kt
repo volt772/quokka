@@ -3,6 +3,7 @@ package com.kakao.data.network
 import com.kakao.data.network.ApiServiceUris.URL_SEARCH_IMG
 import com.kakao.data.network.ApiServiceUris.URL_SEARCH_VCLIP
 import com.kakao.domain.constants.QkdNetworkKeyTags
+import com.kakao.domain.dto.DocumentsRespDto
 import com.kakao.domain.dto.QkdDocuments
 import com.kakao.domain.dto.QkdHamster
 import com.kakao.domain.response.ResponseListDto
@@ -19,7 +20,7 @@ interface QkdApiService {
         @Query(QkdNetworkKeyTags.QueryParam.SIZE) size: Int,
         @Query(QkdNetworkKeyTags.QueryParam.SORT) sort: String?= "recency",
 //    ): Response<QkdHamster>
-    ): Response<ResponseListDto<QkdDocuments>>
+    ): Response<ResponseListDto<DocumentsRespDto>>
 
     @GET(URL_SEARCH_VCLIP)
     suspend fun getSearchVClip(
@@ -28,5 +29,5 @@ interface QkdApiService {
         @Query(QkdNetworkKeyTags.QueryParam.SIZE) size: Int,
         @Query(QkdNetworkKeyTags.QueryParam.SORT) sort: String?= "recency",
 //    ): Response<QkdHamster>
-    ): Response<ResponseListDto<QkdDocuments>>
+    ): Response<ResponseListDto<DocumentsRespDto>>
 }

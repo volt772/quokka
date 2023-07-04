@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.apx6.chipmunk.app.ui.base.BaseViewModel
 import com.kakao.domain.dto.QkDocuments
 import com.kakao.domain.dto.QkdHamster
 import com.kakao.domain.repository.QkdHamsterRepository
 import com.kakao.quokka.di.IoDispatcher
+import com.kakao.quokka.mapper.DocumentsMapper
+import com.kakao.quokka.model.DocumentDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     @IoDispatcher val ioDispatcher: CoroutineDispatcher,
-    private val repository: QkdHamsterRepository
+    private val repository: QkdHamsterRepository,
+    private val mapper: DocumentsMapper
 ) : BaseViewModel() {
 
     private val _query: MutableSharedFlow<String> = MutableSharedFlow()
@@ -35,13 +39,13 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    suspend fun getDocuments(query: String): Flow<PagingData<QkDocuments>> {
+    suspend fun getDocuments(query: String): Flow<PagingData<DocumentDto>> {
         return repository.documents(query)
-//            .map { pagingData ->
-//                pagingData.map {
-//                    mapper.mapDomainMovieToUi(domainMovie = it)
-//                }
-//            }
+            .map { pagingData ->
+                pagingData.map {
+                    mapper.mapDocumentToUi(it)
+                }
+            }
             .cachedIn(viewModelScope)
     }
 

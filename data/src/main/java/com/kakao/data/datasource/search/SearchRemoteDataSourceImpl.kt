@@ -9,6 +9,7 @@ import com.kakao.data.di.IoDispatcher
 import com.kakao.data.network.QkdApiService
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_LOAD_SIZE
 import com.kakao.domain.dto.QkdDocuments
+import com.kakao.domain.mapper.QkdDocumentsMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class SearchRemoteDataSourceImpl @Inject constructor(
     @IoDispatcher val ioDispatcher: CoroutineDispatcher,
     @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher,
-    private val api: QkdApiService
+    private val api: QkdApiService,
+    private val mapper: QkdDocumentsMapper
 ) : SearchRemoteDataSource {
 
     override fun search(
@@ -31,7 +33,7 @@ class SearchRemoteDataSourceImpl @Inject constructor(
                 initialLoadSize = PAGING_LOAD_SIZE
             ),
             pagingSourceFactory = {
-                SearchRemoteMediator(api, query, ioDispatcher, defaultDispatcher)
+                SearchRemoteMediator(api, query, ioDispatcher, defaultDispatcher, mapper)
             }
         ).flow
     }
