@@ -14,41 +14,57 @@ class QkPreferenceImpl @Inject constructor(
     private val preferences: SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
 
-    override fun setInt(key: String, value: Int) {
-        preferences.edit().putInt(key, value).apply()
-    }
-
-    override fun getInt(key: String, defaultValue: Int): Int {
-        return preferences.getInt(key, defaultValue)
-    }
-
-    override fun setLong(key: String, value: Long) {
-        preferences.edit().putLong(key, value).apply()
-    }
-
-    override fun getLong(key: String, defaultValue: Long): Long {
-        return preferences.getLong(key, defaultValue)
-    }
-
-    override fun setString(key: String, value: String) {
-        preferences.edit().putString(key, value).apply()
-    }
-
-    override fun getString(key: String, defaultValue: String): String? {
+    override fun getFileUrl(key: String, defaultValue: String): String? {
         return preferences.getString(key, defaultValue)
     }
 
-    override fun setBoolean(key: String, value: Boolean) {
-        preferences.edit().putBoolean(key, value).apply()
+    override fun setFileUrl(key: String, value: String) {
+        preferences.edit().putString(key, value).apply()
     }
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
-        return preferences.getBoolean(key, defaultValue)
+    override fun getFileKey(key: String): Boolean {
+        return preferences.all.containsKey(key)
+    }
+
+    override fun delFileKey(key: String) {
+        preferences.edit().remove(key).apply()
     }
 
     override fun clear() {
         preferences.edit().clear().apply()
     }
+
+//    override fun setInt(key: String, value: Int) {
+//        preferences.edit().putInt(key, value).apply()
+//    }
+//
+//    override fun getInt(key: String, defaultValue: Int): Int {
+//        return preferences.getInt(key, defaultValue)
+//    }
+//
+//    override fun setLong(key: String, value: Long) {
+//        preferences.edit().putLong(key, value).apply()
+//    }
+//
+//    override fun getLong(key: String, defaultValue: Long): Long {
+//        return preferences.getLong(key, defaultValue)
+//    }
+//
+//    override fun setString(key: String, value: String) {
+//        preferences.edit().putString(key, value).apply()
+//    }
+//
+//    override fun getString(key: String, defaultValue: String): String? {
+//        return preferences.getString(key, defaultValue)
+//    }
+//
+//    override fun setBoolean(key: String, value: Boolean) {
+//        preferences.edit().putBoolean(key, value).apply()
+//    }
+//
+//    override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+//        return preferences.getBoolean(key, defaultValue)
+//    }
 
     override fun removePref() {
         val dir = File(context.filesDir.parent + "/shared_prefs/")

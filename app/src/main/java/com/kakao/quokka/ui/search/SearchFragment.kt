@@ -6,8 +6,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.kakao.domain.constants.QkdResourceType
+import com.kakao.quokka.ext.retrieveFileKey
 import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.DocumentDto
+import com.kakao.quokka.preference.QkPreference
 import com.kakao.quokka.ui.adapter.DocumentLoadStateAdapter
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
@@ -17,6 +19,7 @@ import com.kako.quokka.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -25,6 +28,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private val vm: SearchViewModel by viewModels()
     private lateinit var docAdapter: DocumentsAdapter
     private var keyword: String?= null
+
+    @Inject lateinit var qkPreference: QkPreference
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
@@ -113,12 +118,24 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     private fun doFavorite(doc: DocumentDto, position: Int) {
 //        docAdapter.refresh()
+        val favoriteState = !doc.isFavorite
+        doc.isFavorite = favoriteState
         docAdapter.notifyItemChanged(position)
 
         val url = if (doc.type == QkdResourceType.IMAGE) {
             doc.thumbnailUrl
         } else {
             doc.thumbnail
+        }
+
+        val fileKey = url.retrieveFileKey()
+
+        qkPreference.run {
+            if (favoriteState) {
+                setFileUrl(fileKey, url)
+            } else {
+                delFileKey(fileKey)
+            }
         }
 
 //        println("probe :: doFavorite : ${url}")

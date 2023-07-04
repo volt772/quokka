@@ -4,6 +4,8 @@ import com.kakao.domain.constants.QkdResourceType
 
 data class DocumentDto (
 
+    val key: String = "",
+
     val page: Int = 0,
 
     val type: QkdResourceType,

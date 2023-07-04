@@ -1,5 +1,7 @@
 package com.kakao.quokka.ext
 
+import android.R.attr.path
+import android.net.Uri
 import com.kakao.quokka.QuokkaApp.Companion.appContext
 
 
@@ -47,4 +49,12 @@ fun randomKey(): String {
 		.map { (1..charPool.size).shuffled().last() }
 		.map(charPool::get)
 		.joinToString("")
+}
+
+fun String?.retrieveFileKey(): String {
+	return this?.let { _url ->
+		val uri = Uri.parse(_url)
+		val path = uri.path
+		path?.substringAfterLast("/")
+	} ?: ""
 }
