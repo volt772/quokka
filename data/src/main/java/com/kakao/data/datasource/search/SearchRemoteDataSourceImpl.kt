@@ -28,7 +28,7 @@ class SearchRemoteDataSourceImpl @Inject constructor(
             config = PagingConfig(
                 pageSize = PAGING_LOAD_SIZE,
                 enablePlaceholders = false,
-                initialLoadSize = PAGING_LOAD_SIZE * 2
+                initialLoadSize = PAGING_LOAD_SIZE
             ),
             pagingSourceFactory = {
                 SearchRemoteMediator(api, query, ioDispatcher, defaultDispatcher)

@@ -59,7 +59,6 @@ class DocumentsViewHolder(
                 .into(binding.ivThumbnail)
 
             val dateTime = _doc.datetime.convertFormat()
-            println("probe :: datetime : $dateTime")
             binding.apply {
                 tvDate.text = dateTime.first
                 tvTime.text = dateTime.second
