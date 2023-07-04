@@ -1,10 +1,13 @@
 package com.kakao.quokka.ext
 
 import android.app.Activity
+import android.content.res.ColorStateList
 import android.graphics.Rect
 import android.os.SystemClock
 import android.view.View
 import android.view.WindowInsetsController
+import android.widget.ImageView
+import com.kakao.quokka.QuokkaApp.Companion.appContext
 import com.kako.quokka.R
 
 /**
@@ -13,6 +16,14 @@ import com.kako.quokka.R
  */
 fun View?.visibilityExt(isVisibility: Boolean) {
     this?.visibility = if (isVisibility) View.VISIBLE else View.GONE
+}
+
+fun ImageView?.favoriteColorTint(favorite: Boolean) {
+    if (favorite) {
+        this?.imageTintList = ColorStateList.valueOf(appContext.getColor(R.color.material_red_500))
+    } else {
+        this?.imageTintList = ColorStateList.valueOf(appContext.getColor(R.color.material_gray_500))
+    }
 }
 
 /**

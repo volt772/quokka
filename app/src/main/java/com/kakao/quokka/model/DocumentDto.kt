@@ -18,6 +18,6 @@ data class DocumentDto (
 
     val datetime: String,
 
-    val isFavorite: Boolean?= false
+    var isFavorite: Boolean = false
 
 )

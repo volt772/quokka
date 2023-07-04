@@ -12,12 +12,17 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.kakao.quokka.QuokkaApp.Companion.appContext
 import com.kakao.quokka.ext.convertFormat
+import com.kakao.quokka.ext.favoriteColorTint
+import com.kakao.quokka.ext.setOnSingleClickListener
+import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.model.DocumentModel
 import com.kako.quokka.R
 import com.kako.quokka.databinding.ItemDocumentsBinding
 import com.kako.quokka.databinding.ItemSeparatorBinding
 
-class DocumentsAdapter : PagingDataAdapter<DocumentModel, RecyclerView.ViewHolder>(DocumentModelComparator) {
+class DocumentsAdapter(
+    private var doFavorite: ((DocumentDto, Int) -> Unit)
+) : PagingDataAdapter<DocumentModel, RecyclerView.ViewHolder>(DocumentModelComparator) {
 
     class DocumentViewHolder(val binding: ItemDocumentsBinding): RecyclerView.ViewHolder(binding.root)
     class SeparatorViewHolder(val binding: ItemSeparatorBinding): RecyclerView.ViewHolder(binding.root)
@@ -57,6 +62,13 @@ class DocumentsAdapter : PagingDataAdapter<DocumentModel, RecyclerView.ViewHolde
                         tvTime.text = dateTime.second
                         tvType.text = _doc.type.type
                         tvPage.text = _doc.page.toString()
+
+                        ivFavorite.favoriteColorTint(_doc.isFavorite)
+
+                        ivFavorite.setOnSingleClickListener {
+                            _doc.isFavorite = !_doc.isFavorite
+                            doFavorite(_doc, position)
+                        }
                     }
                 }
 

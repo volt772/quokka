@@ -5,7 +5,9 @@ import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.kakao.domain.constants.QkdResourceType
 import com.kakao.quokka.ext.visibilityExt
+import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.ui.adapter.DocumentLoadStateAdapter
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
@@ -45,7 +47,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     private fun initView() {
-        docAdapter = DocumentsAdapter()
+        docAdapter = DocumentsAdapter(::doFavorite)
 
         binding.rvDocs.apply {
             setHasFixedSize(true)
@@ -76,6 +78,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         docAdapter.addLoadStateListener { loadState ->
 
+            if(loadState.append.endOfPaginationReached) {
+                viewForEmptyDocuments(0)
+                docAdapter.itemCount == 0
+            }
+
             if (loadState.refresh is LoadState.Loading) {
 
                 binding.btnRetry.visibility = View.GONE
@@ -102,6 +109,19 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 }
             }
         }
+    }
+
+    private fun doFavorite(doc: DocumentDto, position: Int) {
+//        docAdapter.refresh()
+        docAdapter.notifyItemChanged(position)
+
+        val url = if (doc.type == QkdResourceType.IMAGE) {
+            doc.thumbnailUrl
+        } else {
+            doc.thumbnail
+        }
+
+//        println("probe :: doFavorite : ${url}")
     }
 
     private fun collectUiState(query: String = "") {
