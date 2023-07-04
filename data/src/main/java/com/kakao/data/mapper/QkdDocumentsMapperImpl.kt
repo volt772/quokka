@@ -1,6 +1,7 @@
 package com.kakao.data.mapper
 
 import com.kakao.data.di.DefaultDispatcher
+import com.kakao.domain.constants.QkdResourceType
 import com.kakao.domain.dto.DocumentsRespDto
 import com.kakao.domain.dto.QkDocuments
 import com.kakao.domain.dto.QkdDocuments
@@ -28,6 +29,7 @@ class QkdDocumentsMapperImpl @Inject constructor(
             documents.map { _d ->
                 QkdDocuments(
                     page = page,
+                    type = if (_d.thumbnailUrl.isNullOrBlank()) { QkdResourceType.CLIP } else { QkdResourceType.IMAGE},
                     thumbnailUrl = _d.thumbnailUrl?: "",
                     thumbnail = _d.thumbnail?: "",
                     title = _d.title?: "",

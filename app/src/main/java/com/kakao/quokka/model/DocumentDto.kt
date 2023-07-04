@@ -1,8 +1,12 @@
 package com.kakao.quokka.model
 
+import com.kakao.domain.constants.QkdResourceType
+
 data class DocumentDto (
 
     val page: Int = 0,
+
+    val type: QkdResourceType,
 
     val thumbnailUrl: String = "",
 

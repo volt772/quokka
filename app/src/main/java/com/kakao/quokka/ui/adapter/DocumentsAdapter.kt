@@ -62,6 +62,7 @@ class DocumentsViewHolder(
             binding.apply {
                 tvDate.text = dateTime.first
                 tvTime.text = dateTime.second
+                tvType.text = doc.type.type
                 tvPage.text = doc.page.toString()
             }
 

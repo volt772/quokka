@@ -13,6 +13,7 @@ class DocumentsMapperImpl @Inject constructor(
     override suspend fun mapDocumentToUi(documents: QkdDocuments): DocumentDto {
         return DocumentDto(
             page = documents.page,
+            type = documents.type,
             thumbnailUrl = documents.thumbnailUrl?: "",
             thumbnail = documents.thumbnail?: "",
             title = documents.title?: "",

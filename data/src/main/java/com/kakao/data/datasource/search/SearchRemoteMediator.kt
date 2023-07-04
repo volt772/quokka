@@ -40,6 +40,8 @@ class SearchRemoteMediator(
                 respClip?.let { clip -> _list.addAll(mapper.mapRespToDocument(pageIndex, clip)) }
             }
 
+            docs.sortByDescending { it.datetime }
+
             val nextKey =
                 if (docs.isEmpty()) {
                     null
