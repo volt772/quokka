@@ -117,7 +117,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     private fun doFavorite(doc: DocumentDto, position: Int) {
-//        docAdapter.refresh()
         val favoriteState = !doc.isFavorite
         doc.isFavorite = favoriteState
         docAdapter.notifyItemChanged(position)

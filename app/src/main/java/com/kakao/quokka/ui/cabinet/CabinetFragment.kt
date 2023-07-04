@@ -1,52 +1,52 @@
 package com.kakao.quokka.ui.cabinet
 
 import androidx.fragment.app.viewModels
-import com.kakao.quokka.ui.DashBoardViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.kakao.quokka.preference.QkPreference
 import com.kakao.quokka.ui.base.BaseFragment
-import com.kakao.quokka.ui.search.SearchFragment
 import com.kako.quokka.BR
 import com.kako.quokka.R
 import com.kako.quokka.databinding.FragmentCabinetBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_cabinet) {
 
-    private val vm: DashBoardViewModel by viewModels()
+    private val vm: CabinetViewModel by viewModels()
+
+    @Inject
+    lateinit var qkPreference: QkPreference
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
     override fun prepareFragment() {
+        initView()
+        subscribers()
     }
 
-//    private var _binding: FragmentHomeBinding? = null
-//
-//    // This property is only valid between onCreateView and
-//    // onDestroyView.
-//    private val binding get() = _binding!!
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        val homeViewModel =
-//            ViewModelProvider(this).get(HomeViewModel::class.java)
-//
-//        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        val root: View = binding.root
-//
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-//        return root
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
+    private fun initView() {
+
+    }
+
+    private fun subscribers() {
+        lifecycleScope.run {
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    vm.getAllFavorites()
+                }
+            }
+
+            launch {
+                vm.favorites.collect {
+                    println("probe :: all favors : $it")
+                }
+            }
+        }
+    }
 
     companion object {
         fun newInstance() = CabinetFragment().apply {

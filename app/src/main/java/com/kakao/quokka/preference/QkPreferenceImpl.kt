@@ -18,6 +18,18 @@ class QkPreferenceImpl @Inject constructor(
         return preferences.getString(key, defaultValue)
     }
 
+    override fun getAllFiles(): Map<String, String> {
+        val files = preferences.all
+
+        val res = mutableMapOf<String, String>().also { _map ->
+            files.forEach { _file ->
+                _map[_file.key] = _file.value.toString()
+            }
+        }
+
+        return res
+    }
+
     override fun setFileUrl(key: String, value: String) {
         preferences.edit().putString(key, value).apply()
     }

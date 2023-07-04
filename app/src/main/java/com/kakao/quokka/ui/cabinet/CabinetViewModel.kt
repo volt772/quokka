@@ -1,13 +1,39 @@
 package com.kakao.quokka.ui.cabinet
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.apx6.chipmunk.app.ui.base.BaseViewModel
+import com.kakao.quokka.di.IoDispatcher
+import com.kakao.quokka.model.FavoritesModel
+import com.kakao.quokka.preference.QkPreference
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import javax.inject.Inject
 
-class CabinetViewModel : ViewModel() {
+@HiltViewModel
+class CabinetViewModel @Inject constructor(
+    @IoDispatcher val ioDispatcher: CoroutineDispatcher,
+    private val qkPreference: QkPreference,
+//    private val repository: QkdHamsterRepository,
+//    private val mapper: DocumentsMapper
+) : BaseViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+
+    private val _favorites: MutableSharedFlow<List<FavoritesModel>> = MutableSharedFlow()
+    val favorites: SharedFlow<List<FavoritesModel>> = _favorites
+
+    suspend fun getAllFavorites() {
+
+        val files = qkPreference.getAllFiles()
+
+        val favors = mutableListOf<FavoritesModel>().also { _list ->
+            files.forEach { _f ->
+                _list.add(FavoritesModel(key = _f.key, url = _f.value))
+            }
+        }
+
+        _favorites.emit(favors)
+
     }
-    val text: LiveData<String> = _text
+
 }

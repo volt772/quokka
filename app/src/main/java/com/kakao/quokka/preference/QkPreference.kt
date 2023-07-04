@@ -7,6 +7,8 @@ interface QkPreference {
 
     fun getFileUrl(key: String, defaultValue: String): String?
 
+    fun getAllFiles(): Map<String, String>
+
     fun getFileKey(key: String): Boolean
 
     fun delFileKey(key: String)
