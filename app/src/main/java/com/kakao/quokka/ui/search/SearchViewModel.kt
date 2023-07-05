@@ -6,7 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.kakao.quokka.ui.base.BaseViewModel
-import com.kakao.domain.repository.QkdHamsterRepository
+import com.kakao.domain.repository.DocumentsRepository
 import com.kakao.quokka.di.IoDispatcher
 import com.kakao.quokka.mapper.DocumentsMapper
 import com.kakao.quokka.model.DocumentModel
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     @IoDispatcher val ioDispatcher: CoroutineDispatcher,
-    private val repository: QkdHamsterRepository,
+    private val repository: DocumentsRepository,
     private val mapper: DocumentsMapper
 ) : BaseViewModel() {
 

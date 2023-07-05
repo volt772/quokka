@@ -5,21 +5,19 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.kakao.data.di.DefaultDispatcher
-import com.kakao.data.di.IoDispatcher
-import com.kakao.data.network.QkdApiService
+import com.kakao.data.network.ApiService
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_LOAD_SIZE
 import com.kakao.domain.dto.QkdDocuments
-import com.kakao.domain.mapper.QkdDocumentsMapper
+import com.kakao.domain.mapper.DocumentsMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ExperimentalPagingApi
 class SearchRemoteDataSourceImpl @Inject constructor(
-    @IoDispatcher val ioDispatcher: CoroutineDispatcher,
     @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher,
-    private val api: QkdApiService,
-    private val mapper: QkdDocumentsMapper
+    private val api: ApiService,
+    private val mapper: DocumentsMapper
 ) : SearchRemoteDataSource {
 
     override fun search(
@@ -33,7 +31,7 @@ class SearchRemoteDataSourceImpl @Inject constructor(
                 initialLoadSize = PAGING_LOAD_SIZE
             ),
             pagingSourceFactory = {
-                SearchRemoteMediator(api, query, ioDispatcher, defaultDispatcher, mapper)
+                SearchRemoteMediator(api, query, defaultDispatcher, mapper)
             }
         ).flow
     }

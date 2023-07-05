@@ -1,9 +1,9 @@
 package com.kakao.domain.constants
 
-enum class QkdResourceType(val type: String) {
+enum class QkdResourceType {
 
-    IMAGE("image"),
+    IMAGE,
 
-    CLIP("clip")
+    CLIP
 
 }

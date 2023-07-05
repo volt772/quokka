@@ -42,8 +42,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     override fun prepareFragment() {
 
         initView()
-
-//        collectUiState("hamster")
         subscribers()
     }
 
@@ -54,7 +52,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             val currFragment = (activity as DashBoardActivity).activeFragment
             if (currFragment != this) {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    queryKeyword = "hamster"
                     vm.queryDocuments(queryKeyword)
                 }
             }

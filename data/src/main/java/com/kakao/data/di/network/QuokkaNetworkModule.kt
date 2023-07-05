@@ -1,6 +1,6 @@
 package com.kakao.data.di.network
 
-import com.kakao.data.network.QkdApiService
+import com.kakao.data.network.ApiService
 import com.kakao.domain.constants.QkdConstants
 import dagger.Module
 import dagger.Provides
@@ -42,7 +42,7 @@ object QuokkaNetworkModule {
     @Provides
     fun provideQuokkaApiService(
         @QuokkaService retrofit: Retrofit
-    ): QkdApiService = retrofit.create(QkdApiService::class.java)
+    ): ApiService = retrofit.create(ApiService::class.java)
 
 
     /**
@@ -59,19 +59,4 @@ object QuokkaNetworkModule {
             .client(okHttpClient)
             .build()
     }
-
-//    /**
-//     * @Desc 첨부파일 전용 Retrofit Builder
-//     */
-//    private fun retrofitAttachBuilder(
-//        baseUrl: String,
-//        okHttpClient: OkHttpClient
-//    ): Retrofit {
-//        val gson = GsonBuilder().setLenient().create()
-//        return Retrofit.Builder()
-//            .baseUrl(baseUrl)
-//            .addConverterFactory(GsonConverterFactory.create(gson))
-//            .client(okHttpClient)
-//            .build()
-//    }
 }

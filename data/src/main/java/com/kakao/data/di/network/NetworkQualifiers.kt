@@ -18,10 +18,6 @@ annotation class QuokkaBaseUrl
 @Retention(AnnotationRetention.BINARY)
 annotation class GeneralInterceptor
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class ProgressInterceptor
-
 /**
  * @Related
  * HttpClients
@@ -29,10 +25,6 @@ annotation class ProgressInterceptor
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class GeneralHttpClient
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class ProgressHttpClient
 
 /**
  * @Related
