@@ -1,10 +1,9 @@
 package com.kakao.quokka.ui.adapter
 
-import android.content.res.ColorStateList
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.apx6.chipmunk.app.ui.base.BaseViewHolder
+import com.kakao.quokka.ui.base.BaseViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -50,7 +49,6 @@ class CabinetAdapter(
 
             binding.ivCabinetFavorite.setOnSingleClickListener {
                 selectFavorite.invoke(c)
-//                selectCheckList.invoke(cl)
             }
         }
     }
@@ -58,7 +56,7 @@ class CabinetAdapter(
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CabinetModel>() {
             override fun areItemsTheSame(oldItem: CabinetModel, newItem: CabinetModel): Boolean =
-                oldItem.url == newItem.url
+                oldItem.url == newItem.url && oldItem.regDate == newItem.regDate
 
             override fun areContentsTheSame(oldItem: CabinetModel, newItem: CabinetModel): Boolean =
                 oldItem == newItem

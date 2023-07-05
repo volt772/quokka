@@ -1,4 +1,4 @@
-package com.apx6.chipmunk.app.ui.base
+package com.kakao.quokka.ui.base
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -14,8 +14,6 @@ abstract class BaseViewHolder<D, out B : ViewDataBinding>(parent: ViewGroup, @La
     protected val context: Context = itemView.context
 
     protected val binding: B = DataBindingUtil.bind(itemView)!!
-
-//    abstract fun bind(data: D)
 
     open fun recycled() {}
 }

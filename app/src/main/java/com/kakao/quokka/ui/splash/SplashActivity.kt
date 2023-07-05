@@ -1,4 +1,4 @@
-package com.kakao.quokka.ui
+package com.kakao.quokka.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.kakao.quokka.ext.statusBar
 import com.kakao.quokka.ui.base.BaseActivity
+import com.kakao.quokka.ui.dashboard.DashBoardActivity
 import com.kako.quokka.R
 import com.kako.quokka.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
 
-    override val viewModel: SplashViewModel by viewModels()
+    override val vm: SplashViewModel by viewModels()
     override fun getViewBinding(): ActivitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {

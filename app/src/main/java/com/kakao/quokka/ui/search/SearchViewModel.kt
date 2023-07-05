@@ -5,7 +5,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.insertSeparators
 import androidx.paging.map
-import com.apx6.chipmunk.app.ui.base.BaseViewModel
+import com.kakao.quokka.ui.base.BaseViewModel
 import com.kakao.domain.repository.QkdHamsterRepository
 import com.kakao.quokka.di.IoDispatcher
 import com.kakao.quokka.mapper.DocumentsMapper

@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_cabinet) {
 
@@ -34,11 +35,6 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
     }
 
     private fun initView() {
-//        binding.btnTest.setOnClickListener {
-////            qkPreference.delFileKey("AK01UhbEzhU")
-//            qkPreference.setString("notification_enabled", "cabinet!!")
-//        }
-
         cabinetAdapter = CabinetAdapter(::selectFavorite)
 
         binding.rvFavors.apply {
@@ -51,29 +47,17 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
         val prefs = prefManager.preferences
         val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
         stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
-//            println("probe :: observe :: cabinet :: ${prf.javaClass.name}")
-
             lifecycleScope.launch {
                 vm.setFavorites(prf)
             }
         }
 
         lifecycleScope.run {
-//            launch {
-//                repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                    vm.getAllFavorites()
-//                }
-//            }
-
             launch {
                 vm.favorites.collect { favor ->
                     showEmptyCabinetListView(favor.count())
                     cabinetAdapter.submitList(favor)
-//                    println("probe :: observe :: lauch :: $it")
                 }
-//                vm.favorites.collect {
-//                    println("probe :: all favors : $it")
-//                }
             }
         }
     }
@@ -87,9 +71,5 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
     }
 
     companion object {
-        fun newInstance() = CabinetFragment().apply {
-//            this.selectedDate = selectedDate this.isDueAllDay = isDueAllDay
-//            param = Unit
-        }
     }
 }

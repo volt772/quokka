@@ -2,6 +2,8 @@ package com.kakao.quokka.di
 
 import android.app.Application
 import android.content.Context
+import com.kakao.quokka.mapper.DocumentsMapper
+import com.kakao.quokka.mapper.DocumentsMapperImpl
 import com.kakao.quokka.preference.PrefManager
 import com.kakao.quokka.preference.PrefManagerImpl
 import dagger.Binds
@@ -21,6 +23,11 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun bindMpPreferences(impl: PrefManagerImpl): PrefManager
+    abstract fun bindPreferences(impl: PrefManagerImpl): PrefManager
+
+    @Binds
+    @Singleton
+    abstract fun bindDocumentsMapper(impl: DocumentsMapperImpl): DocumentsMapper
+
 
 }

@@ -41,10 +41,10 @@ class DocumentsMapperImpl @Inject constructor(
             key = fileKey,
             page = documents.page,
             type = documents.type,
-            thumbnailUrl = documents.thumbnailUrl?: "",
-            thumbnail = documents.thumbnail?: "",
-            title = documents.title?: "",
-            displaySiteName = documents.displaySiteName?: "",
+            thumbnailUrl = documents.thumbnailUrl,
+            thumbnail = documents.thumbnail,
+            title = documents.title,
+            displaySiteName = documents.displaySiteName,
             datetime = documents.datetime,
             isFavorite = isKeyExists
         )

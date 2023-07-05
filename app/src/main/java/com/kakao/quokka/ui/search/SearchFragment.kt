@@ -13,10 +13,10 @@ import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.preference.PrefManager
 import com.kakao.quokka.preference.stringSetLiveData
-import com.kakao.quokka.ui.DashBoardActivity
 import com.kakao.quokka.ui.adapter.DocumentLoadStateAdapter
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
+import com.kakao.quokka.ui.dashboard.DashBoardActivity
 import com.kako.quokka.BR
 import com.kako.quokka.R
 import com.kako.quokka.databinding.FragmentSearchBinding
@@ -30,6 +30,7 @@ import javax.inject.Inject
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
     private val vm: SearchViewModel by viewModels()
+
     private lateinit var docAdapter: DocumentsAdapter
     private var queryKeyword: String = ""
 
@@ -42,17 +43,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         initView()
 
-        collectUiState("hamster")
+//        collectUiState("hamster")
         subscribers()
     }
-
-//    private fun test() {
-//        val prefs = qkPreference.preferences
-//        val stringPrefLiveData = prefs.stringSetLiveData("notification", setOf())
-//        stringPrefLiveData.observe(this) { enabled ->
-//            println("probe :: observe :: search :: $enabled")
-//        }
-//    }
 
     private fun subscribers() {
         val prefs = prefManager.preferences
@@ -60,8 +53,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
             val currFragment = (activity as DashBoardActivity).activeFragment
             if (currFragment != this) {
-//                recyclerViewState = binding.rvDocs.layoutManager?.onSaveInstanceState()
-
                 viewLifecycleOwner.lifecycleScope.launch {
                     queryKeyword = "hamster"
                     vm.queryDocuments(queryKeyword)
@@ -79,7 +70,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     private fun initView() {
-
         binding.rvDocs.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -176,8 +166,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         viewLifecycleOwner.lifecycleScope.launch {
             vm.getDocuments(query).collectLatest { docs ->
                 docAdapter.submitData(docs)
-//                docAdapter.notifyDataSetChanged()
-//                binding.rvDocs.layoutManager?.onRestoreInstanceState(recyclerViewState)
             }
         }
     }
@@ -187,9 +175,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     companion object {
-        fun newInstance() = SearchFragment().apply {
-//            this.selectedDate = selectedDate this.isDueAllDay = isDueAllDay
-//            param = Unit
-        }
     }
 }

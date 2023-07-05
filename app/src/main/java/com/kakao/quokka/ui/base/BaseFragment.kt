@@ -13,15 +13,11 @@ abstract class BaseFragment<B : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
 ) : Fragment() {
 
-
-//    protected var param: PARAM? = null
-
     private var _binding: B? = null
     protected val binding get() = _binding!!
 
     protected abstract fun setBindings()
 
-//    protected abstract fun prepareFragment(param: PARAM)
     protected abstract fun prepareFragment()
 
     override fun onCreateView(
@@ -37,10 +33,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         performDataBinding()
-
-//        param?.let {
-            prepareFragment()
-//        }
+        prepareFragment()
     }
 
     private fun performDataBinding() {
