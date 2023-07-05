@@ -3,6 +3,7 @@ package com.kakao.quokka.ui.dashboard
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import com.kakao.quokka.ext.statusBar
 import com.kakao.quokka.ui.base.BaseActivity
 import com.kakao.quokka.ui.cabinet.CabinetFragment
 import com.kakao.quokka.ui.search.SearchFragment

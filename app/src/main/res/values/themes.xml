@@ -9,7 +9,7 @@
         <item name="colorSecondaryVariant">@color/quokka_600</item>
         <item name="colorOnSecondary">@color/quokka_600</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
 
