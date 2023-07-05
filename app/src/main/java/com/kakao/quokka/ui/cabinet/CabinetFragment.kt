@@ -4,7 +4,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.kakao.quokka.constants.QkConstants.Pref.FAVORITE_KEY
 import com.kakao.quokka.preference.QkPreference
+import com.kakao.quokka.preference.stringSetLiveData
 import com.kakao.quokka.ui.base.BaseFragment
 import com.kako.quokka.BR
 import com.kako.quokka.R
@@ -29,10 +31,19 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
     }
 
     private fun initView() {
-
+        binding.btnTest.setOnClickListener {
+//            qkPreference.delFileKey("AK01UhbEzhU")
+            qkPreference.setString("notification_enabled", "cabinet!!")
+        }
     }
 
     private fun subscribers() {
+        val prefs = qkPreference.preferences
+        val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
+        stringPrefLiveData.observe(viewLifecycleOwner) { enabled ->
+            println("probe :: observe :: cabinet :: $enabled")
+        }
+
         lifecycleScope.run {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {

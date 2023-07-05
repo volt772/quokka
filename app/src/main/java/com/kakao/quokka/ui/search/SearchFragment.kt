@@ -1,15 +1,21 @@
 package com.kakao.quokka.ui.search
 
+import android.content.SharedPreferences
 import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kakao.domain.constants.QkdResourceType
+import com.kakao.quokka.constants.QkConstants.Pref.FAVORITE_KEY
 import com.kakao.quokka.ext.retrieveFileKey
 import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.preference.QkPreference
+import com.kakao.quokka.preference.stringLiveData
+import com.kakao.quokka.preference.stringSetLiveData
 import com.kakao.quokka.ui.adapter.DocumentLoadStateAdapter
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
@@ -41,7 +47,21 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         subscribers()
     }
 
+//    private fun test() {
+//        val prefs = qkPreference.preferences
+//        val stringPrefLiveData = prefs.stringSetLiveData("notification", setOf())
+//        stringPrefLiveData.observe(this) { enabled ->
+//            println("probe :: observe :: search :: $enabled")
+//        }
+//    }
+
     private fun subscribers() {
+        val prefs = qkPreference.preferences
+        val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
+        stringPrefLiveData.observe(viewLifecycleOwner) { enabled ->
+            println("probe :: observe :: search :: $enabled")
+        }
+
         viewLifecycleOwner.lifecycleScope.run {
             launch {
                 vm.query.collectLatest { _query ->
@@ -52,7 +72,28 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     private fun initView() {
+//        binding.btnInput.setOnClickListener {
+//            val aa: Set<String> = setOf("a", "b", "c")
+//j
+//            val bb = mutableSetOf<String>().also { _s ->
+//                aa.forEach {
+//                    _s.add(it)
+//                }
+//                _s.add("d")
+//            }
+//
+//            bb.remove("c")
+//            qkPreference.setStringSet("notification", bb)
+//        }
+//
+//        binding.btnSearchTest.setOnClickListener {
+//            qkPreference.setString("notification_enabled", "search!!")
+//        }
+
         docAdapter = DocumentsAdapter(::doFavorite)
+
+//        docAdapter.stateRestorationPolicy =
+//            RecyclerView.Adapter.StateRestorationPolicy.PREVENT
 
         binding.rvDocs.apply {
             setHasFixedSize(true)
@@ -127,17 +168,21 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             doc.thumbnail
         }
 
-        val fileKey = url.retrieveFileKey()
-
         qkPreference.run {
-            if (favoriteState) {
-                setFileUrl(fileKey, url)
-            } else {
-                delFileKey(fileKey)
-            }
-        }
+            val favorsSet = getStringSet(FAVORITE_KEY)
 
-//        println("probe :: doFavorite : ${url}")
+            val favors = mutableSetOf<String>().also { s ->
+                favorsSet.forEach { f -> s.add(f) }
+            }
+
+            if (favoriteState) {
+                favors.add(url)
+            } else {
+                favors.remove(url)
+            }
+
+            qkPreference.setStringSet(FAVORITE_KEY, favors)
+        }
     }
 
     private fun collectUiState(query: String = "") {

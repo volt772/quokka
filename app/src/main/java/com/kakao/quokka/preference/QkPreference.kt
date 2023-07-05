@@ -1,7 +1,11 @@
 package com.kakao.quokka.preference
 
+import android.content.SharedPreferences
+
 
 interface QkPreference {
+
+    val preferences: SharedPreferences
 
     fun setFileUrl(key: String, value: String)
 
@@ -21,13 +25,16 @@ interface QkPreference {
 //
 //    fun getLong(key: String, defaultValue: Long): Long
 //
-//    fun setString(key: String, value: String)
+    fun setString(key: String, value: String)
 //
 //    fun getString(key: String, defaultValue: String): String?
 //
 //    fun setBoolean(key: String, value: Boolean)
 //
 //    fun getBoolean(key: String, defaultValue: Boolean): Boolean
+    fun setStringSet(key: String, value: Set<String>)
+//    fun getStringSet(key: String, value: String)
+    fun getStringSet(key: String): Set<String>
 
     fun clear()
 

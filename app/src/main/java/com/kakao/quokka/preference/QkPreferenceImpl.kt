@@ -11,8 +11,10 @@ class QkPreferenceImpl @Inject constructor(
     private val context: Context,
 ) : QkPreference {
 
-    private val preferences: SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(context)
+    override val preferences: SharedPreferences
+        get() = PreferenceManager.getDefaultSharedPreferences(context)
+//    override val preferences: SharedPreferences =
+//        PreferenceManager.getDefaultSharedPreferences(context)
 
     override fun getFileUrl(key: String, defaultValue: String): String? {
         return preferences.getString(key, defaultValue)
@@ -62,9 +64,9 @@ class QkPreferenceImpl @Inject constructor(
 //        return preferences.getLong(key, defaultValue)
 //    }
 //
-//    override fun setString(key: String, value: String) {
-//        preferences.edit().putString(key, value).apply()
-//    }
+    override fun setString(key: String, value: String) {
+        preferences.edit().putString(key, value).apply()
+    }
 //
 //    override fun getString(key: String, defaultValue: String): String? {
 //        return preferences.getString(key, defaultValue)
@@ -77,6 +79,13 @@ class QkPreferenceImpl @Inject constructor(
 //    override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
 //        return preferences.getBoolean(key, defaultValue)
 //    }
+    override fun setStringSet(key: String, value: Set<String>) {
+        preferences.edit().putStringSet(key, value).apply()
+    }
+
+    override fun getStringSet(key: String): Set<String> {
+        return preferences.getStringSet(key, setOf()) as Set<String>
+    }
 
     override fun removePref() {
         val dir = File(context.filesDir.parent + "/shared_prefs/")

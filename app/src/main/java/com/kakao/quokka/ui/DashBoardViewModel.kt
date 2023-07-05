@@ -22,38 +22,38 @@ class DashBoardViewModel @Inject constructor(
     private val repository: QkdHamsterRepository
 ) : BaseViewModel() {
 
-    private val _query: MutableSharedFlow<String> = MutableSharedFlow()
-    val query: SharedFlow<String> = _query
-
-    private val _hamster: MutableSharedFlow<QkdHamster> = MutableSharedFlow()
-    val hamster: SharedFlow<QkdHamster> = _hamster
-
-    suspend fun queryDocuments(query: String) {
-        println("probe :: vm save : query : $query")
-        viewModelScope.launch {
-            println("probe :: vm save : do emit")
-            _query.emit(query)
-        }
-    }
-
-    fun getHamster() {
+//    private val _query: MutableSharedFlow<String> = MutableSharedFlow()
+//    val query: SharedFlow<String> = _query
+//
+//    private val _hamster: MutableSharedFlow<QkdHamster> = MutableSharedFlow()
+//    val hamster: SharedFlow<QkdHamster> = _hamster
+//
+//    suspend fun queryDocuments(query: String) {
+//        println("probe :: vm save : query : $query")
 //        viewModelScope.launch {
-//            val result = hamsterRepository.getHamster()
+//            println("probe :: vm save : do emit")
+//            _query.emit(query)
 //        }
-    }
-
-    fun getTest() {
-//        println("probe :: test hamster!!")
-    }
-
-//    suspend fun getDocuments(): Flow<PagingData<QkDocuments>> {
-//        println("probe :: >>>>>>>>>..")
-//        return repository.documents()
-////            .map { pagingData ->
-////                pagingData.map {
-////                    mapper.mapDomainMovieToUi(domainMovie = it)
-////                }
-////            }
-//            .cachedIn(viewModelScope)
 //    }
+//
+//    fun getHamster() {
+////        viewModelScope.launch {
+////            val result = hamsterRepository.getHamster()
+////        }
+//    }
+//
+//    fun getTest() {
+////        println("probe :: test hamster!!")
+//    }
+//
+////    suspend fun getDocuments(): Flow<PagingData<QkDocuments>> {
+////        println("probe :: >>>>>>>>>..")
+////        return repository.documents()
+//////            .map { pagingData ->
+//////                pagingData.map {
+//////                    mapper.mapDomainMovieToUi(domainMovie = it)
+//////                }
+//////            }
+////            .cachedIn(viewModelScope)
+////    }
 }

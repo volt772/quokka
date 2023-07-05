@@ -1,7 +1,8 @@
 package com.kakao.quokka.constants
 
 object QkConstants {
-    object Uri {
-        const val BASE = "https://task.wiro.kr"
+
+    object Pref {
+        const val FAVORITE_KEY = "favorite"
     }
 }

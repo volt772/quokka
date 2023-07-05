@@ -3,6 +3,7 @@ package com.kakao.quokka.mapper
 import com.kakao.data.di.DefaultDispatcher
 import com.kakao.domain.constants.QkdResourceType
 import com.kakao.domain.dto.QkdDocuments
+import com.kakao.quokka.constants.QkConstants
 import com.kakao.quokka.ext.retrieveFileKey
 import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.preference.QkPreference
@@ -22,7 +23,16 @@ class DocumentsMapperImpl @Inject constructor(
         }
 
         val fileKey = url.retrieveFileKey()
-        val isKeyExists = qkPreference.getFileKey(fileKey)
+
+        val favorsSet = qkPreference.getStringSet(QkConstants.Pref.FAVORITE_KEY)
+
+        var isKeyExists = false
+        favorsSet.forEach { f ->
+            if (f == url) {
+                isKeyExists = true
+                return@forEach
+            }
+        }
 
         return DocumentDto(
             key = fileKey,
