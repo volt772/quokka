@@ -33,7 +33,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     private val vm: SearchViewModel by viewModels()
     private lateinit var docAdapter: DocumentsAdapter
-    private var keyword: String?= null
+    private var queryKeyword: String = ""
 
     @Inject lateinit var qkPreference: QkPreference
 
@@ -58,8 +58,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private fun subscribers() {
         val prefs = qkPreference.preferences
         val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
-        stringPrefLiveData.observe(viewLifecycleOwner) { enabled ->
-            println("probe :: observe :: search :: $enabled")
+        stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
+//            if (queryKeyword.isNotBlank()) {
+//                collectUiState(queryKeyword)
+//            }
+            println("probe :: observe :: search :: $prf")
         }
 
         viewLifecycleOwner.lifecycleScope.run {
@@ -107,6 +110,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 binding.svDocs.clearFocus()
                 lifecycleScope.launch {
                     query?.let { _query ->
+                        queryKeyword = _query
                         vm.queryDocuments(_query)
                     }
                 }

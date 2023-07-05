@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kakao.quokka.constants.QkConstants.Pref.FAVORITE_KEY
+import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.CabinetModel
 import com.kakao.quokka.preference.QkPreference
 import com.kakao.quokka.preference.stringSetLiveData
@@ -71,6 +72,7 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
 
             launch {
                 vm.favorites.collect { favor ->
+                    showEmptyCabinetListView(favor.count())
                     cabinetAdapter.submitList(favor)
 //                    println("probe :: observe :: lauch :: $it")
                 }
@@ -79,6 +81,10 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
 //                }
             }
         }
+    }
+
+    private fun showEmptyCabinetListView(count: Int) {
+        binding.clNoFavors.visibilityExt(count <= 0)
     }
 
     private fun selectFavorite(c: CabinetModel) {

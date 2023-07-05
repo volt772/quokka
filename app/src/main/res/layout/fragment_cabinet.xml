@@ -29,7 +29,7 @@
 
             <!-- No Docs-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_no_docs"
+                android:id="@+id/cl_no_favors"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
@@ -39,7 +39,7 @@
 
                 <!-- Icon-->
                 <ImageView
-                    android:id="@+id/iv_no_docs"
+                    android:id="@+id/iv_no_favors"
                     android:layout_width="@dimen/md_100"
                     android:layout_height="@dimen/md_100"
                     android:src="@drawable/ic_no_result"
@@ -51,13 +51,13 @@
 
                 <!-- Desc-->
                 <TextView
-                    android:id="@+id/tv_no_checklist"
+                    android:id="@+id/tv_no_favors"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/empty_result"
+                    android:text="@string/empty_cabinet"
                     android:layout_marginTop="@dimen/md_12"
                     style="@style/DocumentsEmptyLabel"
-                    app:layout_constraintTop_toBottomOf="@id/iv_no_docs"
+                    app:layout_constraintTop_toBottomOf="@id/iv_no_favors"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
