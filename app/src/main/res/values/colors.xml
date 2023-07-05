@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Quokka Color Palettes-->
+    <color name="quokka_100">#FFF671</color>
+    <color name="quokka_200">#52578A</color>
+    <color name="quokka_300">#282B3F</color>
+    <color name="quokka_400">#131230</color>
+    <color name="quokka_500">#ED1C24</color>
+    <color name="quokka_600">#C7C6C6</color>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
