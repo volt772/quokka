@@ -3,19 +3,27 @@ package com.kakao.quokka.preference
 import android.content.SharedPreferences
 
 
-interface QkPreference {
+interface PrefManager {
 
     val preferences: SharedPreferences
 
-    fun setFileUrl(key: String, value: String)
+    fun setStringSet(key: String, value: Set<String>)
 
-    fun getFileUrl(key: String, defaultValue: String): String?
+    fun getStringSet(key: String): Set<String>
 
-    fun getAllFiles(): Map<String, String>
+    fun addDocUrl(url: String)
 
-    fun getFileKey(key: String): Boolean
+    fun removeDocUrl(url: String)
 
-    fun delFileKey(key: String)
+//    fun setFileUrl(key: String, value: String)
+//
+//    fun getFileUrl(key: String, defaultValue: String): String?
+//
+//    fun getAllFiles(): Map<String, String>
+//
+//    fun getFileKey(key: String): Boolean
+//
+//    fun delFileKey(key: String)
 
 //    fun setInt(key: String, value: Int)
 //
@@ -25,16 +33,13 @@ interface QkPreference {
 //
 //    fun getLong(key: String, defaultValue: Long): Long
 //
-    fun setString(key: String, value: String)
+//    fun setString(key: String, value: String)
 //
 //    fun getString(key: String, defaultValue: String): String?
 //
 //    fun setBoolean(key: String, value: Boolean)
 //
 //    fun getBoolean(key: String, defaultValue: Boolean): Boolean
-    fun setStringSet(key: String, value: Set<String>)
-//    fun getStringSet(key: String, value: String)
-    fun getStringSet(key: String): Set<String>
 
     fun clear()
 

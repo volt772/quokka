@@ -1,20 +1,15 @@
 package com.kakao.quokka.ui.search
 
-import android.content.SharedPreferences
 import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.RecyclerView
 import com.kakao.domain.constants.QkdResourceType
 import com.kakao.quokka.constants.QkConstants.Pref.FAVORITE_KEY
-import com.kakao.quokka.ext.retrieveFileKey
 import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.DocumentDto
-import com.kakao.quokka.preference.QkPreference
-import com.kakao.quokka.preference.stringLiveData
+import com.kakao.quokka.preference.PrefManager
 import com.kakao.quokka.preference.stringSetLiveData
 import com.kakao.quokka.ui.adapter.DocumentLoadStateAdapter
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
@@ -35,7 +30,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private lateinit var docAdapter: DocumentsAdapter
     private var queryKeyword: String = ""
 
-    @Inject lateinit var qkPreference: QkPreference
+    @Inject lateinit var prefManager: PrefManager
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
@@ -56,7 +51,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 //    }
 
     private fun subscribers() {
-        val prefs = qkPreference.preferences
+        val prefs = prefManager.preferences
         val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
         stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
 //            if (queryKeyword.isNotBlank()) {
@@ -172,28 +167,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             doc.thumbnail
         }
 
-        qkPreference.run {
-            val favorsSet = getStringSet(FAVORITE_KEY)
-
-            val favors = mutableSetOf<String>().also { s ->
-                favorsSet.forEach { f -> s.add(f) }
-            }
-
-            if (favoriteState) {
-                favors.add(url)
-            } else {
-                favors.remove(url)
-            }
-
-            qkPreference.setStringSet(FAVORITE_KEY, favors)
+        if (favoriteState) {
+            prefManager.addDocUrl(url)
+        } else {
+            prefManager.removeDocUrl(url)
         }
     }
 
     private fun collectUiState(query: String = "") {
         viewLifecycleOwner.lifecycleScope.launch {
             vm.getDocuments(query).collectLatest { docs ->
-//                viewForEmptyDocuments(docs.count())
-//                viewForEmptyDocuments(0)
                 docAdapter.submitData(docs)
             }
         }
@@ -209,33 +192,4 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 //            param = Unit
         }
     }
-
-//    private var _binding: FragmentDashboardBinding? = null
-//
-//    // This property is only valid between onCreateView and
-//    // onDestroyView.
-//    private val binding get() = _binding!!
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        val dashboardViewModel =
-//            ViewModelProvider(this).get(DashboardViewModel::class.java)
-//
-//        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-//        val root: View = binding.root
-//
-//        val textView: TextView = binding.textDashboard
-//        dashboardViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-//        return root
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
 }

@@ -6,12 +6,12 @@ import com.kakao.domain.dto.QkdDocuments
 import com.kakao.quokka.constants.QkConstants
 import com.kakao.quokka.ext.retrieveFileKey
 import com.kakao.quokka.model.DocumentDto
-import com.kakao.quokka.preference.QkPreference
+import com.kakao.quokka.preference.PrefManager
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class DocumentsMapperImpl @Inject constructor(
-    private val qkPreference: QkPreference,
+    private val prefManager: PrefManager,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
 ) : DocumentsMapper {
 
@@ -24,7 +24,7 @@ class DocumentsMapperImpl @Inject constructor(
 
         val fileKey = url.retrieveFileKey()
 
-        val favorsSet = qkPreference.getStringSet(QkConstants.Pref.FAVORITE_KEY)
+        val favorsSet = prefManager.getStringSet(QkConstants.Pref.FAVORITE_KEY)
 
         var isKeyExists = false
         favorsSet.forEach { f ->

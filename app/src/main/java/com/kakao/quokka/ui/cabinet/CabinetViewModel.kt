@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.apx6.chipmunk.app.ui.base.BaseViewModel
 import com.kakao.quokka.di.IoDispatcher
 import com.kakao.quokka.model.CabinetModel
-import com.kakao.quokka.preference.QkPreference
+import com.kakao.quokka.preference.PrefManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CabinetViewModel @Inject constructor(
     @IoDispatcher val ioDispatcher: CoroutineDispatcher,
-    private val qkPreference: QkPreference,
+    private val prefManager: PrefManager,
 //    private val repository: QkdHamsterRepository,
 //    private val mapper: DocumentsMapper
 ) : BaseViewModel() {
