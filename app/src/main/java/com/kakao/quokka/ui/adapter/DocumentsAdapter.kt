@@ -95,7 +95,9 @@ class DocumentsAdapter(
                 return (
                     oldItem is DocumentModel.DocumentItem &&
                     newItem is DocumentModel.DocumentItem &&
-                    oldItem.doc.datetime == newItem.doc.datetime) ||
+                    oldItem.doc.datetime == newItem.doc.datetime &&
+                    oldItem.doc.isFavorite == newItem.doc.isFavorite &&
+                    oldItem.doc.key == newItem.doc.key) ||
                     (oldItem is DocumentModel.SeparatorItem && newItem is DocumentModel.SeparatorItem &&
                         oldItem.desc == newItem.desc)
             }

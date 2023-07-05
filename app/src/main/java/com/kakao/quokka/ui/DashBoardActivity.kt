@@ -18,7 +18,7 @@ class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityDashboardBind
 
     private val searchFragment = SearchFragment()
     private val cabinetFragment = CabinetFragment()
-    private var activeFragment: Fragment = searchFragment
+    var activeFragment: Fragment = searchFragment
 
     private var query: String?= ""
 

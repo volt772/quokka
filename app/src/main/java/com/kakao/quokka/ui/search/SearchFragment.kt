@@ -1,16 +1,19 @@
 package com.kakao.quokka.ui.search
 
+import android.os.Parcelable
 import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import com.kakao.domain.constants.QkdResourceType
 import com.kakao.quokka.constants.QkConstants.Pref.FAVORITE_KEY
 import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.preference.PrefManager
 import com.kakao.quokka.preference.stringSetLiveData
+import com.kakao.quokka.ui.DashBoardActivity
 import com.kakao.quokka.ui.adapter.DocumentLoadStateAdapter
 import com.kakao.quokka.ui.adapter.DocumentsAdapter
 import com.kakao.quokka.ui.base.BaseFragment
@@ -31,6 +34,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private var queryKeyword: String = ""
 
     @Inject lateinit var prefManager: PrefManager
+    private var recyclerViewState: Parcelable? = null
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
@@ -54,10 +58,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         val prefs = prefManager.preferences
         val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
         stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
-//            if (queryKeyword.isNotBlank()) {
-//                collectUiState(queryKeyword)
-//            }
-            println("probe :: observe :: search :: $prf")
+            val currFragment = (activity as DashBoardActivity).activeFragment
+            if (currFragment != this) {
+//                recyclerViewState = binding.rvDocs.layoutManager?.onSaveInstanceState()
+
+                viewLifecycleOwner.lifecycleScope.launch {
+                    queryKeyword = "hamster"
+                    vm.queryDocuments(queryKeyword)
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.run {
@@ -70,28 +79,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     private fun initView() {
-//        binding.btnInput.setOnClickListener {
-//            val aa: Set<String> = setOf("a", "b", "c")
-//j
-//            val bb = mutableSetOf<String>().also { _s ->
-//                aa.forEach {
-//                    _s.add(it)
-//                }
-//                _s.add("d")
-//            }
-//
-//            bb.remove("c")
-//            qkPreference.setStringSet("notification", bb)
-//        }
-//
-//        binding.btnSearchTest.setOnClickListener {
-//            qkPreference.setString("notification_enabled", "search!!")
-//        }
+
+        binding.rvDocs.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                recyclerViewState = binding.rvDocs.getLayoutManager()?.onSaveInstanceState() // save recycleView state
+            }
+        })
 
         docAdapter = DocumentsAdapter(::doFavorite)
+        docAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
 
-//        docAdapter.stateRestorationPolicy =
-//            RecyclerView.Adapter.StateRestorationPolicy.PREVENT
 
         binding.rvDocs.apply {
             setHasFixedSize(true)
@@ -178,6 +176,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         viewLifecycleOwner.lifecycleScope.launch {
             vm.getDocuments(query).collectLatest { docs ->
                 docAdapter.submitData(docs)
+//                docAdapter.notifyDataSetChanged()
+//                binding.rvDocs.layoutManager?.onRestoreInstanceState(recyclerViewState)
             }
         }
     }
