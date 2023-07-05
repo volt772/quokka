@@ -4,7 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.kakao.quokka.constants.QkConstants
-import java.io.File
+import com.kakao.quokka.ext.currMillis
+import com.kakao.quokka.ext.splitUrlKey
 import javax.inject.Inject
 
 
@@ -25,20 +26,31 @@ class PrefManagerImpl @Inject constructor(
 
     override fun addDocUrl(url: String) {
         val docs = getDocList()
-        docs.add(url)
+        docs.add("${url}||${currMillis}")
 
         setStringSet(QkConstants.Pref.FAVORITE_KEY, docs)
     }
 
     override fun removeDocUrl(url: String) {
         val docs = getDocList()
-        docs.remove(url)
 
+        var removeTarget = ""
+        docs.forEach { d ->
+            try {
+                val keySet = d.splitUrlKey()
+                val dUrl = keySet.first
+
+                if (dUrl == url) {
+                    removeTarget = d
+                    return@forEach
+                }
+            } catch (e: IndexOutOfBoundsException) {
+                return@forEach
+            }
+        }
+
+        if (removeTarget.isNotBlank()) docs.remove(removeTarget)
         setStringSet(QkConstants.Pref.FAVORITE_KEY, docs)
-    }
-
-    override fun clear() {
-        preferences.edit().clear().apply()
     }
 
     private fun getDocList(): MutableSet<String> {
@@ -46,19 +58,6 @@ class PrefManagerImpl @Inject constructor(
 
         return mutableSetOf<String>().also { s ->
             favorsSet.forEach { f -> s.add(f) }
-        }
-    }
-
-
-    override fun removePref() {
-        val dir = File(context.filesDir.parent + "/shared_prefs/")
-        val children = dir.list()
-        for (child in children) {
-            context.getSharedPreferences(
-                child.replace(".xml", ""),
-                Context.MODE_PRIVATE
-            ).edit().clear().apply()
-            File(dir, child).delete()
         }
     }
 }

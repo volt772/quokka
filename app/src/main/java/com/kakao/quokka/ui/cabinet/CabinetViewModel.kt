@@ -3,6 +3,7 @@ package com.kakao.quokka.ui.cabinet
 import androidx.lifecycle.viewModelScope
 import com.apx6.chipmunk.app.ui.base.BaseViewModel
 import com.kakao.quokka.di.IoDispatcher
+import com.kakao.quokka.ext.splitUrlKey
 import com.kakao.quokka.model.CabinetModel
 import com.kakao.quokka.preference.PrefManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,11 +27,15 @@ class CabinetViewModel @Inject constructor(
     suspend fun setFavorites(favors: Set<String>) {
         viewModelScope.launch {
             val list = mutableListOf<CabinetModel>().also {_list ->
-                favors.forEach { _f ->
-                    _list.add(CabinetModel(_f))
+                favors.forEach { fv ->
+                    val keySet = fv.splitUrlKey()
+                    val url = keySet.first
+                    val regDate = keySet.second
+                    _list.add(CabinetModel(url = url, regDate = regDate))
                 }
             }
 
+            list.sortBy { it.regDate }
             _favorites.emit(list)
         }
     }

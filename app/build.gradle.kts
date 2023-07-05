@@ -17,7 +17,7 @@ android {
         versionCode = Version.versionCode
         versionName = Version.versionName
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.kakao.quokka.CustomTestRunner"
     }
 
     buildTypes {

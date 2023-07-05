@@ -5,6 +5,7 @@ import com.kakao.domain.constants.QkdResourceType
 import com.kakao.domain.dto.QkdDocuments
 import com.kakao.quokka.constants.QkConstants
 import com.kakao.quokka.ext.retrieveFileKey
+import com.kakao.quokka.ext.splitUrlKey
 import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.preference.PrefManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -28,7 +29,9 @@ class DocumentsMapperImpl @Inject constructor(
 
         var isKeyExists = false
         favorsSet.forEach { f ->
-            if (f == url) {
+            val keySet = f.splitUrlKey()
+            val dUrl = keySet.first
+            if (dUrl == url) {
                 isKeyExists = true
                 return@forEach
             }

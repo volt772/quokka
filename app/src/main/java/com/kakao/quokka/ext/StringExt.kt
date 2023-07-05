@@ -58,3 +58,12 @@ fun String?.retrieveFileKey(): String {
 		path?.substringAfterLast("/")
 	} ?: ""
 }
+
+fun String.splitUrlKey(): Pair<String, Long> {
+	return try {
+		val keyArr = this.split("||")
+		keyArr[0] to keyArr[1].toLong()
+	} catch (e: IndexOutOfBoundsException) {
+		"" to 0
+	}
+}

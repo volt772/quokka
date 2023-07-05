@@ -5,10 +5,10 @@ import java.util.Date
 
 //
 //
-//val currMillis: Long
-//    get() {
-//        return System.currentTimeMillis()
-//    }
+val currMillis: Long
+    get() {
+        return System.currentTimeMillis()
+    }
 //
 //
 val DOC_FORMAT = "yy.MM.dd HH:mm"
