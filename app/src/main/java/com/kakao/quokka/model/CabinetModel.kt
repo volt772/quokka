@@ -1,8 +1,6 @@
 package com.kakao.quokka.model
 
-data class FavoritesModel (
-
-    val key: String,
+data class CabinetModel (
 
     val url: String
 

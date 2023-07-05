@@ -1,107 +1,70 @@
 package com.kakao.quokka.ui.adapter
 
-import android.view.LayoutInflater
+import android.content.res.ColorStateList
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
+import com.apx6.chipmunk.app.ui.base.BaseViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.kakao.quokka.QuokkaApp.Companion.appContext
-import com.kakao.quokka.ext.convertFormat
-import com.kakao.quokka.ext.favoriteColorTint
+import com.kakao.quokka.QuokkaApp
 import com.kakao.quokka.ext.setOnSingleClickListener
-import com.kakao.quokka.model.DocumentDto
-import com.kakao.quokka.model.DocumentModel
+import com.kakao.quokka.model.CabinetModel
 import com.kako.quokka.R
-import com.kako.quokka.databinding.ItemDocumentsBinding
-import com.kako.quokka.databinding.ItemSeparatorBinding
+import com.kako.quokka.databinding.ItemCabinetBinding
+
 
 class CabinetAdapter(
-    private var doFavorite: ((DocumentDto, Int) -> Unit)
-) : PagingDataAdapter<DocumentModel, RecyclerView.ViewHolder>(DocumentModelComparator) {
+    private val selectFavorite: (CabinetModel) -> Unit
+) : ListAdapter<CabinetModel, CabinetAdapter.CabinetViewHolder>(DIFF_CALLBACK) {
 
-    class DocumentViewHolder(val binding: ItemDocumentsBinding): RecyclerView.ViewHolder(binding.root)
-    class SeparatorViewHolder(val binding: ItemSeparatorBinding): RecyclerView.ViewHolder(binding.root)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CabinetViewHolder(parent)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            R.layout.item_documents -> DocumentViewHolder(ItemDocumentsBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            else -> SeparatorViewHolder(ItemSeparatorBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-        }
-    }
+    override fun onBindViewHolder(holder: CabinetViewHolder, position: Int) =
+        holder.bind(getItem(position), selectFavorite)
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val docModel: DocumentModel = getItem(position)!!
 
-        docModel.let {
-            when (docModel) {
-                is DocumentModel.DocumentItem -> {
-                    val vh = holder as DocumentViewHolder
-                    vh.binding.apply {
-                        val _doc = docModel.doc
+    inner class CabinetViewHolder(
+        parent: ViewGroup
+    ) : BaseViewHolder<CabinetModel, ItemCabinetBinding>(
+        parent,
+        R.layout.item_cabinet
+    ) {
 
-                        /* Thumbnail*/
-                        val thumbUrl = _doc.thumbnailUrl.ifBlank { _doc.thumbnail }
+        fun bind(c: CabinetModel, selectFavorite: (CabinetModel) -> Unit) {
 
-                        Glide.with(appContext)
-                            .load(thumbUrl)
-                            .apply(RequestOptions.circleCropTransform())
-                            .apply(
-                                RequestOptions.bitmapTransform(
-                                    MultiTransformation(CenterCrop(), RoundedCorners(12))
-                                )
-                            )
-                            .into(ivThumbnail)
-
-                        val dateTime = _doc.datetime.convertFormat()
-                        tvDate.text = dateTime.first
-                        tvTime.text = dateTime.second
-                        tvType.text = _doc.key
-                        tvPage.text = _doc.page.toString()
-
-                        ivFavorite.favoriteColorTint(_doc.isFavorite)
-
-                        ivFavorite.setOnSingleClickListener {
-                            doFavorite(_doc, position)
-                        }
-                    }
-                }
-
-                is DocumentModel.SeparatorItem -> {
-                    val vh = holder as SeparatorViewHolder
-                    vh.binding.apply {
-                        tvDescription.text = docModel.desc
-                    }
-                }
+            binding.apply {
+                Glide.with(QuokkaApp.appContext)
+                    .load(c.url)
+                    .apply(RequestOptions.circleCropTransform())
+                    .apply(
+                        RequestOptions.bitmapTransform(
+                            MultiTransformation(CenterCrop(), RoundedCorners(12))
+                        )
+                    )
+                    .into(ivCabinetThumbnail)
             }
-        }
-    }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is DocumentModel.DocumentItem -> R.layout.item_documents
-            is DocumentModel.SeparatorItem -> R.layout.item_separator
-            null -> throw UnsupportedOperationException("Unknown view")
+            binding.ivCabinetFavorite.setOnSingleClickListener {
+                selectFavorite.invoke(c)
+//                selectCheckList.invoke(cl)
+            }
         }
     }
 
     companion object {
-        private val DocumentModelComparator = object : DiffUtil.ItemCallback<DocumentModel>() {
-            override fun areItemsTheSame(oldItem: DocumentModel, newItem: DocumentModel): Boolean {
-                return (
-                    oldItem is DocumentModel.DocumentItem &&
-                    newItem is DocumentModel.DocumentItem &&
-                    oldItem.doc.datetime == newItem.doc.datetime) ||
-                    (oldItem is DocumentModel.SeparatorItem && newItem is DocumentModel.SeparatorItem &&
-                        oldItem.desc == newItem.desc)
-            }
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CabinetModel>() {
+            override fun areItemsTheSame(oldItem: CabinetModel, newItem: CabinetModel): Boolean =
+                oldItem.url == newItem.url
 
-            override fun areContentsTheSame(oldItem: DocumentModel, newItem: DocumentModel): Boolean =
+            override fun areContentsTheSame(oldItem: CabinetModel, newItem: CabinetModel): Boolean =
                 oldItem == newItem
         }
     }
 }
+
+
+
