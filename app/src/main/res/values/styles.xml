@@ -59,5 +59,18 @@
         <item name="android:textSize">@dimen/md_18</item>
     </style>
 
+    <!-- Search : History Recent Label -->
+    <style name="HistoryRecentLabel">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/md_16</item>
+    </style>
+
+    <!-- Search : History All Clear Label -->
+    <style name="HistoryAllClearLabel">
+        <item name="android:textColor">@color/quokka_500</item>
+        <item name="android:textSize">@dimen/md_16</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 </resources>

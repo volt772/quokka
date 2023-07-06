@@ -11,8 +11,12 @@ interface PrefManager {
 
     fun getStringSet(key: String): Set<String>
 
+    fun removeString(key: String, value: String)
+
     fun addStringSet(key: String, value: String)
 
     fun removeStringSet(key: String, value: String)
+
+    fun clearKey(key: String)
 
 }

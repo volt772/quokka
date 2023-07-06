@@ -3,7 +3,6 @@ package com.kakao.quokka.preference
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.kakao.quokka.constants.QkConstants
 import com.kakao.quokka.ext.currMillis
 import com.kakao.quokka.ext.splitKey
 import javax.inject.Inject
@@ -22,6 +21,10 @@ class PrefManagerImpl @Inject constructor(
 
     override fun getStringSet(key: String): Set<String> {
         return preferences.getStringSet(key, setOf()) as Set<String>
+    }
+
+    override fun removeString(key: String, value: String) {
+        preferences.edit().remove(value)
     }
 
     override fun addStringSet(key: String, value: String) {
@@ -51,6 +54,10 @@ class PrefManagerImpl @Inject constructor(
 
         if (removeTarget.isNotBlank()) prefs.remove(removeTarget)
         setStringSet(key, prefs)
+    }
+
+    override fun clearKey(key: String) {
+        preferences.edit().remove(key).apply()
     }
 
     private fun getDocList(key: String): MutableSet<String> {

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kakao.domain.constants.QkdResourceType
 import com.kakao.quokka.constants.QkConstants.Pref.FAVORITE_KEY
 import com.kakao.quokka.constants.QkConstants.Pref.HISTORY_KEY
+import com.kakao.quokka.ext.currMillis
 import com.kakao.quokka.ext.setOnSingleClickListener
 import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.DocumentDto
@@ -92,18 +93,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         })
 
         binding.ivSearch.setOnSingleClickListener {
-//            val sample = mutableListOf<HistoryModel>().also { _list ->
-//                _list.add(HistoryModel("hamster", 1000))
-//                _list.add(HistoryModel("두산", 2000))
-//                _list.add(HistoryModel("오산", 3000))
-//                _list.add(HistoryModel("cat", 4000))
-//                _list.add(HistoryModel("quokka", 5000))
-//                _list.add(HistoryModel("qllqkwjelkjasdklfj", 6000))
-//            }
             val categoryListDialog = SearchDialog.newInstance(
                 historyModels,
                 ::doSearch,
-                ::delHistories
+                ::delHistories,
+                ::clearHistories
             )
             requireActivity().supportFragmentManager.beginTransaction().add(categoryListDialog, "AA").commitAllowingStateLoss()
 
@@ -119,23 +113,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 footer = DocumentLoadStateAdapter { docAdapter.retry() }
             )
         }
-
-//        binding.svDocs.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                binding.svDocs.clearFocus()
-//                lifecycleScope.launch {
-//                    query?.let { _query ->
-//                        queryKeyword = _query
-//                        vm.queryDocuments(_query)
-//                    }
-//                }
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                return false
-//            }
-//        })
 
         binding.btnRetry.setOnClickListener{
             docAdapter.retry()
@@ -180,14 +157,25 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         lifecycleScope.launch {
             query.let { _query ->
                 prefManager.addStringSet(HISTORY_KEY, _query)
+                historyModels.add(HistoryModel(_query, currMillis))
                 queryKeyword = _query
                 vm.queryDocuments(_query)
             }
         }
     }
 
-    private fun delHistories(histories: List<HistoryModel>) {
+    private fun delHistories() {
+        val updated = mutableSetOf<String>().also { _s ->
+            historyModels.forEach { _history ->
+                val value = "${_history.keyword}||${_history.regDate}"
+                _s.add(value)
+            }
+        }
+        prefManager.setStringSet(HISTORY_KEY, updated)
+    }
 
+    private fun clearHistories() {
+        prefManager.clearKey(HISTORY_KEY)
     }
 
     private fun doFavorite(doc: DocumentDto, position: Int) {

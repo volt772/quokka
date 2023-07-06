@@ -49,7 +49,7 @@ class HistoryAdapter(
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HistoryModel>() {
             override fun areItemsTheSame(oldItem: HistoryModel, newItem: HistoryModel): Boolean =
-                oldItem.regDate == newItem.regDate
+                oldItem.keyword == newItem.keyword && oldItem.regDate == newItem.regDate
 
             override fun areContentsTheSame(oldItem: HistoryModel, newItem: HistoryModel): Boolean =
                 oldItem == newItem

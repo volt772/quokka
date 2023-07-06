@@ -1,5 +1,6 @@
 package com.kakao.quokka.ui.search
 
+import android.content.DialogInterface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
@@ -21,9 +22,11 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
 
     private var histories: MutableList<HistoryModel> = mutableListOf()
     private var doSearch: ((String) -> Unit)? = null
-    private var delHistories: ((List<HistoryModel>) -> Unit)? = null
+    private var delHistories: (() -> Unit)? = null
+    private var clearHistories: (() -> Unit)? = null
 
     private val deleteTargetList: MutableList<HistoryModel> = mutableListOf()
+    private var dismissFlag: DismissFlag = DismissFlag.DELETE
 
     private lateinit var historyAdapter: HistoryAdapter
 
@@ -37,10 +40,10 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
             view?.requestLayout()
         }
 
-        initView()
+        viewForEmpty()
     }
 
-    private fun initView() {
+    private fun viewForEmpty() {
         binding.apply {
             clSearchBotEmpty.visibilityExt(histories.isEmpty())
             clSearchBot.visibilityExt(histories.isNotEmpty())
@@ -56,7 +59,7 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
 
             /* 모두삭제*/
             tvClearHistories.setOnSingleClickListener {
-
+                dialogClearHistory()
             }
 
             /* 최근검색리스트*/
@@ -74,7 +77,6 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
                     query?.let { _query ->
                         dialogSearch(_query)
                     }
-
                     return false
                 }
 
@@ -82,52 +84,54 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
                     return false
                 }
             })
-
-//            dialogHeader.title = getString(viewType.title)
-//            rvCategoryList.layoutManager = LinearLayoutManager(context)
-//            val categoryListAdapter = CategoryListDialogAdapter(param, selected).apply {
-//                setItemClickListener(object : CategoryListDialogAdapter.OnItemClickListener {
-//                    override fun itemClick(category: CmdCategory) {
-//                        selectCategory?.invoke(category)
-//                        dismiss()
-//                    }
-//                })
-//            }
-
-
-//            /* 닫기버튼 */
-//            dialogHeader.ivListClose.setOnClickListener {
-//                dismiss()
-//            }
-
-
         }
     }
 
     private fun dialogSearch(query: String) {
+        dismissFlag = DismissFlag.QUERY
         doSearch?.invoke(query)
         dismiss()
     }
 
     private fun dialogDeleteHistory(history: HistoryModel) {
+        dismissFlag = DismissFlag.DELETE
         deleteTargetList.add(history)
         histories.remove(history)
+
+        viewForEmpty()
         historyAdapter.notifyDataSetChanged()
     }
 
     private fun dialogClearHistory() {
-//        delHistories
+        dismissFlag = DismissFlag.CLEAR
+
+        histories.clear()
+        historyAdapter.notifyDataSetChanged()
+
+        viewForEmpty()
+        clearHistories?.invoke()
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if (dismissFlag == DismissFlag.DELETE) {
+            delHistories?.invoke()
+        }
+        deleteTargetList.clear()
     }
 
     companion object {
+        enum class DismissFlag { QUERY, DELETE, CLEAR }
         fun newInstance(
             histories: MutableList<HistoryModel>,
             doSearch: (String) -> Unit,
-            delHistories: (List<HistoryModel>) -> Unit
+            delHistories: () -> Unit,
+            clearHistories: () -> Unit
         ) = SearchDialog().apply {
             this.histories = histories
             this.doSearch = doSearch
             this.delHistories = delHistories
+            this.clearHistories = clearHistories
             param = Unit
         }
     }

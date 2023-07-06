@@ -14,8 +14,7 @@
             android:id="@+id/cl_search_root"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingHorizontal="@dimen/md_12"
-            android:background="@color/material_green_600" >
+            android:paddingHorizontal="@dimen/md_18" >
 
             <!-- Top-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,8 +23,7 @@
                 android:layout_height="@dimen/md_60"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@color/material_red_800" >
+                app:layout_constraintEnd_toEndOf="parent" >
 
                 <ImageView
                     android:id="@+id/iv_back"
@@ -62,8 +60,7 @@
                 app:layout_constraintTop_toBottomOf="@id/cl_search_top"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@color/material_yellow_A200" >
+                app:layout_constraintBottom_toBottomOf="parent" >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_search_bot_label"
@@ -76,6 +73,7 @@
                         android:id="@+id/tv_recent_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/HistoryRecentLabel"
                         android:text="@string/recent_search"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -86,6 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/clear_histories"
+                        style="@style/HistoryAllClearLabel"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
@@ -95,6 +94,7 @@
                     android:id="@+id/rv_histories"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/md_0"
+                    android:layout_marginTop="@dimen/md_6"
                     app:layout_constraintVertical_bias="0.0"
                     app:layout_constrainedHeight="true"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -112,8 +112,7 @@
                 app:layout_constraintTop_toBottomOf="@id/cl_search_top"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@color/material_yellow_A200" >
+                app:layout_constraintBottom_toBottomOf="parent" >
 
                 <TextView
                     android:id="@+id/tv_no_history_label"
