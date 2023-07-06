@@ -6,6 +6,7 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kakao.quokka.ext.setOnSingleClickListener
+import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.HistoryModel
 import com.kakao.quokka.ui.adapter.HistoryAdapter
 import com.kakao.quokka.ui.base.BaseBottomSheetDialog
@@ -20,7 +21,7 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
 
     private var histories: MutableList<HistoryModel> = mutableListOf()
     private var doSearch: ((String) -> Unit)? = null
-    private var delHistories: ((List<String>) -> Unit)? = null
+    private var delHistories: ((List<HistoryModel>) -> Unit)? = null
 
     private val deleteTargetList: MutableList<HistoryModel> = mutableListOf()
 
@@ -36,6 +37,14 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
             view?.requestLayout()
         }
 
+        initView()
+    }
+
+    private fun initView() {
+        binding.apply {
+            clSearchBotEmpty.visibilityExt(histories.isEmpty())
+            clSearchBot.visibilityExt(histories.isNotEmpty())
+        }
     }
 
     override fun prepareDialog(param: Unit) {
@@ -114,7 +123,7 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
         fun newInstance(
             histories: MutableList<HistoryModel>,
             doSearch: (String) -> Unit,
-            delHistories: (List<String>) -> Unit
+            delHistories: (List<HistoryModel>) -> Unit
         ) = SearchDialog().apply {
             this.histories = histories
             this.doSearch = doSearch

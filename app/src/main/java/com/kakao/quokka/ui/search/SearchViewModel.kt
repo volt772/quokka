@@ -7,9 +7,13 @@ import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.kakao.quokka.ui.base.BaseViewModel
 import com.kakao.domain.repository.DocumentsRepository
+import com.kakao.quokka.constants.QkConstants
 import com.kakao.quokka.di.IoDispatcher
+import com.kakao.quokka.ext.splitKey
 import com.kakao.quokka.mapper.DocumentsMapper
 import com.kakao.quokka.model.DocumentModel
+import com.kakao.quokka.model.HistoryModel
+import com.kakao.quokka.preference.PrefManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -22,12 +26,16 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     @IoDispatcher val ioDispatcher: CoroutineDispatcher,
+    private val prefManager: PrefManager,
     private val repository: DocumentsRepository,
     private val mapper: DocumentsMapper
 ) : BaseViewModel() {
 
     private val _query: MutableSharedFlow<String> = MutableSharedFlow()
     val query: SharedFlow<String> = _query
+
+    private val _history: MutableSharedFlow<List<HistoryModel>> = MutableSharedFlow()
+    val history: SharedFlow<List<HistoryModel>> = _history
 
     suspend fun queryDocuments(query: String) {
         viewModelScope.launch {
@@ -52,5 +60,24 @@ class SearchViewModel @Inject constructor(
                 }
             }
             .cachedIn(viewModelScope)
+    }
+
+    suspend fun getHistories() {
+        viewModelScope.launch {
+            val histories = prefManager.getStringSet(QkConstants.Pref.HISTORY_KEY)
+
+            val historyModels = mutableListOf<HistoryModel>().also { _list ->
+                histories.forEach { f ->
+                    val keySet = f.splitKey()
+                    val keyword = keySet.first
+                    val regDate = keySet.second
+
+                    _list.add(HistoryModel(keyword, regDate))
+                }
+            }
+
+            historyModels.sortByDescending { it.regDate }
+            _history.emit(historyModels)
+        }
     }
 }

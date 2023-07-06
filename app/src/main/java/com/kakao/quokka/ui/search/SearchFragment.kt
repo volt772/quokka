@@ -8,6 +8,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.kakao.domain.constants.QkdResourceType
 import com.kakao.quokka.constants.QkConstants.Pref.FAVORITE_KEY
+import com.kakao.quokka.constants.QkConstants.Pref.HISTORY_KEY
 import com.kakao.quokka.ext.setOnSingleClickListener
 import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.DocumentDto
@@ -38,12 +39,21 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     @Inject lateinit var prefManager: PrefManager
     private var recyclerViewState: Parcelable? = null
 
+    private val historyModels: MutableList<HistoryModel> = mutableListOf()
+
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
     override fun prepareFragment() {
 
         initView()
         subscribers()
+        initDataSet()
+    }
+
+    private fun initDataSet() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            vm.getHistories()
+        }
     }
 
     private fun subscribers() {
@@ -64,6 +74,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                     collectUiState(_query)
                 }
             }
+
+            launch {
+                vm.history.collectLatest { histories ->
+                    historyModels.addAll(histories)
+                }
+            }
         }
     }
 
@@ -76,16 +92,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         })
 
         binding.ivSearch.setOnSingleClickListener {
-            val sample = mutableListOf<HistoryModel>().also { _list ->
-                _list.add(HistoryModel("hamster", 1000))
-                _list.add(HistoryModel("두산", 2000))
-                _list.add(HistoryModel("오산", 3000))
-                _list.add(HistoryModel("cat", 4000))
-                _list.add(HistoryModel("quokka", 5000))
-                _list.add(HistoryModel("qllqkwjelkjasdklfj", 6000))
-            }
+//            val sample = mutableListOf<HistoryModel>().also { _list ->
+//                _list.add(HistoryModel("hamster", 1000))
+//                _list.add(HistoryModel("두산", 2000))
+//                _list.add(HistoryModel("오산", 3000))
+//                _list.add(HistoryModel("cat", 4000))
+//                _list.add(HistoryModel("quokka", 5000))
+//                _list.add(HistoryModel("qllqkwjelkjasdklfj", 6000))
+//            }
             val categoryListDialog = SearchDialog.newInstance(
-                sample,
+                historyModels,
                 ::doSearch,
                 ::delHistories
             )
@@ -163,13 +179,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private fun doSearch(query: String) {
         lifecycleScope.launch {
             query.let { _query ->
+                prefManager.addStringSet(HISTORY_KEY, _query)
                 queryKeyword = _query
                 vm.queryDocuments(_query)
             }
         }
     }
 
-    private fun delHistories(histories: List<String>) {
+    private fun delHistories(histories: List<HistoryModel>) {
 
     }
 
