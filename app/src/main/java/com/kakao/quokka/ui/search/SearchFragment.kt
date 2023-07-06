@@ -49,6 +49,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         initView()
         subscribers()
         initDataSet()
+        viewForEmptyDocuments(true)
     }
 
     private fun initDataSet() {
@@ -121,7 +122,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         docAdapter.addLoadStateListener { loadState ->
 
             if(loadState.append.endOfPaginationReached) {
-                viewForEmptyDocuments(0)
+                viewForEmptyDocuments(true)
                 docAdapter.itemCount == 0
             }
 
@@ -199,13 +200,23 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private fun collectUiState(query: String = "") {
         viewLifecycleOwner.lifecycleScope.launch {
             vm.getDocuments(query).collectLatest { docs ->
+                viewForEmptyDocuments(false)
                 docAdapter.submitData(docs)
             }
         }
     }
 
-    private fun viewForEmptyDocuments(count: Int) {
-        binding.clNoDocs.visibilityExt(count <= 0)
+    private fun viewForEmptyDocuments(visible: Boolean) {
+        val infoMsg = if (queryKeyword.isBlank()) {
+            getString(R.string.empty_keyword)
+        } else {
+            getString(R.string.empty_result)
+        }
+
+        binding.apply {
+            clNoDocs.visibilityExt(visible)
+            tvNoDocs.text = infoMsg
+        }
     }
 
     companion object {

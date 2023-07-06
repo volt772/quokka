@@ -18,14 +18,6 @@ fun View?.visibilityExt(isVisibility: Boolean) {
     this?.visibility = if (isVisibility) View.VISIBLE else View.GONE
 }
 
-fun ImageView?.favoriteColorTint(favorite: Boolean) {
-    if (favorite) {
-        this?.imageTintList = ColorStateList.valueOf(appContext.getColor(R.color.material_red_500))
-    } else {
-        this?.imageTintList = ColorStateList.valueOf(appContext.getColor(R.color.material_gray_500))
-    }
-}
-
 private const val MIN_CLICK_INTERVAL = 500L
 
 /**

@@ -12,6 +12,7 @@
     <string name="title_search">Search</string>
     <string name="title_cabinet">Cabinet</string>
 
+    <string name="empty_keyword">검색키워드를 입력해주세요.</string>
     <string name="empty_result">검색 결과가 없습니다.</string>
     <string name="empty_cabinet">보관함이 비었습니다..</string>
 

@@ -30,26 +30,11 @@
                 app:tint="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <SearchView
-            android:id="@+id/sv_docs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:queryHint="Enter user name"
-            android:iconifiedByDefault="false"
-            android:layout_marginHorizontal="@dimen/md_12"
-            android:layout_marginVertical="@dimen/md_12"
-            android:background="@drawable/bg_rect_search_docs"
-            android:queryBackground="@android:color/transparent"
-            app:layout_constraintTop_toBottomOf="@id/cl_search_root"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/cl_container" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/md_0"
-            app:layout_constraintTop_toBottomOf="@id/sv_docs"
+            app:layout_constraintTop_toBottomOf="@id/cl_search_root"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" >
@@ -61,7 +46,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:spanCount="3"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_documents" />
 
@@ -75,27 +59,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" >
 
-                <!-- Icon-->
-                <ImageView
-                    android:id="@+id/iv_no_docs"
-                    android:layout_width="@dimen/md_100"
-                    android:layout_height="@dimen/md_100"
-                    android:src="@drawable/ic_no_result"
-                    android:tint="@color/material_gray_500"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <!-- Desc-->
                 <TextView
-                    android:id="@+id/tv_no_checklist"
+                    android:id="@+id/tv_no_docs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/empty_result"
                     android:layout_marginTop="@dimen/md_12"
                     style="@style/DocumentsEmptyLabel"
-                    app:layout_constraintTop_toBottomOf="@id/iv_no_docs"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -121,7 +94,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

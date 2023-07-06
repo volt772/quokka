@@ -31,8 +31,7 @@
                 android:id="@+id/iv_cabinet_favorite"
                 android:layout_width="@dimen/md_24"
                 android:layout_height="@dimen/md_24"
-                android:src="@drawable/ic_favorite"
-                android:tint="@color/material_red_A700"
+                android:src="@drawable/ic_favorite_y"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />

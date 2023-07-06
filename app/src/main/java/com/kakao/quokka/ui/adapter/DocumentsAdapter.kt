@@ -60,10 +60,12 @@ class DocumentsAdapter(
                         val dateTime = _doc.datetime.convertFormat()
                         tvDate.text = dateTime.first
                         tvTime.text = dateTime.second
-                        tvType.text = _doc.key
-                        tvPage.text = _doc.page.toString()
 
-                        ivFavorite.favoriteColorTint(_doc.isFavorite)
+//                        ivFavorite.favoriteColorTint(_doc.isFavorite)
+                        ivFavorite.setImageResource(
+                            if (_doc.isFavorite) { R.drawable.ic_favorite_y }
+                            else R.drawable.ic_favorite_n
+                        )
 
                         ivFavorite.setOnSingleClickListener {
                             doFavorite(_doc, position)

@@ -67,30 +67,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" >
 
-            <TextView
-                android:id="@+id/tv_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/md_6"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_page"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_page"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/tv_type"
-                app:layout_constraintEnd_toStartOf="@id/iv_favorite"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_favorite"
                 android:layout_width="@dimen/md_24"
                 android:layout_height="@dimen/md_24"
-                android:src="@drawable/ic_favorite"
+                android:src="@drawable/ic_favorite_n"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
