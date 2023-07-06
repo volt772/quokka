@@ -11,8 +11,8 @@ interface PrefManager {
 
     fun getStringSet(key: String): Set<String>
 
-    fun addDocUrl(url: String)
+    fun addStringSet(key: String, value: String)
 
-    fun removeDocUrl(url: String)
+    fun removeStringSet(key: String, value: String)
 
 }

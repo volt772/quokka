@@ -2,7 +2,6 @@ package com.kakao.quokka.ui.search
 
 import android.os.Parcelable
 import android.view.View
-import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -186,9 +185,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         }
 
         if (favoriteState) {
-            prefManager.addDocUrl(url)
+            prefManager.addStringSet(FAVORITE_KEY, url)
         } else {
-            prefManager.removeDocUrl(url)
+            prefManager.removeStringSet(FAVORITE_KEY, url)
         }
     }
 

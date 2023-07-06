@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.kakao.quokka.constants.QkConstants
 import com.kakao.quokka.ext.currMillis
-import com.kakao.quokka.ext.splitUrlKey
+import com.kakao.quokka.ext.splitKey
 import javax.inject.Inject
 
 
@@ -24,23 +24,23 @@ class PrefManagerImpl @Inject constructor(
         return preferences.getStringSet(key, setOf()) as Set<String>
     }
 
-    override fun addDocUrl(url: String) {
-        val docs = getDocList()
-        docs.add("${url}||${currMillis}")
+    override fun addStringSet(key: String, value: String) {
+        val prefs = getDocList(key)
+        prefs.add("${value}||${currMillis}")
 
-        setStringSet(QkConstants.Pref.FAVORITE_KEY, docs)
+        setStringSet(key, prefs)
     }
 
-    override fun removeDocUrl(url: String) {
-        val docs = getDocList()
+    override fun removeStringSet(key: String, value: String) {
+        val prefs = getDocList(key)
 
         var removeTarget = ""
-        docs.forEach { d ->
+        prefs.forEach { d ->
             try {
-                val keySet = d.splitUrlKey()
-                val dUrl = keySet.first
+                val keySet = d.splitKey()
+                val dValue = keySet.first
 
-                if (dUrl == url) {
+                if (dValue == value) {
                     removeTarget = d
                     return@forEach
                 }
@@ -49,15 +49,15 @@ class PrefManagerImpl @Inject constructor(
             }
         }
 
-        if (removeTarget.isNotBlank()) docs.remove(removeTarget)
-        setStringSet(QkConstants.Pref.FAVORITE_KEY, docs)
+        if (removeTarget.isNotBlank()) prefs.remove(removeTarget)
+        setStringSet(key, prefs)
     }
 
-    private fun getDocList(): MutableSet<String> {
-        val favorsSet = getStringSet(QkConstants.Pref.FAVORITE_KEY)
+    private fun getDocList(key: String): MutableSet<String> {
+        val prefSet = getStringSet(key)
 
         return mutableSetOf<String>().also { s ->
-            favorsSet.forEach { f -> s.add(f) }
+            prefSet.forEach { f -> s.add(f) }
         }
     }
 }

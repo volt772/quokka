@@ -67,7 +67,7 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
     }
 
     private fun selectFavorite(c: CabinetModel) {
-        prefManager.removeDocUrl(c.url)
+        prefManager.removeStringSet(FAVORITE_KEY, c.url)
     }
 
     companion object {

@@ -11,7 +11,7 @@ fun String?.retrieveFileKey(): String {
 	} ?: ""
 }
 
-fun String.splitUrlKey(): Pair<String, Long> {
+fun String.splitKey(): Pair<String, Long> {
 	return try {
 		val keyArr = this.split("||")
 		keyArr[0] to keyArr[1].toLong()

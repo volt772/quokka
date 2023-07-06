@@ -42,7 +42,7 @@ class PlayGroundTest {
 
         runBlocking {
             val url = "https://search1.kakaocdn.net/argon/138x78_80_pr/AAAAAAAA"
-            prefManager.addDocUrl(url)
+//            prefManager.addStringSet(url)
         }
 
         println("[TEST] probe : ==========================================================================================================================================")
