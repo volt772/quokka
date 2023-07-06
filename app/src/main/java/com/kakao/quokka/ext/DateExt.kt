@@ -5,6 +5,7 @@ import java.util.Date
 
 val DOC_DATE_FORMAT = "yy.MM.dd"
 val DOC_TIME_FORMAT = "HH:mm"
+val DOC_FULL_FORMAT = "yy.MM.dd HH:mm"
 val DOC_RESP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
 
 val currMillis: Long

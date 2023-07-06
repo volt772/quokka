@@ -12,7 +12,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.kakao.quokka.QuokkaApp.Companion.appContext
 import com.kakao.quokka.ext.convertFormat
-import com.kakao.quokka.ext.favoriteColorTint
 import com.kakao.quokka.ext.setOnSingleClickListener
 import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.model.DocumentModel
@@ -61,7 +60,6 @@ class DocumentsAdapter(
                         tvDate.text = dateTime.first
                         tvTime.text = dateTime.second
 
-//                        ivFavorite.favoriteColorTint(_doc.isFavorite)
                         ivFavorite.setImageResource(
                             if (_doc.isFavorite) { R.drawable.ic_favorite_y }
                             else R.drawable.ic_favorite_n

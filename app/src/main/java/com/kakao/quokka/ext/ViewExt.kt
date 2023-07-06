@@ -1,13 +1,9 @@
 package com.kakao.quokka.ext
 
 import android.app.Activity
-import android.content.res.ColorStateList
-import android.graphics.Rect
 import android.os.SystemClock
 import android.view.View
 import android.view.WindowInsetsController
-import android.widget.ImageView
-import com.kakao.quokka.QuokkaApp.Companion.appContext
 import com.kako.quokka.R
 
 /**

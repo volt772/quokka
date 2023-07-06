@@ -23,9 +23,9 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:spanCount="3"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_documents" />
+                app:spanCount="2"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_cabinet" />
 
             <!-- No Docs-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,18 +37,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" >
 
-                <!-- Icon-->
-                <ImageView
-                    android:id="@+id/iv_no_favors"
-                    android:layout_width="@dimen/md_100"
-                    android:layout_height="@dimen/md_100"
-                    android:src="@drawable/ic_no_result"
-                    android:tint="@color/material_gray_500"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <!-- Desc-->
                 <TextView
                     android:id="@+id/tv_no_favors"
@@ -57,7 +45,8 @@
                     android:text="@string/empty_cabinet"
                     android:layout_marginTop="@dimen/md_12"
                     style="@style/DocumentsEmptyLabel"
-                    app:layout_constraintTop_toBottomOf="@id/iv_no_favors"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
