@@ -30,4 +30,17 @@
         <item name="postSplashScreenTheme">@style/Theme.Quokka.NoActionBar</item>
         <item name="android:windowSplashScreenBrandingImage">@drawable/logo_project</item>
     </style>
+
+    <!-- BottomSheet -->
+    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_rounded_corner</item>
+    </style>
+
+    <!-- BottomSheetDialogRound -->
+    <style name="BottomDialogRoundStyle" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="colorControlActivated">@color/gray_h0_8</item>
+    </style>
 </resources>

@@ -29,3 +29,12 @@ fun String?.convertFormat(): Pair<String, String> {
         dateFormatter.format(Date(millis)) to timeFormatter.format(Date(millis))
     } ?: ("" to "")
 }
+
+fun Long?.millisToFormedDate(format : String = DOC_DATE_FORMAT): String {
+    val formed = this?.let { millis ->
+        val formatter = SimpleDateFormat(format)
+        formatter.format(Date(millis))
+    } ?: ""
+
+    return formed
+}

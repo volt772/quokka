@@ -14,4 +14,8 @@
 
     <string name="empty_result">검색 결과가 없습니다.</string>
     <string name="empty_cabinet">보관함이 비었습니다..</string>
+
+    <string name="search">검색</string>
+    <string name="recent_search">최근 검색</string>
+    <string name="clear_histories">모두 삭제</string>
 </resources>
