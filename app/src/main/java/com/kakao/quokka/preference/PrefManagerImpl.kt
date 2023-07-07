@@ -27,6 +27,24 @@ class PrefManagerImpl @Inject constructor(
         preferences.edit().remove(value)
     }
 
+    override fun updateStringSet(key: String, value: String) {
+        val prefs = getDocList(key)
+
+        val updatedPref = prefs.map { p ->
+            val keySet = p.splitKey()
+            val _key = keySet.first
+            val _time = keySet.second
+
+            if (_key == value) {
+                "${value}||${currMillis}"
+            } else {
+                "${_key}||${_time}"
+            }
+        }
+
+        setStringSet(key, updatedPref.toSet())
+    }
+
     override fun addStringSet(key: String, value: String) {
         val prefs = getDocList(key)
         prefs.add("${value}||${currMillis}")

@@ -86,69 +86,53 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     private fun initView() {
-        binding.rvDocs.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                recyclerViewState = binding.rvDocs.getLayoutManager()?.onSaveInstanceState() // save recycleView state
-            }
-        })
-
-        binding.ivSearch.setOnSingleClickListener {
-            val categoryListDialog = SearchDialog.newInstance(
-                historyModels,
-                ::doSearch,
-                ::delHistories,
-                ::clearHistories
-            )
-            requireActivity().supportFragmentManager.beginTransaction().add(categoryListDialog, "AA").commitAllowingStateLoss()
-
-        }
-
-        docAdapter = DocumentsAdapter(::doFavorite)
-        docAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
-
-
-        binding.rvDocs.apply {
-            setHasFixedSize(true)
-            adapter = docAdapter.withLoadStateFooter(
-                footer = DocumentLoadStateAdapter { docAdapter.retry() }
-            )
-        }
-
-        binding.btnRetry.setOnClickListener{
-            docAdapter.retry()
-        }
-
-        docAdapter.addLoadStateListener { loadState ->
-
-            if(loadState.append.endOfPaginationReached) {
-                viewForEmptyDocuments(true)
-                docAdapter.itemCount == 0
+        with(binding) {
+            /* Search Dialog*/
+            ivSearch.setOnSingleClickListener {
+                val categoryListDialog = SearchDialog.newInstance(
+                    historyModels,
+                    ::doSearch,
+                    ::delHistories,
+                    ::clearHistories
+                )
+                requireActivity()
+                    .supportFragmentManager
+                    .beginTransaction()
+                    .add(categoryListDialog, TAG)
+                    .commitAllowingStateLoss()
             }
 
-            if (loadState.refresh is LoadState.Loading) {
-
-                binding.btnRetry.visibility = View.GONE
-
-                // Show ProgressBar
-                binding.progressBar.visibility = View.VISIBLE
+            /* Adapter*/
+            docAdapter = DocumentsAdapter(::doFavorite)
+            docAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
+            rvDocs.apply {
+                setHasFixedSize(true)
+                adapter = docAdapter.withLoadStateFooter(
+                    footer = DocumentLoadStateAdapter { docAdapter.retry() }
+                )
             }
-            else {
-                // Hide ProgressBar
-                binding.progressBar.visibility = View.GONE
 
-                // If we have an error, show a toast
-                val errorState = when {
-                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-                    loadState.refresh is LoadState.Error -> {
-                        binding.btnRetry.visibility = View.VISIBLE
-                        loadState.refresh as LoadState.Error
-                    }
-                    else -> null
+            docAdapter.addLoadStateListener { loadState ->
+                if (loadState.append.endOfPaginationReached) {
+                    viewForEmptyDocuments(true)
+                    docAdapter.itemCount == 0
                 }
-                errorState?.let {
+
+                if (loadState.refresh is LoadState.Loading) {
+                    progressBar.visibility = View.VISIBLE
+                } else {
+                    progressBar.visibility = View.GONE
+
+                    val errorState = when {
+                        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                        else -> null
+                    }
+
+                    errorState?.let {
 //                    Toast.makeText(this, it.error.message, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -156,9 +140,25 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     private fun doSearch(query: String) {
         lifecycleScope.launch {
+
+            var updatedModel: HistoryModel?= null
             query.let { _query ->
-                prefManager.addStringSet(HISTORY_KEY, _query)
-                historyModels.add(HistoryModel(_query, currMillis))
+                historyModels.forEach { h ->
+                    prefManager.run {
+                        if (h.keyword == query) {
+                            updateStringSet(HISTORY_KEY, query)
+                            updatedModel = h
+                        } else {
+                            addStringSet(HISTORY_KEY, _query)
+                        }
+                    }
+                }
+
+                updatedModel?.let { um ->
+                    historyModels.remove(um)
+                }
+
+                historyModels.add(0, HistoryModel(_query, currMillis))
                 queryKeyword = _query
                 vm.queryDocuments(_query)
             }
@@ -220,5 +220,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     }
 
     companion object {
+        const val TAG = "SearchFragment"
     }
 }

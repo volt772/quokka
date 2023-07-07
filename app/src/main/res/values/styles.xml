@@ -70,6 +70,7 @@
     <style name="HistoryRecentLabel">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/md_16</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- Search : History All Clear Label -->

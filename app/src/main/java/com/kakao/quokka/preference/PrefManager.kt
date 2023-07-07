@@ -13,6 +13,8 @@ interface PrefManager {
 
     fun removeString(key: String, value: String)
 
+    fun updateStringSet(key: String, value: String)
+
     fun addStringSet(key: String, value: String)
 
     fun removeStringSet(key: String, value: String)
