@@ -2,7 +2,6 @@ package com.kakao.quokka.ext
 
 import android.net.Uri
 
-
 fun String?.retrieveFileKey(): String {
 	return this?.let { _url ->
 		val uri = Uri.parse(_url)

@@ -2,39 +2,40 @@ package com.kakao.quokka.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kakao.quokka.ext.visibilityExt
 import com.kako.quokka.databinding.ItemLoadStateBinding
 
 class DocumentLoadStateAdapter(
     private val retry: () -> Unit
 ) : LoadStateAdapter<DocumentLoadStateAdapter.LoadStateViewHolder>() {
 
-    override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
-
-        val progress = holder.loadStateViewBinding.loadStateProgress
-        val btnRetry = holder.loadStateViewBinding.loadStateRetry
-        val txtErrorMessage = holder.loadStateViewBinding.loadStateErrorMessage
-
-        btnRetry.isVisible = loadState !is LoadState.Loading
-        txtErrorMessage.isVisible = loadState !is LoadState.Loading
-        progress.isVisible = loadState is LoadState.Loading
-
-        if (loadState is LoadState.Error){
-            txtErrorMessage.text = loadState.error.localizedMessage
-        }
-
-        btnRetry.setOnClickListener {
-            retry.invoke()
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
         return LoadStateViewHolder(
             ItemLoadStateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
+    }
+
+    override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
+        holder.loadStateViewBinding.apply {
+            val progress = pbLoading
+            val btnRetry = btnStateRetry
+            val txtErrorMessage = tvError
+
+            btnRetry.visibilityExt(loadState !is LoadState.Loading)
+            txtErrorMessage.visibilityExt(loadState !is LoadState.Loading)
+            progress.visibilityExt(loadState is LoadState.Loading)
+
+            if (loadState is LoadState.Error){
+                txtErrorMessage.text = loadState.error.localizedMessage
+            }
+
+            btnRetry.setOnClickListener {
+                retry.invoke()
+            }
+        }
     }
 
     class LoadStateViewHolder(val loadStateViewBinding: ItemLoadStateBinding) :

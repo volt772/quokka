@@ -2,6 +2,9 @@ package com.kakao.quokka.model
 
 import com.kakao.domain.constants.QkdResourceType
 
+/**
+ * DocumentDto
+ */
 data class DocumentDto (
 
     val key: String = "",

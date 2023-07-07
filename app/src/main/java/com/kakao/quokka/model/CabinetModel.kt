@@ -1,9 +1,12 @@
 package com.kakao.quokka.model
 
+/**
+ * CabinetModel
+ */
 data class CabinetModel (
 
-    val url: String,
+    val url: String,        // file thumbnail Url
 
-    val regDate: Long
+    val regDate: Long       // like date
 
 )

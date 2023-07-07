@@ -15,18 +15,26 @@ class PrefManagerImpl @Inject constructor(
     override val preferences: SharedPreferences
         get() = PreferenceManager.getDefaultSharedPreferences(context)
 
+    /**
+     * Simple String Set
+     */
     override fun setStringSet(key: String, value: Set<String>) {
         preferences.edit().putStringSet(key, value).apply()
     }
 
+    /**
+     * Simple String Get
+     */
     override fun getStringSet(key: String): Set<String> {
         return preferences.getStringSet(key, setOf()) as Set<String>
     }
 
-    override fun removeString(key: String, value: String) {
-        preferences.edit().remove(value)
-    }
-
+    /**
+     * Update String Set
+     * @desc prevent duplicate value
+     * @desc format 'keyword||millis'
+     * @example '검색어||1688719919529'
+     */
     override fun updateStringSet(key: String, value: String) {
         val prefs = getDocList(key)
 
@@ -45,6 +53,11 @@ class PrefManagerImpl @Inject constructor(
         setStringSet(key, updatedPref.toSet())
     }
 
+    /**
+     * Add String Set
+     * @desc format 'keyword||millis'
+     * @example '검색어||1688719919529'
+     */
     override fun addStringSet(key: String, value: String) {
         val prefs = getDocList(key)
         prefs.add("${value}||${currMillis}")
@@ -52,6 +65,10 @@ class PrefManagerImpl @Inject constructor(
         setStringSet(key, prefs)
     }
 
+    /**
+     * Remove String Set
+     * @desc remove string value
+     */
     override fun removeStringSet(key: String, value: String) {
         val prefs = getDocList(key)
 
@@ -74,6 +91,10 @@ class PrefManagerImpl @Inject constructor(
         setStringSet(key, prefs)
     }
 
+    /**
+     * Clear Key
+     * @desc delete key
+     */
     override fun clearKey(key: String) {
         preferences.edit().remove(key).apply()
     }

@@ -13,7 +13,8 @@ abstract class PrefLiveData<T> (
         value = this.getValueFromPreferences(key, defValue)
     }
 
-    private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+    private val preferenceChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key == this.key) {
             value = getValueFromPreferences(key, defValue)
         }
@@ -33,11 +34,20 @@ abstract class PrefLiveData<T> (
     }
 }
 
-class PrefStringSetLiveData(sharedPrefs: SharedPreferences, key: String, defValue: Set<String>) :
-    PrefLiveData<Set<String>>(sharedPrefs, key, defValue) {
-    override fun getValueFromPreferences(key: String, defValue: Set<String>): Set<String> = sharedPrefs.getStringSet(key, defValue) as Set<String>
+class PrefStringSetLiveData(
+    pref: SharedPreferences,
+    key: String,
+    defValue: Set<String>
+) : PrefLiveData<Set<String>>(pref, key, defValue) {
+    override fun getValueFromPreferences(
+        key: String,
+        defValue: Set<String>
+    ): Set<String> = sharedPrefs.getStringSet(key, defValue) as Set<String>
 }
 
-fun SharedPreferences.stringSetLiveData(key: String, defValue: Set<String>): PrefLiveData<Set<String>> {
+fun SharedPreferences.stringSetLiveData(
+    key: String,
+    defValue: Set<String>
+): PrefLiveData<Set<String>> {
     return PrefStringSetLiveData(this, key, defValue)
 }

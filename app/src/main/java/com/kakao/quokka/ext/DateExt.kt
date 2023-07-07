@@ -3,10 +3,10 @@ package com.kakao.quokka.ext
 import java.text.SimpleDateFormat
 import java.util.Date
 
-val DOC_DATE_FORMAT = "yy.MM.dd"
-val DOC_TIME_FORMAT = "HH:mm"
-val DOC_FULL_FORMAT = "yy.MM.dd HH:mm"
-val DOC_RESP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+const val DOC_DATE_FORMAT = "yy.MM.dd"
+const val DOC_TIME_FORMAT = "HH:mm"
+const val DOC_FULL_FORMAT = "yy.MM.dd HH:mm"
+const val DOC_RESP_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
 
 val currMillis: Long
     get() {

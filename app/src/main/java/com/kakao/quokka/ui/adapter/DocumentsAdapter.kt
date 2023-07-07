@@ -57,14 +57,16 @@ class DocumentsAdapter(
                             .into(ivThumbnail)
 
                         val dateTime = _doc.datetime.convertFormat()
-                        tvDate.text = dateTime.first
-                        tvTime.text = dateTime.second
+                        tvDate.text = dateTime.first    // Image Date
+                        tvTime.text = dateTime.second   // Image Time
 
+                        /* favorite*/
                         ivFavorite.setImageResource(
                             if (_doc.isFavorite) { R.drawable.ic_favorite_y }
                             else R.drawable.ic_favorite_n
                         )
 
+                        /* listener : switch favorite (like/dislike)*/
                         ivFavorite.setOnSingleClickListener {
                             doFavorite(_doc, position)
                         }
@@ -83,8 +85,8 @@ class DocumentsAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is DocumentModel.DocumentItem -> R.layout.item_documents
-            is DocumentModel.SeparatorItem -> R.layout.item_separator
+            is DocumentModel.DocumentItem -> R.layout.item_documents        // view for documents
+            is DocumentModel.SeparatorItem -> R.layout.item_separator       // view for page separator (ex. 1, 2, 3 ..)
             null -> throw UnsupportedOperationException("Unknown view")
         }
     }

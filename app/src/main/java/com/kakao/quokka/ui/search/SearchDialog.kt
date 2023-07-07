@@ -73,7 +73,7 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
 
             historyAdapter.submitList(histories)
 
-            /* Search By Keywrod*/
+            /* Search By Keyword*/
             svDocs.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     query?.let { _query ->

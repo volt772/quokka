@@ -20,4 +20,7 @@
     <string name="recent_search">최근 검색</string>
     <string name="clear_histories">모두 삭제</string>
     <string name="no_history">최근 검색 내역이 없습니다.</string>
+
+    <string name="list_loading_failed">불러오지 못하였습니다.</string>
+    <string name="list_loading_failed_retry">재시도</string>
 </resources>

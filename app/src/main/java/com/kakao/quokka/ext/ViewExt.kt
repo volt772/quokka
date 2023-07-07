@@ -24,9 +24,7 @@ fun View.setOnSingleClickListener(onSingleClick: (View) -> Unit) {
 
     setOnClickListener {
         val elapsedTime = SystemClock.elapsedRealtime() - lastClickTime
-
         if (elapsedTime < MIN_CLICK_INTERVAL) return@setOnClickListener
-
         lastClickTime = SystemClock.elapsedRealtime()
 
         onSingleClick(this)

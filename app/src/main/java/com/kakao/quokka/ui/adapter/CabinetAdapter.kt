@@ -40,7 +40,6 @@ class CabinetAdapter(
             binding.apply {
                 Glide.with(QuokkaApp.appContext)
                     .load(c.url)
-//                    .apply(RequestOptions.circleCropTransform())
                     .apply(
                         RequestOptions.bitmapTransform(
                             MultiTransformation(CenterCrop(), RoundedCorners(4))
@@ -51,6 +50,7 @@ class CabinetAdapter(
                 tvRegdate.text = c.regDate.millisToFormedDate(DOC_FULL_FORMAT)
             }
 
+            /* listener : dislike*/
             binding.ivCabinetFavorite.setOnSingleClickListener {
                 selectFavorite.invoke(c)
             }

@@ -32,13 +32,15 @@ class HistoryAdapter(
         fun bind(hm: HistoryModel, deleteHistory: (HistoryModel) -> Unit) {
 
             binding.apply {
-                tvKeyword.text = hm.keyword
-                tvRegdate.text = hm.regDate.millisToFormedDate()
+                tvKeyword.text = hm.keyword     // Recent Search Keyword
+                tvRegdate.text = hm.regDate.millisToFormedDate()    // Search Date (millis)
 
+                /* listener : keyword select -> search*/
                 tvKeyword.setOnSingleClickListener {
                     searchHistory.invoke(hm.keyword)
                 }
 
+                /* listener : delete from history list*/
                 ivDelete.setOnSingleClickListener {
                     deleteHistory.invoke(hm)
                 }
