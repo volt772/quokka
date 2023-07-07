@@ -27,7 +27,7 @@ class SearchRemoteDataSourceImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PAGING_LOAD_SIZE,
-                enablePlaceholders = false,
+                enablePlaceholders = true,
                 initialLoadSize = PAGING_LOAD_SIZE
             ),
             pagingSourceFactory = {
