@@ -14,9 +14,14 @@ import javax.inject.Inject
 class CabinetViewModel @Inject constructor(
 ) : BaseViewModel() {
 
+    /* History Keywords*/
     private val _favorites: MutableSharedFlow<List<CabinetModel>> = MutableSharedFlow()
     val favorites: SharedFlow<List<CabinetModel>> = _favorites
 
+    /**
+     * Switch Favorite Flag
+     * @desc like to dislike
+     */
     suspend fun setFavorites(favors: Set<String>) {
         viewModelScope.launch {
             val list = mutableListOf<CabinetModel>().also {_list ->

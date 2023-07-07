@@ -20,12 +20,12 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
     R.style.BottomDialogRoundStyle
 ) {
 
-    private var histories: MutableList<HistoryModel> = mutableListOf()
-    private var doSearch: ((String) -> Unit)? = null
-    private var delHistories: (() -> Unit)? = null
-    private var clearHistories: (() -> Unit)? = null
+    private var histories: MutableList<HistoryModel> = mutableListOf()  // History Keywords
+    private var doSearch: ((String) -> Unit)? = null    // Func() -> Search
+    private var delHistories: (() -> Unit)? = null      // Func() -> Delete keyword
+    private var clearHistories: (() -> Unit)? = null    // Func() -> Clear keyword list
 
-    private val deleteTargetList: MutableList<HistoryModel> = mutableListOf()
+    private val deleteTargetList: MutableList<HistoryModel> = mutableListOf()   // Delete Targets
     private var dismissFlag: DismissFlag = DismissFlag.DELETE
 
     private lateinit var historyAdapter: HistoryAdapter
@@ -43,6 +43,9 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
         viewForEmpty()
     }
 
+    /**
+     * Branch off view between search view and empty view
+     */
     private fun viewForEmpty() {
         binding.apply {
             clSearchBotEmpty.visibilityExt(histories.isEmpty())
@@ -50,19 +53,18 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
         }
     }
 
+    /**
+     * Render Dialog
+     */
     override fun prepareDialog(param: Unit) {
         binding.apply {
-            /* 뒤로가기*/
-            ivBack.setOnSingleClickListener {
-                dismiss()
-            }
+            /* Go back (Dismiss the Dialog)*/
+            ivBack.setOnSingleClickListener { dismiss() }
 
-            /* 모두삭제*/
-            tvClearHistories.setOnSingleClickListener {
-                dialogClearHistory()
-            }
+            /* Clear All*/
+            tvClearHistories.setOnSingleClickListener { dialogClearHistory() }
 
-            /* 최근검색리스트*/
+            /* List Adapter*/
             historyAdapter = HistoryAdapter(::dialogSearch, ::dialogDeleteHistory)
             rvHistories.apply {
                 layoutManager = LinearLayoutManager(context)
@@ -71,7 +73,7 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
 
             historyAdapter.submitList(histories)
 
-            /* 검색*/
+            /* Search By Keywrod*/
             svDocs.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     query?.let { _query ->
@@ -87,12 +89,20 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
         }
     }
 
+    /**
+     * Execute Search
+     * @desc Dismiss dialog and save keyword to fragment's flow value named 'query'
+     */
     private fun dialogSearch(query: String) {
         dismissFlag = DismissFlag.QUERY
         doSearch?.invoke(query)
         dismiss()
     }
 
+    /**
+     * Delete Keyword
+     * @desc just add to 'deleteTargetList' and remove when dialog dismissed
+     */
     private fun dialogDeleteHistory(history: HistoryModel) {
         dismissFlag = DismissFlag.DELETE
         deleteTargetList.add(history)
@@ -102,6 +112,10 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
         historyAdapter.notifyDataSetChanged()
     }
 
+    /**
+     * Clear All Keywords
+     * @desc remove 'history' key in SharedPrefernece
+     */
     private fun dialogClearHistory() {
         dismissFlag = DismissFlag.CLEAR
 
@@ -112,6 +126,10 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
         clearHistories?.invoke()
     }
 
+    /**
+     * Dismiss Dialog
+     * @desc Delete keyword in 'deleteTargetList'
+     */
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         if (dismissFlag == DismissFlag.DELETE) {

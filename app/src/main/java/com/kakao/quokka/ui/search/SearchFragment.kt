@@ -1,7 +1,6 @@
 package com.kakao.quokka.ui.search
 
-import android.os.Parcelable
-import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -32,59 +31,28 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
+    @Inject lateinit var prefManager: PrefManager
+
     private val vm: SearchViewModel by viewModels()
 
-    private lateinit var docAdapter: DocumentsAdapter
-    private var queryKeyword: String = ""
+    private var queryKeyword: String = ""   // Current Search Keyword
+    private val historyModels: MutableList<HistoryModel> = mutableListOf()  // History Keywords
 
-    @Inject lateinit var prefManager: PrefManager
-    private var recyclerViewState: Parcelable? = null
-
-    private val historyModels: MutableList<HistoryModel> = mutableListOf()
+    private lateinit var docAdapter: DocumentsAdapter   // Search Result(=Document) Adapter
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
     override fun prepareFragment() {
-
         initView()
         subscribers()
         initDataSet()
         viewForEmptyDocuments(true)
     }
 
-    private fun initDataSet() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            vm.getHistories()
-        }
-    }
-
-    private fun subscribers() {
-        val prefs = prefManager.preferences
-        val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
-        stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
-            val currFragment = (activity as DashBoardActivity).activeFragment
-            if (currFragment != this) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    vm.queryDocuments(queryKeyword)
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.run {
-            launch {
-                vm.query.collectLatest { _query ->
-                    collectUiState(_query)
-                }
-            }
-
-            launch {
-                vm.history.collectLatest { histories ->
-                    historyModels.addAll(histories)
-                }
-            }
-        }
-    }
-
+    /**
+     * Initialize View
+     * @desc Search, Adapter
+     */
     private fun initView() {
         with(binding) {
             /* Search Dialog*/
@@ -103,41 +71,88 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             }
 
             /* Adapter*/
-            docAdapter = DocumentsAdapter(::doFavorite)
-            docAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
-            rvDocs.apply {
-                setHasFixedSize(true)
-                adapter = docAdapter.withLoadStateFooter(
-                    footer = DocumentLoadStateAdapter { docAdapter.retry() }
-                )
-            }
-
-            docAdapter.addLoadStateListener { loadState ->
-                if (loadState.append.endOfPaginationReached) {
-                    viewForEmptyDocuments(true)
-                    docAdapter.itemCount == 0
+            docAdapter = DocumentsAdapter(::doFavorite).apply {
+                stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
+                rvDocs.apply {
+                    setHasFixedSize(true)
+                    adapter = withLoadStateFooter(
+                        footer = DocumentLoadStateAdapter { retry() }
+                    )
                 }
 
-                if (loadState.refresh is LoadState.Loading) {
-                    progressBar.visibility = View.VISIBLE
-                } else {
-                    progressBar.visibility = View.GONE
-
-                    val errorState = when {
-                        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-                        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-                        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-                        else -> null
+                addLoadStateListener { loadState ->
+                    if (loadState.append.endOfPaginationReached) {
+                        viewForEmptyDocuments(true)
+                        itemCount == 0
                     }
 
-                    errorState?.let {
-//                    Toast.makeText(this, it.error.message, Toast.LENGTH_LONG).show()
+                    if (loadState.refresh is LoadState.Loading) {
+                        progressBar.visibilityExt(true)
+                    } else {
+                        progressBar.visibilityExt(false)
+
+                        val errorState = when {
+                            loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                            loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                            loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                            else -> null
+                        }
+
+                        errorState?.let { error ->
+                            Toast.makeText(requireActivity(), error.error.message, Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
         }
     }
 
+    /**
+     * Initialize Data Set
+     */
+    private fun initDataSet() {
+        /* History (Recent Keyword)*/
+        viewLifecycleOwner.lifecycleScope.launch { vm.getHistories() }
+    }
+
+    /**
+     * Initialize Subscribers
+     */
+    private fun subscribers() {
+        /* Listen SharedPreference Change (key='favorite'))*/
+        val prefs = prefManager.preferences
+        val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
+        stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
+            val currFragment = (activity as DashBoardActivity).activeFragment
+            if (currFragment != this) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    vm.queryDocuments(queryKeyword)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.run {
+            /* Search By Keyword*/
+            launch {
+                vm.query.collectLatest { _query ->
+                    collectUiState(_query)
+                }
+            }
+
+            /* Recent History Keyword*/
+            launch {
+                vm.history.collectLatest { histories ->
+                    historyModels.addAll(histories)
+                }
+            }
+        }
+    }
+
+    /**
+     * Execute Search
+     * @param query Search Keyword
+     * @desc Search & Save Keyword to Preference
+     */
     private fun doSearch(query: String) {
         lifecycleScope.launch {
 
@@ -145,26 +160,30 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             query.let { _query ->
                 historyModels.forEach { h ->
                     prefManager.run {
+                        /* keyword Exist : Only Update Datetime*/
                         if (h.keyword == query) {
                             updateStringSet(HISTORY_KEY, query)
                             updatedModel = h
                         } else {
+                            /* keyword Not Exist : Add*/
                             addStringSet(HISTORY_KEY, _query)
                         }
                     }
                 }
 
-                updatedModel?.let { um ->
-                    historyModels.remove(um)
-                }
+                updatedModel?.let { um -> historyModels.remove(um) }
 
                 historyModels.add(0, HistoryModel(_query, currMillis))
+
                 queryKeyword = _query
                 vm.queryDocuments(_query)
             }
         }
     }
 
+    /**
+     * Delete History Item
+     */
     private fun delHistories() {
         val updated = mutableSetOf<String>().also { _s ->
             historyModels.forEach { _history ->
@@ -175,10 +194,18 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         prefManager.setStringSet(HISTORY_KEY, updated)
     }
 
+    /**
+     * Clear History Items
+     * @desc Delete key 'history'
+     */
     private fun clearHistories() {
         prefManager.clearKey(HISTORY_KEY)
     }
 
+    /**
+     * Mark Favorite
+     * @param doc Selected Document Dto
+     */
     private fun doFavorite(doc: DocumentDto, position: Int) {
         val favoriteState = !doc.isFavorite
         doc.isFavorite = favoriteState
@@ -190,13 +217,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             doc.thumbnail
         }
 
-        if (favoriteState) {
-            prefManager.addStringSet(FAVORITE_KEY, url)
-        } else {
-            prefManager.removeStringSet(FAVORITE_KEY, url)
+        prefManager.run {
+            if (favoriteState) addStringSet(FAVORITE_KEY, url)
+            else removeStringSet(FAVORITE_KEY, url)
         }
     }
 
+    /**
+     * List Submit Data
+     * @desc Render Paging List by API Response
+     */
     private fun collectUiState(query: String = "") {
         viewLifecycleOwner.lifecycleScope.launch {
             vm.getDocuments(query).collectLatest { docs ->
@@ -206,6 +236,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         }
     }
 
+    /**
+     * Branch off view between paging list and empty view
+     */
     private fun viewForEmptyDocuments(visible: Boolean) {
         val infoMsg = if (queryKeyword.isBlank()) {
             getString(R.string.empty_keyword)

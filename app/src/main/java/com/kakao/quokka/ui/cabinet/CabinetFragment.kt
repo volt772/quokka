@@ -20,12 +20,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_cabinet) {
 
+    @Inject lateinit var prefManager: PrefManager
+
     private val vm: CabinetViewModel by viewModels()
 
-    @Inject
-    lateinit var prefManager: PrefManager
-
-    private lateinit var cabinetAdapter: CabinetAdapter
+    private lateinit var cabinetAdapter: CabinetAdapter     // Favorites (=Cabinet) Adapter
 
     override fun setBindings() { binding.setVariable(BR._all, vm) }
 
@@ -34,6 +33,10 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
         subscribers()
     }
 
+    /**
+     * Initialize View
+     * @desc Adapter
+     */
     private fun initView() {
         cabinetAdapter = CabinetAdapter(::selectFavorite)
 
@@ -43,7 +46,11 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
         }
     }
 
+    /**
+     * Initialize Subscribers
+     */
     private fun subscribers() {
+        /* Listen SharedPreference Change (key='favorite'))*/
         val prefs = prefManager.preferences
         val stringPrefLiveData = prefs.stringSetLiveData(FAVORITE_KEY, setOf())
         stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
@@ -54,6 +61,7 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
 
         lifecycleScope.run {
             launch {
+                /* List History Keywords*/
                 vm.favorites.collect { favor ->
                     showEmptyCabinetListView(favor.count())
                     cabinetAdapter.submitList(favor)
@@ -62,14 +70,21 @@ class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_c
         }
     }
 
+    /**
+     * Branch off view between list and empty view
+     */
     private fun showEmptyCabinetListView(count: Int) {
         binding.clNoFavors.visibilityExt(count <= 0)
     }
 
+    /**
+     * Select Favorite Icon
+     */
     private fun selectFavorite(c: CabinetModel) {
         prefManager.removeStringSet(FAVORITE_KEY, c.url)
     }
 
     companion object {
+        const val TAG = "CabinetFragment"
     }
 }

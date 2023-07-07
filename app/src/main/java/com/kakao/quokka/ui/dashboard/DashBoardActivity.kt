@@ -27,6 +27,10 @@ class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityDashboardBind
         initFrag()
     }
 
+    /**
+     * Initialize Fragments
+     * @desc SearchFragment && CabinetFragment
+     */
     private fun initFrag() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -38,6 +42,10 @@ class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityDashboardBind
         initListeners()
     }
 
+    /**
+     * Initialize Fragment Listener
+     * @desc Move Tap
+     */
     private fun initListeners() {
         binding.bnNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
