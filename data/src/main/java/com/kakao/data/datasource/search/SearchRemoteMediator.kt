@@ -13,6 +13,12 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
+/**
+ * SearchRemoteMediator
+ * @desc Paging Request & Arrange Data Set
+ * @return Flow<PagingData<QkdDocuments>>
+ */
+
 private const val TMDB_STARTING_PAGE_INDEX = 1
 
 @ExperimentalPagingApi
@@ -41,8 +47,7 @@ class SearchRemoteMediator(
 
             docs.sortByDescending { it.datetime }
 
-            val nextKey =
-                if (docs.isEmpty()) {
+            val nextKey = if (docs.isEmpty()) {
                     null
                 } else {
                     pageIndex + (params.loadSize / 10)

@@ -1,5 +1,8 @@
 package com.kakao.domain.constants
 
+/**
+ * QkdNetworkKeyTags
+ */
 object QkdNetworkKeyTags {
 
     object HEADER {

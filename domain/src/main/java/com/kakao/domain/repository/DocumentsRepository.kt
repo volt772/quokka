@@ -4,6 +4,9 @@ import androidx.paging.PagingData
 import com.kakao.domain.dto.QkdDocuments
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * DocumentsRepository
+ */
 interface DocumentsRepository {
 
     suspend fun documents(query: String): Flow<PagingData<QkdDocuments>>

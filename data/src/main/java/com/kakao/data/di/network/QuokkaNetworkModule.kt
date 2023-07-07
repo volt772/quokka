@@ -21,9 +21,7 @@ object QuokkaNetworkModule {
     @QuokkaBaseUrl
     fun provideQuokkaBaseUrl() = QkdConstants.Uri.BASE
 
-    /**
-     * @Desc Retrofit Clients
-     */
+
     @Provides
     @Singleton
     @QuokkaService
@@ -35,9 +33,7 @@ object QuokkaNetworkModule {
         return retrofitBuilder(baseUrl, converterFactory, okHttpClient)
     }
 
-    /**
-     * @Desc API Services
-     */
+
     @Singleton
     @Provides
     fun provideQuokkaApiService(
@@ -45,9 +41,6 @@ object QuokkaNetworkModule {
     ): ApiService = retrofit.create(ApiService::class.java)
 
 
-    /**
-     * @Desc 일반 Retrofit Builder
-     */
     private fun retrofitBuilder(
         baseUrl: String,
         converterFactory: Converter.Factory,

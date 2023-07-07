@@ -12,17 +12,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-/**
- * CommonNetworkModule
- */
 
 private const val CONNECT_TIMEOUT = 10L
 private const val WRITE_TIMEOUT = 10L
 private const val READ_TIMEOUT = 10L
-
-private const val ATTACH_CONNECT_TIMEOUT = 30L
-private const val ATTACH_WRITE_TIMEOUT = 30L
-private const val ATTACH_READ_TIMEOUT = 30L
 
 @Module
 @InstallIn(SingletonComponent::class)

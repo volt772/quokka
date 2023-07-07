@@ -4,15 +4,15 @@
 
     <stroke
         android:drawable="@android:color/transparent"
-        android:width="@dimen/md_1"
-        android:color="@color/gray_h48" >
+        android:width="1dp"
+        android:color="#E9E9E9" >
     </stroke>
 
     <solid android:color="@color/white" />
 
     <corners
-        android:bottomLeftRadius="@dimen/md_5"
-        android:bottomRightRadius="@dimen/md_5"
-        android:topLeftRadius="@dimen/md_5"
-        android:topRightRadius="@dimen/md_5" />
+        android:bottomLeftRadius="5dp"
+        android:bottomRightRadius="5dp"
+        android:topLeftRadius="5dp"
+        android:topRightRadius="5dp" />
 </shape>

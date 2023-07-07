@@ -1,5 +1,8 @@
 package com.kakao.domain.constants
 
+/**
+ * QkdConstants
+ */
 object QkdConstants {
 
     object Uri {

@@ -7,11 +7,16 @@ import com.kakao.domain.repository.DocumentsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+/**
+ * DocumentsRepositoryImpl
+ */
 class DocumentsRepositoryImpl @Inject constructor(
     private val dataSource: SearchRemoteDataSource,
 ): DocumentsRepository {
 
-    override suspend fun documents(query: String): Flow<PagingData<QkdDocuments>> {
+    override suspend fun documents(
+        query: String
+    ): Flow<PagingData<QkdDocuments>> {
         return dataSource.search(query)
     }
 }

@@ -13,6 +13,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+/**
+ * SearchRemoteDataSourceImpl
+ * @desc Paging
+ * @return Flow<PagingData<QkdDocuments>>
+ */
 @ExperimentalPagingApi
 class SearchRemoteDataSourceImpl @Inject constructor(
     @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher,

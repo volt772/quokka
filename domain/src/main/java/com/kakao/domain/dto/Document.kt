@@ -3,6 +3,9 @@ package com.kakao.domain.dto
 import com.google.gson.annotations.SerializedName
 import com.kakao.domain.constants.QkdNetworkKeyTags
 
+/**
+ * Document
+ */
 data class Document (
 
     @field:SerializedName(QkdNetworkKeyTags.Response.THUMBNAIL_URL)

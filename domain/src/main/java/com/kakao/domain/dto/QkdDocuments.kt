@@ -2,6 +2,9 @@ package com.kakao.domain.dto
 
 import com.kakao.domain.constants.QkdResourceType
 
+/**
+ * QkdDocuments
+ */
 data class QkdDocuments (
 
     val page: Int,
