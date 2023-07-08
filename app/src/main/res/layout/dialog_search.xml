@@ -30,6 +30,7 @@
                     android:layout_width="@dimen/md_28"
                     android:layout_height="@dimen/md_28"
                     android:src="@drawable/ic_back"
+                    android:background="?selectableItemBackgroundBorderless"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -85,6 +86,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/clear_histories"
                         style="@style/HistoryAllClearLabel"
+                        android:background="?selectableItemBackgroundBorderless"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
