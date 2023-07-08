@@ -128,6 +128,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         stringPrefLiveData.observe(viewLifecycleOwner) { prf ->
             val currFragment = (activity as DashBoardActivity).activeFragment
             if (currFragment != this) {
+                docAdapter.notifyDataSetChanged()
                 viewLifecycleOwner.lifecycleScope.launch {
                     vm.queryDocuments(queryKeyword)
                 }
