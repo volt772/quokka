@@ -44,6 +44,7 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
         }
 
         viewForEmpty()
+        binding.svDocs.requestFocus()
     }
 
     /**
