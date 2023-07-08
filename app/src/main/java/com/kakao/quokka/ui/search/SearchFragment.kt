@@ -159,26 +159,23 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
      */
     private fun doSearch(query: String) {
         lifecycleScope.launch {
-
-            var updatedModel: HistoryModel?= null
             query.let { _query ->
-                historyModels.forEach { h ->
-                    prefManager.run {
-                        /* keyword Exist : Only Update Datetime*/
-                        if (h.keyword == query) {
-                            updateStringSet(HISTORY_KEY, query)
-                            updatedModel = h
-                        } else {
-                            /* keyword Not Exist : Add*/
-                            addStringSet(HISTORY_KEY, _query)
-                        }
+                historyModels.filter { historyModel ->
+                    historyModel.keyword == query
+                }.run {
+                    if (this.isNotEmpty()) {
+                        /* Keyword Already Exists*/
+                        prefManager.updateStringSet(HISTORY_KEY, query)
+                        historyModels.remove(this.first())
+                    } else {
+                        /* New Keyword*/
+                        prefManager.addStringSet(HISTORY_KEY, _query)
                     }
                 }
 
-                updatedModel?.let { um -> historyModels.remove(um) }
-
                 historyModels.add(0, HistoryModel(_query, currMillis))
 
+                /* Do Search*/
                 queryKeyword = _query
                 vm.queryDocuments(_query)
             }

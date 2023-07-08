@@ -1,6 +1,7 @@
 package com.kakao.quokka.cases
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kakao.quokka.model.HistoryModel
 import com.kakao.quokka.preference.PrefManager
 import com.kakao.quokka.utils.TestCoroutineRule
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -69,6 +70,31 @@ class PlayGroundTest {
         }
 
         println("[TEST] probe : ==========================================================================================================================================")
+    }
+
+    @Test
+    fun test_02_handle_pref() {
+        val query = "hamster"
+        var updatedModel: HistoryModel?= null
+        val historyModel = mutableListOf<HistoryModel>().also { _list ->
+            _list.add(HistoryModel(keyword="hamster", regDate=1688806880786))
+            _list.add(HistoryModel(keyword="quokka", regDate=1688796093763))
+            _list.add(HistoryModel(keyword="doosan", regDate=1688795889686))
+            _list.add(HistoryModel(keyword="asdfwerqwerasdf", regDate=1688719678062))
+        }
+
+        val rr = historyModel.filter {
+            it.keyword == query
+        }.run {
+            if (this.isNotEmpty()) {
+                println("probe :: exists : $this")
+            } else {
+                println("probe :: no exists")
+            }
+        }
+
+        println("probe :: rr : $rr")
+
     }
 
 
