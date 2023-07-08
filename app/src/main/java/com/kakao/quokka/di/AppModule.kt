@@ -13,6 +13,9 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 
+/**
+ * AppModule
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class AppModule {
@@ -28,6 +31,5 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindDocumentsMapper(impl: DocumentsMapperImpl): DocumentsMapper
-
 
 }

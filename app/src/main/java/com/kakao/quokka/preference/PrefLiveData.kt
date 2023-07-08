@@ -3,6 +3,9 @@ package com.kakao.quokka.preference
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 
+/**
+ * Shared Preference LiveData
+ */
 abstract class PrefLiveData<T> (
     val sharedPrefs: SharedPreferences,
    val key: String,

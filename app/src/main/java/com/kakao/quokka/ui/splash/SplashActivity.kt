@@ -12,6 +12,9 @@ import com.kako.quokka.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
+/**
+ * SplashActivity
+ */
 @AndroidEntryPoint
 class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
 

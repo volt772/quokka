@@ -11,7 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.kakao.quokka.QuokkaApp.Companion.appContext
-import com.kakao.quokka.ext.convertFormat
+import com.kakao.quokka.ext.convertDateAndTime
 import com.kakao.quokka.ext.setOnSingleClickListener
 import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.model.DocumentModel
@@ -19,6 +19,10 @@ import com.kako.quokka.R
 import com.kako.quokka.databinding.ItemDocumentsBinding
 import com.kako.quokka.databinding.ItemSeparatorBinding
 
+
+/**
+ * DocumentsAdapter
+ */
 class DocumentsAdapter(
     private var doFavorite: ((DocumentDto, Int) -> Unit)
 ) : PagingDataAdapter<DocumentModel, RecyclerView.ViewHolder>(DocumentModelComparator) {
@@ -56,7 +60,7 @@ class DocumentsAdapter(
                             )
                             .into(ivThumbnail)
 
-                        val dateTime = _doc.datetime.convertFormat()
+                        val dateTime = _doc.datetime.convertDateAndTime()
                         tvDate.text = dateTime.first    // Image Date
                         tvTime.text = dateTime.second   // Image Time
 

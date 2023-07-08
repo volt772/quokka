@@ -9,6 +9,9 @@ import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.preference.PrefManager
 import javax.inject.Inject
 
+/**
+ * DocumentsMapperImpl
+ */
 class DocumentsMapperImpl @Inject constructor(
     private val prefManager: PrefManager,
 ) : DocumentsMapper {

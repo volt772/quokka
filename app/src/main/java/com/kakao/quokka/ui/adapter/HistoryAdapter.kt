@@ -3,7 +3,7 @@ package com.kakao.quokka.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.kakao.quokka.ext.millisToFormedDate
+import com.kakao.quokka.ext.convertDate
 import com.kakao.quokka.ext.setOnSingleClickListener
 import com.kakao.quokka.model.HistoryModel
 import com.kakao.quokka.ui.base.BaseViewHolder
@@ -11,6 +11,9 @@ import com.kako.quokka.R
 import com.kako.quokka.databinding.ItemHistoryBinding
 
 
+/**
+ * HistoryAdapter
+ */
 class HistoryAdapter(
     private val searchHistory: (String) -> Unit,
     private val deleteHistory: (HistoryModel) -> Unit
@@ -33,7 +36,7 @@ class HistoryAdapter(
 
             binding.apply {
                 tvKeyword.text = hm.keyword     // Recent Search Keyword
-                tvRegdate.text = hm.regDate.millisToFormedDate()    // Search Date (millis)
+                tvRegdate.text = hm.regDate.convertDate()    // Search Date (millis)
 
                 /* listener : keyword select -> search*/
                 tvKeyword.setOnSingleClickListener {

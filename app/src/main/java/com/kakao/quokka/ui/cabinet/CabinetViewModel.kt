@@ -10,6 +10,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+/**
+ * CabinetViewModel
+ */
 @HiltViewModel
 class CabinetViewModel @Inject constructor(
 ) : BaseViewModel() {

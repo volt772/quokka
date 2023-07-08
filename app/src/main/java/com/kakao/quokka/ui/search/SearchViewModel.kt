@@ -21,6 +21,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+/**
+ * SearchViewModel
+ */
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val prefManager: PrefManager,

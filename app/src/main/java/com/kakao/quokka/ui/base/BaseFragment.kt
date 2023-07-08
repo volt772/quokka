@@ -9,6 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
+
+/**
+ * BaseFragment
+ */
 abstract class BaseFragment<B : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
 ) : Fragment() {

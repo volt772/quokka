@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 
 
+/**
+ * BaseActivity
+ */
 abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivity() {
 
     protected abstract val vm: VM

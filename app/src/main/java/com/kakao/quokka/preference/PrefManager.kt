@@ -2,7 +2,9 @@ package com.kakao.quokka.preference
 
 import android.content.SharedPreferences
 
-
+/**
+ * PrefManager
+ */
 interface PrefManager {
 
     val preferences: SharedPreferences

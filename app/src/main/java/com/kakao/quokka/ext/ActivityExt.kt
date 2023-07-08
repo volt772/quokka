@@ -6,6 +6,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 
 
+/**
+ * Activity External Functions
+ */
 fun Activity.hideKeyboard() {
     val view = this.currentFocus
     view?.let {

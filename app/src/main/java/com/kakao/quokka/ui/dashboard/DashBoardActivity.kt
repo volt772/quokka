@@ -11,6 +11,10 @@ import com.kako.quokka.R
 import com.kako.quokka.databinding.ActivityDashboardBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+
+/**
+ * DashBoardActivity
+ */
 @AndroidEntryPoint
 class DashBoardActivity : BaseActivity<DashBoardViewModel, ActivityDashboardBinding>() {
 

@@ -15,6 +15,9 @@ import com.kako.quokka.R
 import com.kako.quokka.databinding.DialogSearchBinding
 
 
+/**
+ * SearchDialog
+ */
 class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
     R.layout.dialog_search,
     R.style.BottomDialogRoundStyle

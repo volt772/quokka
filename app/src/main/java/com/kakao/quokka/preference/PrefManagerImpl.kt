@@ -8,6 +8,9 @@ import com.kakao.quokka.ext.splitKey
 import javax.inject.Inject
 
 
+/**
+ * PrefManagerImpl
+ */
 class PrefManagerImpl @Inject constructor(
     private val context: Context,
 ) : PrefManager {

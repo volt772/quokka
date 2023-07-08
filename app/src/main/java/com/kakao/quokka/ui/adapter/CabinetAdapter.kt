@@ -11,13 +11,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.kakao.quokka.QuokkaApp
 import com.kakao.quokka.ext.DOC_FULL_FORMAT
-import com.kakao.quokka.ext.millisToFormedDate
+import com.kakao.quokka.ext.convertDate
 import com.kakao.quokka.ext.setOnSingleClickListener
 import com.kakao.quokka.model.CabinetModel
 import com.kako.quokka.R
 import com.kako.quokka.databinding.ItemCabinetBinding
 
 
+/**
+ * CabinetAdapter
+ */
 class CabinetAdapter(
     private val selectFavorite: (CabinetModel) -> Unit
 ) : ListAdapter<CabinetModel, CabinetAdapter.CabinetViewHolder>(DIFF_CALLBACK) {
@@ -47,7 +50,7 @@ class CabinetAdapter(
                     )
                     .into(ivCabinetThumbnail)
 
-                tvRegdate.text = c.regDate.millisToFormedDate(DOC_FULL_FORMAT)
+                tvRegdate.text = c.regDate.convertDate(DOC_FULL_FORMAT)
             }
 
             /* listener : dislike*/

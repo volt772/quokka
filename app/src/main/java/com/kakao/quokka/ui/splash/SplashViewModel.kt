@@ -5,6 +5,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 
+/**
+ * SplashViewModel
+ */
 @HiltViewModel
 class SplashViewModel @Inject constructor(
 ) : BaseViewModel()

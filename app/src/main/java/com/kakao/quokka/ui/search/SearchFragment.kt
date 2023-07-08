@@ -28,6 +28,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+/**
+ * SearchFragment
+ * @desc Tab '검색'
+ */
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 

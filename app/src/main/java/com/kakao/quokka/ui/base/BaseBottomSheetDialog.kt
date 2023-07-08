@@ -14,6 +14,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kakao.quokka.ext.hideKeyboard
 import com.kakao.quokka.ext.showKeyboard
 
+
+/**
+ * BaseBottomSheetDialog
+ */
 abstract class BaseBottomSheetDialog<B : ViewDataBinding, PARAM>(
     @LayoutRes private val layoutResId: Int,
     @StyleRes private val styleResId: Int,

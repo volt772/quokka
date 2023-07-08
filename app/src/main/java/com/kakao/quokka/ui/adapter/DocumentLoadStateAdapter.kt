@@ -8,6 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kakao.quokka.ext.visibilityExt
 import com.kako.quokka.databinding.ItemLoadStateBinding
 
+
+/**
+ * DocumentLoadStateAdapter
+ * @desc Document Paging Load Status
+ */
 class DocumentLoadStateAdapter(
     private val retry: () -> Unit
 ) : LoadStateAdapter<DocumentLoadStateAdapter.LoadStateViewHolder>() {

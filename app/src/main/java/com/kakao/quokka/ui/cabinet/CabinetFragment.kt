@@ -17,6 +17,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+/**
+ * CabinetFragment
+ * @desc Tab '보관'
+ */
 @AndroidEntryPoint
 class CabinetFragment : BaseFragment<FragmentCabinetBinding>(R.layout.fragment_cabinet) {
 
