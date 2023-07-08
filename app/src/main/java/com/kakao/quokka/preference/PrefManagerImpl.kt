@@ -43,13 +43,13 @@ class PrefManagerImpl @Inject constructor(
 
         val updatedPref = prefs.map { p ->
             val keySet = p.splitKey()
-            val _key = keySet.first
-            val _time = keySet.second
+            val pKey = keySet.first
+            val pDateTime = keySet.second
 
-            if (_key == value) {
+            if (pKey == value) {
                 "${value}||${currMillis}"
             } else {
-                "${_key}||${_time}"
+                "${pKey}||${pDateTime}"
             }
         }
 

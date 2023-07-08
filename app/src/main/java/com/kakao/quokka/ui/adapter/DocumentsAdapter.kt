@@ -45,10 +45,10 @@ class DocumentsAdapter(
                 is DocumentModel.DocumentItem -> {
                     val vh = holder as DocumentViewHolder
                     vh.binding.apply {
-                        val _doc = docModel.doc
+                        val dm = docModel.doc
 
                         /* Thumbnail*/
-                        val thumbUrl = _doc.thumbnailUrl.ifBlank { _doc.thumbnail }
+                        val thumbUrl = dm.thumbnailUrl.ifBlank { dm.thumbnail }
 
                         Glide.with(appContext)
                             .load(thumbUrl)
@@ -60,19 +60,19 @@ class DocumentsAdapter(
                             )
                             .into(ivThumbnail)
 
-                        val dateTime = _doc.datetime.convertDateAndTime()
+                        val dateTime = dm.datetime.convertDateAndTime()
                         tvDate.text = dateTime.first    // Image Date
                         tvTime.text = dateTime.second   // Image Time
 
                         /* favorite*/
                         ivFavorite.setImageResource(
-                            if (_doc.isFavorite) { R.drawable.ic_favorite_y }
+                            if (dm.isFavorite) { R.drawable.ic_favorite_y }
                             else R.drawable.ic_favorite_n
                         )
 
                         /* listener : switch favorite (like/dislike)*/
                         ivFavorite.setOnSingleClickListener {
-                            doFavorite(_doc, position)
+                            doFavorite(dm, position)
                         }
                     }
                 }

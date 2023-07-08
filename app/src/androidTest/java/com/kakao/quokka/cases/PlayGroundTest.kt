@@ -1,7 +1,6 @@
 package com.kakao.quokka.cases
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kakao.quokka.ext.splitKey
 import com.kakao.quokka.preference.PrefManager
 import com.kakao.quokka.utils.TestCoroutineRule
 import dagger.hilt.android.testing.HiltAndroidRule

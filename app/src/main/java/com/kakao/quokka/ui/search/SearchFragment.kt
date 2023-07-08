@@ -87,7 +87,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 addLoadStateListener { loadState ->
                     if (loadState.append.endOfPaginationReached) {
                         viewForEmptyDocuments(true)
-                        itemCount == 0
                     }
 
                     if (loadState.refresh is LoadState.Loading) {

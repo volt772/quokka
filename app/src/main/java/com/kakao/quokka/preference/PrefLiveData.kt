@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData
  */
 abstract class PrefLiveData<T> (
     val sharedPrefs: SharedPreferences,
-   val key: String,
-   val defValue: T
+    val key: String,
+    private val defValue: T
 ) : LiveData<T>() {
 
     init {

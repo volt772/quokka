@@ -1,8 +1,6 @@
 package com.kakao.quokka.ui.base
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-
 
 /**
  * BaseViewModel
