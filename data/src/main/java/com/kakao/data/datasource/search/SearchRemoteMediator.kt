@@ -3,14 +3,12 @@ package com.kakao.data.datasource.search
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.kakao.data.di.IoDispatcher
 import com.kakao.data.network.ApiService
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_NETWORK_SIZE
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_NETWORK_SORT
 import com.kakao.domain.dto.QkdDocuments
 import com.kakao.domain.mapper.DocumentsMapper
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -37,23 +35,30 @@ class SearchRemoteMediator(
 
             val respImg = withContext(ioDispatcher) {
                 api.getSearchImage(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
-            }.body()?.documents
+            }.body()
             val respClip = withContext(ioDispatcher) {
                 api.getSearchVClip(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
-            }.body()?.documents
+            }.body()
 
+            /* Retrieve Document List*/
             val docs = mutableListOf<QkdDocuments>().also { _list ->
-                respImg?.let { img -> _list.addAll(mapper.mapRespToDocument(pageIndex, img)) }
-                respClip?.let { clip -> _list.addAll(mapper.mapRespToDocument(pageIndex, clip)) }
+                respImg?.documents?.let { img -> _list.addAll(mapper.mapRespToDocument(pageIndex, img)) }
+                respClip?.documents?.let { clip -> _list.addAll(mapper.mapRespToDocument(pageIndex, clip)) }
             }
+
+            /* Check Page is Last*/
+            val respImgIsEnd = respImg?.meta?.is_end?: true
+            val respClipIsEnd = respClip?.meta?.is_end?: true
+            val isEndPage = respImgIsEnd && respClipIsEnd
 
             docs.sortByDescending { it.datetime }
 
-            val nextKey = if (docs.isEmpty()) {
-                    null
-                } else {
-                    pageIndex + (params.loadSize / 10)
-                }
+            val nextKey = if (docs.isEmpty() || isEndPage) {
+                null
+            } else {
+                pageIndex + (params.loadSize / 10)
+            }
+
             LoadResult.Page(
                 data = docs,
                 prevKey = if (pageIndex == TMDB_STARTING_PAGE_INDEX) null else pageIndex,

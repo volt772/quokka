@@ -58,6 +58,7 @@ class DocumentsAdapter(
                                     MultiTransformation(CenterCrop(), RoundedCorners(12))
                                 )
                             )
+                            .placeholder(R.drawable.ic_placeholder_thumbnail)
                             .into(ivThumbnail)
 
                         val dateTime = dm.datetime.convertDateAndTime()

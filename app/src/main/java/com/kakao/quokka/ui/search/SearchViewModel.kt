@@ -64,7 +64,10 @@ class SearchViewModel @Inject constructor(
             .map {
                 it.insertSeparators { before, after ->
                     if (before?.doc?.page != after?.doc?.page) {
-                        DocumentModel.SeparatorItem("${after?.doc?.page}")
+                        val label = after?.doc?.page
+                        label?.let { _label ->
+                            DocumentModel.SeparatorItem(_label.toString())
+                        }
                     } else {
                         null
                     }

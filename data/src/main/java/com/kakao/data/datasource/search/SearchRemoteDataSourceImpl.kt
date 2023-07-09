@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.kakao.data.di.DefaultDispatcher
-import com.kakao.data.di.IoDispatcher
 import com.kakao.data.network.ApiService
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_LOAD_SIZE
 import com.kakao.domain.dto.QkdDocuments

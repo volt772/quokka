@@ -48,6 +48,7 @@ class CabinetAdapter(
                             MultiTransformation(CenterCrop(), RoundedCorners(4))
                         )
                     )
+                    .placeholder(R.drawable.ic_placeholder_thumbnail)
                     .into(ivCabinetThumbnail)
 
                 tvRegdate.text = c.regDate.convertDate(DOC_FULL_FORMAT)
