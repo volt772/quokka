@@ -29,16 +29,30 @@ class SearchRemoteMediator(
     private val mapper: DocumentsMapper
 ) : PagingSource<Int, QkdDocuments>() {
 
+    private var respImgIsEnd = false
+    private var respClipIsEnd = false
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, QkdDocuments> {
         val pageIndex = params.key ?: TMDB_STARTING_PAGE_INDEX
         return try {
 
-            val respImg = withContext(ioDispatcher) {
-                api.getSearchImage(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
-            }.body()
-            val respClip = withContext(ioDispatcher) {
-                api.getSearchVClip(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
-            }.body()
+            /* Request Image*/
+            val respImg = if (!respImgIsEnd) {
+                withContext(ioDispatcher) {
+                    api.getSearchImage(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
+                }.body()
+            } else {
+                null
+            }
+
+            /* Request VClip*/
+            val respClip = if (!respClipIsEnd) {
+                withContext(ioDispatcher) {
+                    api.getSearchVClip(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
+                }.body()
+            } else {
+                null
+            }
 
             /* Retrieve Document List*/
             val docs = mutableListOf<QkdDocuments>().also { _list ->
@@ -47,8 +61,8 @@ class SearchRemoteMediator(
             }
 
             /* Check Page is Last*/
-            val respImgIsEnd = respImg?.meta?.is_end?: true
-            val respClipIsEnd = respClip?.meta?.is_end?: true
+            respImgIsEnd = respImg?.meta?.is_end?: true
+            respClipIsEnd = respClip?.meta?.is_end?: true
             val isEndPage = respImgIsEnd && respClipIsEnd
 
             docs.sortByDescending { it.datetime }
