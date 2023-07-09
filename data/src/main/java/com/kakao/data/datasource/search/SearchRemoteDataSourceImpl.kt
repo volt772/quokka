@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.kakao.data.di.DefaultDispatcher
+import com.kakao.data.di.IoDispatcher
 import com.kakao.data.network.ApiService
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_LOAD_SIZE
 import com.kakao.domain.dto.QkdDocuments
@@ -20,7 +21,7 @@ import javax.inject.Inject
  */
 @ExperimentalPagingApi
 class SearchRemoteDataSourceImpl @Inject constructor(
-    @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher val ioDispatcher: CoroutineDispatcher,
     private val api: ApiService,
     private val mapper: DocumentsMapper
 ) : SearchRemoteDataSource {
@@ -36,7 +37,7 @@ class SearchRemoteDataSourceImpl @Inject constructor(
                 initialLoadSize = PAGING_LOAD_SIZE
             ),
             pagingSourceFactory = {
-                SearchRemoteMediator(api, query, defaultDispatcher, mapper)
+                SearchRemoteMediator(api, query, ioDispatcher, mapper)
             }
         ).flow
     }

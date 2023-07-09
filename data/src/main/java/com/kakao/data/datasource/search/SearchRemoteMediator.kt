@@ -3,12 +3,14 @@ package com.kakao.data.datasource.search
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.kakao.data.di.IoDispatcher
 import com.kakao.data.network.ApiService
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_NETWORK_SIZE
 import com.kakao.domain.constants.QkdConstants.DataSource.PAGING_NETWORK_SORT
 import com.kakao.domain.dto.QkdDocuments
 import com.kakao.domain.mapper.DocumentsMapper
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -25,7 +27,7 @@ private const val TMDB_STARTING_PAGE_INDEX = 1
 class SearchRemoteMediator(
     private val api: ApiService,
     private val query: String,
-    private val defaultDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher,
     private val mapper: DocumentsMapper
 ) : PagingSource<Int, QkdDocuments>() {
 
@@ -33,10 +35,10 @@ class SearchRemoteMediator(
         val pageIndex = params.key ?: TMDB_STARTING_PAGE_INDEX
         return try {
 
-            val respImg = withContext(defaultDispatcher) {
+            val respImg = withContext(ioDispatcher) {
                 api.getSearchImage(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
             }.body()?.documents
-            val respClip = withContext(defaultDispatcher) {
+            val respClip = withContext(ioDispatcher) {
                 api.getSearchVClip(query = query, page = pageIndex, size = PAGING_NETWORK_SIZE, sort = PAGING_NETWORK_SORT)
             }.body()?.documents
 
