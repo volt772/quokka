@@ -16,7 +16,10 @@ class DocumentsMapperImpl @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
 ) : DocumentsMapper {
 
-    override suspend fun mapRespToDocument(page: Int, documents: List<Document>): List<QkdDocuments> {
+    override suspend fun mapRespToDocument(
+        page: Int,
+        documents: List<Document>)
+    : List<QkdDocuments> {
         return withContext(defaultDispatcher) {
             documents.map { _d ->
                 QkdDocuments(

@@ -9,16 +9,16 @@ import com.kakao.domain.constants.QkdNetworkKeyTags
 data class Document (
 
     @field:SerializedName(QkdNetworkKeyTags.Response.THUMBNAIL_URL)
-    val thumbnailUrl: String,
+    val thumbnailUrl: String?,
 
     @field:SerializedName(QkdNetworkKeyTags.Response.THUMBNAIL)
-    val thumbnail: String,
+    val thumbnail: String?,
 
     @field:SerializedName(QkdNetworkKeyTags.Response.TITLE)
-    val title: String,
+    val title: String?,
 
     @field:SerializedName(QkdNetworkKeyTags.Response.DISPLAY_SITENAME)
-    val displaySiteName: String,
+    val displaySiteName: String?,
 
     @field:SerializedName(QkdNetworkKeyTags.Response.DATETIME)
     val datetime: String
