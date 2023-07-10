@@ -24,7 +24,7 @@ object InterceptorModule {
     fun provideInterceptor(): Interceptor {
         return Interceptor { chain ->
             val builder = chain.request().newBuilder()
-                .header(AUTHORIZATION, "KakaoAK dbb8d3097da36f5c3fcd34a5e56e055b")
+                .header(AUTHORIZATION, "KakaoAK dbb8d3097~")
             chain.proceed(builder.build())
         }
     }

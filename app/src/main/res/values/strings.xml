@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">페이징</string>
-    <string name="kakao_app_key">81a7bb3e2ac3b29f418a2cc2c0610c31</string>
-    <string name="kakao_header_key">KakaoAK dbb8d3097da36f5c3fcd34a5e56e055b</string>
+    <string name="kakao_app_key">81a7bb3e2ac3b~</string>
+    <string name="kakao_header_key">KakaoAK dbb8d3097~</string>
 
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
