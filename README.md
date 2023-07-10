@@ -3,17 +3,13 @@
 <br />
 <div align="center">
     <img src="https://github.com/volt772/quokka/blob/main/introduce/project_thumbnail.png" alt="Logo">
- 
-  <h3 align="center">the 페이징</h3>
-</div>
+ </div>
 
 
 <!-- ABOUT THE PROJECT -->
 ## Images
-|||
-|:---|----|
-|<img src="https://github.com/volt772/quokka/blob/main/introduce/intro_app_4.jpeg" width=400 height=850>|<img src="https://github.com/volt772/quokka/blob/main/introduce/intro_app_1.jpeg" width=400 height=850><br/>|
-|<img src="https://github.com/volt772/quokka/blob/main/introduce/intro_app_2.jpeg" width=400 height=850>|<img src="https://github.com/volt772/quokka/blob/main/introduce/intro_app_3.jpeg" width=400 height=850>|
+<img src="https://github.com/volt772/quokka/blob/main/introduce/intro_app_1.png">
+<img src="https://github.com/volt772/quokka/blob/main/introduce/intro_app_2.png">
 
 
 
