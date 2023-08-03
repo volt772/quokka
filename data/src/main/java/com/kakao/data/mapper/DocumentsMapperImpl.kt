@@ -29,7 +29,9 @@ class DocumentsMapperImpl @Inject constructor(
                     thumbnail = _d.thumbnail?: "",
                     title = _d.title?: "",
                     displaySiteName = _d.displaySiteName?: "",
-                    datetime = _d.datetime
+                    datetime = _d.datetime,
+                    imageUrl = _d.imageUrl,
+                    url = _d.url
                 )
             }
         }

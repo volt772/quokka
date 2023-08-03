@@ -1,5 +1,7 @@
 package com.kakao.domain.dto
 
+import com.google.gson.annotations.SerializedName
+import com.kakao.domain.constants.QkdNetworkKeyTags
 import com.kakao.domain.constants.QkdResourceType
 
 /**
@@ -19,6 +21,10 @@ data class QkdDocuments (
 
     val displaySiteName: String,
 
-    val datetime: String
+    val datetime: String,
+
+    val imageUrl: String,
+
+    val url: String,
 
 )

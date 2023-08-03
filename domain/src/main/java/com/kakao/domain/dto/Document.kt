@@ -21,6 +21,12 @@ data class Document (
     val displaySiteName: String?,
 
     @field:SerializedName(QkdNetworkKeyTags.Response.DATETIME)
-    val datetime: String
+    val datetime: String,
+
+    @field:SerializedName(QkdNetworkKeyTags.Response.IMAGE_URL)
+    val imageUrl: String,
+
+    @field:SerializedName(QkdNetworkKeyTags.Response.URL)
+    val url: String,
 
 )
