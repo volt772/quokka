@@ -24,9 +24,9 @@ data class Document (
     val datetime: String,
 
     @field:SerializedName(QkdNetworkKeyTags.Response.IMAGE_URL)
-    val imageUrl: String,
+    val imageUrl: String?,
 
     @field:SerializedName(QkdNetworkKeyTags.Response.URL)
-    val url: String,
+    val url: String?,
 
 )

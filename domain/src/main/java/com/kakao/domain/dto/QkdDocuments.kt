@@ -11,6 +11,8 @@ data class QkdDocuments (
 
     val page: Int,
 
+    val key: String,
+
     val type: QkdResourceType,
 
     val thumbnailUrl: String,

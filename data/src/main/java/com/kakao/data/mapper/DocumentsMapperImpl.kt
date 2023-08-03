@@ -24,14 +24,15 @@ class DocumentsMapperImpl @Inject constructor(
             documents.map { _d ->
                 QkdDocuments(
                     page = page,
+                    key = ",",
                     type = if (_d.thumbnailUrl.isNullOrBlank()) { QkdResourceType.CLIP } else { QkdResourceType.IMAGE},
                     thumbnailUrl = _d.thumbnailUrl?: "",
                     thumbnail = _d.thumbnail?: "",
                     title = _d.title?: "",
                     displaySiteName = _d.displaySiteName?: "",
                     datetime = _d.datetime,
-                    imageUrl = _d.imageUrl,
-                    url = _d.url
+                    imageUrl = _d.imageUrl?: "",
+                    url = _d.url?: ""
                 )
             }
         }
