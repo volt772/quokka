@@ -8,23 +8,23 @@ import com.kakao.domain.constants.QkdDatabaseTags
 import com.kakao.domain.entity.RemoteKeyEntity
 
 @Dao
-interface RemoteKeyDao {
+abstract class RemoteKeyDao: BaseDao<RemoteKeyEntity>() {
 
     /* ▼ SELECT ==========================================================================================================================*/
     @Query(
         value =
         """
         SELECT * FROM ${RemoteKeyEntity.TABLE_REMOTE_KEYS} 
-        WHERE ${QkdDatabaseTags.RemoteKey.KEY} = :key 
+        WHERE `${QkdDatabaseTags.RemoteKey.KEY}` = :key 
         """
     )
-    suspend fun getRemoteKey(
+    abstract fun getRemoteKey(
         key: String
     ): RemoteKeyEntity?
 
     /* ▼ INSERT ==========================================================================================================================*/
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(remoteKeyEntity: List<RemoteKeyEntity>)
+    abstract fun insertAll(remoteKeyEntity: List<RemoteKeyEntity>)
 
     /* ▼ DELETE ==========================================================================================================================*/
 
@@ -32,10 +32,10 @@ interface RemoteKeyDao {
         value =
         """
         DELETE FROM ${RemoteKeyEntity.TABLE_REMOTE_KEYS} 
-        WHERE ${QkdDatabaseTags.RemoteKey.KEY} = :key
+        WHERE `${QkdDatabaseTags.RemoteKey.KEY}` = :key
         """
     )
-    suspend fun deleteKeys(
+    abstract fun deleteKeys(
         key: String
     )
 }

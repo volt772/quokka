@@ -18,6 +18,14 @@ android {
         versionName = Version.versionName
 
         testInstrumentationRunner = "com.kakao.quokka.CustomTestRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+                arguments["room.incremental"] = "true"
+                arguments["room.expandProjection"] = "true"
+            }
+        }
     }
 
     buildTypes {
@@ -81,6 +89,12 @@ dependencies {
     implementation(Retrofit.adapterRxJava)
     implementation(Retrofit.adapterRxJava2)
     implementation(Retrofit.loggingInterceptor)
+
+    /* Room*/
+    implementation(Room.core)
+    implementation(Room.rxJava2)
+    implementation(Room.ktx)
+    kapt(Room.compiler)
 
     /* Paging3*/
     implementation(Paging3.ktx)

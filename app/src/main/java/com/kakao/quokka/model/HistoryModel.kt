@@ -6,6 +6,8 @@ package com.kakao.quokka.model
  */
 data class HistoryModel (
 
+    val id: Long,
+
     val keyword: String,
 
     val regDate: Long

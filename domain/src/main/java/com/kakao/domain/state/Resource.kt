@@ -1,4 +1,4 @@
-package com.kakao.domain.repository
+package com.kakao.domain.state
 
 sealed class Resource<T> {
 

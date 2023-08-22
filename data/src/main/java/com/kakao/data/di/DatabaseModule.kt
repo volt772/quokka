@@ -52,4 +52,8 @@ object DatabaseModule {
     @Singleton
     fun provideRemoteKeyDao(database: QkDatabase) = database.remoteKeyDao()
 
+    @Provides
+    @Singleton
+    fun provideHistoryDao(database: QkDatabase) = database.historyDao()
+
 }

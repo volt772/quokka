@@ -5,27 +5,27 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.kakao.domain.constants.QkdDatabaseTags
+import com.kakao.domain.entity.DocumentEntity
 import com.kakao.domain.entity.RemoteKeyEntity
 
 @Dao
-interface DocumentDao {
+abstract class DocumentDao: BaseDao<DocumentEntity>() {
 
     /* ▼ SELECT ==========================================================================================================================*/
     @Query(
         value =
         """
         SELECT * FROM ${RemoteKeyEntity.TABLE_REMOTE_KEYS} 
-        WHERE ${QkdDatabaseTags.RemoteKey.KEY} = :key 
+        WHERE `${QkdDatabaseTags.RemoteKey.KEY}` = :key 
         """
     )
-    suspend fun getRemoteKey(
-        id: Long,
+    abstract fun getRemoteKey(
         key: String
     ): RemoteKeyEntity?
 
     /* ▼ INSERT ==========================================================================================================================*/
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(remoteKeyEntity: List<RemoteKeyEntity>)
+    abstract fun insertAll(remoteKeyEntity: List<RemoteKeyEntity>)
 
     /* ▼ DELETE ==========================================================================================================================*/
 
@@ -33,11 +33,10 @@ interface DocumentDao {
         value =
         """
         DELETE FROM ${RemoteKeyEntity.TABLE_REMOTE_KEYS} 
-        WHERE ${QkdDatabaseTags.RemoteKey.KEY} = :key
+        WHERE `${QkdDatabaseTags.RemoteKey.KEY}` = :key
         """
     )
-    suspend fun deleteKeys(
-        id: Long,
+    abstract fun deleteKeys(
         key: String
     )
 }

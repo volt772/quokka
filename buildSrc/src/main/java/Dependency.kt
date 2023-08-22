@@ -60,6 +60,13 @@ object Paging3 {
     const val roomPaging = "androidx.room:room-paging:2.5.0"
 }
 
+object Room {
+    const val core = "androidx.room:room-runtime:2.5.1"
+    const val rxJava2 = "androidx.room:room-rxjava2:2.5.1"
+    const val ktx = "androidx.room:room-ktx:2.5.1"
+    const val compiler = "androidx.room:room-compiler:2.5.1"
+}
+
 object PrefManager {
     const val preferenceKtx = "androidx.preference:preference-ktx:1.2.0"
 }

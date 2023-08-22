@@ -3,7 +3,7 @@ package com.kakao.domain.dto
 
 data class QkdHistory (
 
-    val id: Int,
+    val id: Long,
 
     val keyword: String,
 

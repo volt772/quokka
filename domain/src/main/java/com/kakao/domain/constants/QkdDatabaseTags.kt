@@ -24,6 +24,6 @@ object QkdDatabaseTags {
     object HistoryKey {
         const val ID = "id"
         const val KEYWORD = "keyword"
-        const val REG_DATE = "reg_date"
+        const val REG_DATE = "regDate"
     }
 }

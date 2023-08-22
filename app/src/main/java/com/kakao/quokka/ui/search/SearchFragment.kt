@@ -6,10 +6,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.kakao.domain.constants.QkdResourceType
+import com.kakao.domain.state.State
 import com.kakao.quokka.constants.QkConstants.Pref.FAVORITE_KEY
-import com.kakao.quokka.constants.QkConstants.Pref.HISTORY_KEY
-import com.kakao.quokka.ext.currMillis
 import com.kakao.quokka.ext.setOnSingleClickListener
+import com.kakao.quokka.ext.showToast
 import com.kakao.quokka.ext.visibilityExt
 import com.kakao.quokka.model.DocumentDto
 import com.kakao.quokka.model.HistoryModel
@@ -40,7 +40,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private val vm: SearchViewModel by viewModels()
 
     private var queryKeyword: String = ""   // Current Search Keyword
-    private val historyModels: MutableList<HistoryModel> = mutableListOf()  // History Keywords
+    private val historyList: MutableList<HistoryModel> = mutableListOf()  // History Keywords
 
     private lateinit var docAdapter: DocumentsAdapter   // Search Result(=Document) Adapter
 
@@ -62,7 +62,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             /* Search Dialog*/
             ivSearch.setOnSingleClickListener {
                 val categoryListDialog = SearchDialog.newInstance(
-                    historyModels,
+                    historyList,
                     ::doSearch,
                     ::delHistories,
                     ::clearHistories
@@ -115,7 +115,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
      */
     private fun initDataSet() {
         /* History (Recent Keyword)*/
-        viewLifecycleOwner.lifecycleScope.launch { vm.getHistories() }
+        viewLifecycleOwner.lifecycleScope.launch { vm.getHistory() }
     }
 
     /**
@@ -145,8 +145,29 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
             /* Recent History Keyword*/
             launch {
-                vm.history.collectLatest { histories ->
-                    historyModels.addAll(histories)
+                vm.keywords.collect { state ->
+                    when (state) {
+                        is State.Loading -> historyList.clear()
+                        is State.Success -> {
+                            val tmpList = mutableListOf<HistoryModel>().also { _list ->
+                                state.data.map {
+                                    _list.add(HistoryModel(
+                                        id = it.id,
+                                        keyword = it.keyword,
+                                        regDate = it.regDate
+                                    ))
+                                }
+                            }
+
+                            historyList.apply {
+                                clear()
+                                addAll(tmpList)
+                            }
+                        }
+                        is State.Error -> {
+                            requireContext().showToast(R.string.list_loading_failed, false)
+                        }
+                    }
                 }
             }
         }
@@ -160,20 +181,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     private fun doSearch(query: String) {
         lifecycleScope.launch {
             query.let { _query ->
-                historyModels.filter { historyModel ->
-                    historyModel.keyword == query
-                }.run {
-                    if (this.isNotEmpty()) {
-                        /* Keyword Already Exists*/
-                        prefManager.updateStringSet(HISTORY_KEY, query)
-                        historyModels.remove(this.first())
-                    } else {
-                        /* New Keyword*/
-                        prefManager.addStringSet(HISTORY_KEY, _query)
-                    }
-                }
 
-                historyModels.add(0, HistoryModel(_query, currMillis))
+                vm.postHistory(query)
 
                 /* Do Search*/
                 queryKeyword = _query
@@ -185,14 +194,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     /**
      * Delete History Item
      */
-    private fun delHistories() {
-        val updated = mutableSetOf<String>().also { _s ->
-            historyModels.forEach { _history ->
-                val value = "${_history.keyword}||${_history.regDate}"
-                _s.add(value)
-            }
+    private fun delHistories(kid: Long) {
+        lifecycleScope.launch {
+            vm.delHistory(kid)
         }
-        prefManager.setStringSet(HISTORY_KEY, updated)
     }
 
     /**
@@ -200,7 +205,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
      * @desc Delete key 'history'
      */
     private fun clearHistories() {
-        prefManager.clearKey(HISTORY_KEY)
+        lifecycleScope.launch {
+            vm.clearHistory()
+        }
     }
 
     /**

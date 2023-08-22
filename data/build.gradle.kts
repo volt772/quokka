@@ -20,6 +20,12 @@ android {
 
 dependencies {
 
+    /* Room*/
+    implementation(Room.core)
+    implementation(Room.rxJava2)
+    implementation(Room.ktx)
+    kapt(Room.compiler)
+
     /* Retrofit*/
     implementation(Retrofit.core)
     implementation(Retrofit.converterGson)

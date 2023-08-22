@@ -14,16 +14,12 @@ import com.kakao.domain.entity.RemoteKeyEntity.Companion.TABLE_REMOTE_KEYS
 data class RemoteKeyEntity(
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = QkdDatabaseTags.RemoteKey.ID)
     val id: Long = 0,
 
-    @ColumnInfo(name = QkdDatabaseTags.RemoteKey.KEY)
     val key: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.RemoteKey.PREV_KEY)
     val prevKey: Int?,
 
-    @ColumnInfo(name = QkdDatabaseTags.RemoteKey.NEXT_KEY)
     val nextKey: Int?
 
 ) {

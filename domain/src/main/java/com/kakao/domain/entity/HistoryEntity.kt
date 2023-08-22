@@ -17,13 +17,10 @@ import com.kakao.domain.entity.HistoryEntity.Companion.TABLE_HISTORY
 data class HistoryEntity(
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = QkdDatabaseTags.HistoryKey.ID)
     val id: Long = 0,
 
-    @ColumnInfo(name = QkdDatabaseTags.HistoryKey.KEYWORD)
     val keyword: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.HistoryKey.REG_DATE)
     val regDate: Long = 0L
 
 ) {

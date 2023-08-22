@@ -1,6 +1,5 @@
 package com.kakao.quokka.ui.search
 
-import android.content.DialogInterface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
@@ -25,11 +24,8 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
 
     private var histories: MutableList<HistoryModel> = mutableListOf()  // History Keywords
     private var doSearch: ((String) -> Unit)? = null    // Func() -> Search
-    private var delHistories: (() -> Unit)? = null      // Func() -> Delete keyword
+    private var delHistories: ((Long) -> Unit)? = null      // Func() -> Delete keyword
     private var clearHistories: (() -> Unit)? = null    // Func() -> Clear keyword list
-
-    private val deleteTargetList: MutableList<HistoryModel> = mutableListOf()   // Delete Targets
-    private var dismissFlag: DismissFlag = DismissFlag.DELETE
 
     private lateinit var historyAdapter: HistoryAdapter
 
@@ -98,7 +94,6 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
      * @desc Dismiss dialog and save keyword to fragment's flow value named 'query'
      */
     private fun dialogSearch(query: String) {
-        dismissFlag = DismissFlag.QUERY
         doSearch?.invoke(query)
         dismiss()
     }
@@ -108,12 +103,11 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
      * @desc just add to 'deleteTargetList' and remove when dialog dismissed
      */
     private fun dialogDeleteHistory(history: HistoryModel) {
-        dismissFlag = DismissFlag.DELETE
-        deleteTargetList.add(history)
         histories.remove(history)
-
-        viewForEmpty()
         historyAdapter.notifyDataSetChanged()
+        viewForEmpty()
+
+        delHistories?.invoke(history.id)
     }
 
     /**
@@ -121,33 +115,18 @@ class SearchDialog : BaseBottomSheetDialog<DialogSearchBinding, Unit>(
      * @desc remove 'history' key in SharedPrefernece
      */
     private fun dialogClearHistory() {
-        dismissFlag = DismissFlag.CLEAR
-
         histories.clear()
         historyAdapter.notifyDataSetChanged()
-
         viewForEmpty()
+
         clearHistories?.invoke()
     }
 
-    /**
-     * Dismiss Dialog
-     * @desc Delete keyword in 'deleteTargetList'
-     */
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        if (dismissFlag == DismissFlag.DELETE) {
-            delHistories?.invoke()
-        }
-        deleteTargetList.clear()
-    }
-
     companion object {
-        enum class DismissFlag { QUERY, DELETE, CLEAR }
         fun newInstance(
             histories: MutableList<HistoryModel>,
             doSearch: (String) -> Unit,
-            delHistories: () -> Unit,
+            delHistories: (Long) -> Unit,
             clearHistories: () -> Unit
         ) = SearchDialog().apply {
             this.histories = histories

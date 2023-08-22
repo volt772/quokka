@@ -17,31 +17,22 @@ import com.kakao.domain.entity.DocumentEntity.Companion.TABLE_DOCUMENT
 data class DocumentEntity(
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.ID)
     val id: Long = 0,
 
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.KEY)
     val key: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.THUMBNAIL_URL)
     val thumbnailUrl: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.THUMBNAIL)
     val thumbnail: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.TITLE)
     val title: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.DISPLAY_SITE_NAME)
     val displaySiteName: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.DATETIME)
     val datetime: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.IMAGE_URL)
     val imageUrl: String = "",
 
-    @ColumnInfo(name = QkdDatabaseTags.DocumentKey.URL)
     val url: String = ""
 
 ) {
